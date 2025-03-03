@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Login</string>
+    <string name="eTxtLogin_hint">Username</string>
+    <string name="eTxtPassword_hint">Password</string>
+    <string name="txtRegisterRedirect_text">If you don\'t have an account, please click <a>Here</a>!!!</string>
+</resources>
