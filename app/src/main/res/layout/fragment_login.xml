@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center_vertical"
-    tools:context=".LoginPage">
+    android:gravity="center"
+    tools:context=".MainActivity">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -40,7 +40,7 @@
                 android:background="@drawable/custom_edit_text"
                 android:padding="8dp"
                 android:ems="10"
-                android:hint="@string/eTxtLogin_hint"
+                android:hint="@string/eTxtUsername_hint"
                 android:inputType="text"
                 android:layout_marginTop="24dp"
                 android:drawableStart="@drawable/ic_user"
@@ -73,9 +73,9 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
+        android:id="@+id/txtRegisterRedirect"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:text="@string/txtRegisterRedirect_text"
         android:textColor="#000000"/>
 </LinearLayout>

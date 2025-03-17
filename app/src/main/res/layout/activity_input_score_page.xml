@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".InputScorePage">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+        android:text="@string/txtTitleInput_txt"
+        android:textAlignment="center"
+        android:textColor="@color/purple_200"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/txtSubject_txt"
+                android:textSize="16sp"
+                android:textColor="@color/purple_200"/>
+
+            <Spinner
+                android:id="@+id/listSubjects"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/txtClass_txt"
+                android:textSize="16sp"
+                android:textColor="@color/purple_200"/>
+
+            <Spinner
+                android:id="@+id/listClasses"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content" />
+
+        </TableRow>
+
+        <TableRow android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/txtStudent_txt"
+                android:textSize="16sp"
+                android:textColor="@color/purple_200"/>
+
+            <Spinner
+                android:id="@+id/listStudents"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content" />
+        </TableRow>
+    </TableLayout>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:textSize="16sp"
+                android:textColor="@color/purple_200"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/txtMiddleSemesterScore_txt"/>
+
+            <EditText
+                android:id="@+id/eTxtMiddleSemesterScore"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/txtFinalSemesterScore_txt"
+                android:textSize="16sp"
+                android:textColor="@color/purple_200"/>
+
+            <EditText
+                android:id="@+id/eTxtFinalSemesterScore"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+        </TableRow>
+    </TableLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="@color/purple_200"
+            android:padding="10dp"
+            android:text="@string/btnSave_txt"
+            app:cornerRadius="25dp" />
+
+        <Button
+            android:id="@+id/btnSaveAndContinue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/purple_200"
+            android:padding="10dp"
+            android:text="@string/btnSaveAndContinueAdd_txt"
+            app:cornerRadius="25dp" />
+    </LinearLayout>
+
+
+</LinearLayout>

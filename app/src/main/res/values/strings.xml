@@ -1,6 +1,31 @@
 <resources>
     <string name="app_name">Login</string>
-    <string name="eTxtLogin_hint">Username</string>
+    <string name="eTxtUsername_hint">Username</string>
     <string name="eTxtPassword_hint">Password</string>
-    <string name="txtRegisterRedirect_text">If you don\'t have an account, please click <a>Here</a>!!!</string>
+
+    <string name="txtRegister_txt">Register</string>
+    <string name="eTxtFirstName_txt">First Name</string>
+    <string name="eTxtLastName_txt">Last Name</string>
+    <string name="txtLoginRedirect_txt">Already have an account? Press Login</string>
+    <string name="btnUpload_txt">Upload avatar</string>
+
+    <string name="txtTitleInput_txt">Nhập điểm</string>
+    <string name="btnSave_txt">Lưu</string>
+    <string name="btnSaveAndContinueAdd_txt">Lưu và nhập tiếp</string>
+    <string name="txtSubject_txt">Chọn môn học</string>
+    <string name="txtClass_txt">Chọn lớp giảng dạy</string>
+    <string name="txtStudent_txt">Chọn sinh viên</string>
+    <string name="txtMiddleSemesterScore_txt">Nhập điểm quá trình</string>
+    <string name="txtFinalSemesterScore_txt">Nhập điểm cuối kỳ</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome!"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
