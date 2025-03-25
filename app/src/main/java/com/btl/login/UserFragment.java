@@ -12,6 +12,9 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -75,26 +78,73 @@ public class UserFragment extends Fragment {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        final CharSequence[] options = {"Login", "Register", "Cancel"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-        builder.setTitle("Need to login before watch this page!!!");
-        builder.setItems(options, (dialog, which) -> {
-            if (!options[which].equals("Cancel")) {
-                if (options[which].equals("Login")) {
-                    LoginFragment loginFragment = new LoginFragment();
+        customFormFields(view);
 
-                    fragmentTransaction.replace(android.R.id.content, loginFragment);
-                } else if (options[which].equals("Register")) {
-                    RegisterFragment registerFragment = new RegisterFragment();
+//        final CharSequence[] options = {"Login", "Register", "Cancel"};
+//        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+//        builder.setTitle("Need to login before watch this page!!!");
+//        builder.setItems(options, (dialog, which) -> {
+//            if (!options[which].equals("Cancel")) {
+//                if (options[which].equals("Login")) {
+//                    LoginFragment loginFragment = new LoginFragment();
+//
+//                    fragmentTransaction.replace(android.R.id.content, loginFragment);
+//                } else if (options[which].equals("Register")) {
+//                    RegisterFragment registerFragment = new RegisterFragment();
+//
+//                    fragmentTransaction.replace(android.R.id.content, registerFragment);
+//                }
+//                fragmentTransaction.commit();
+//            }
+//            dialog.dismiss();
+//        });
+//
+//        AlertDialog alertDialog = builder.create();
+//        alertDialog.show();
+    }
 
-                    fragmentTransaction.replace(android.R.id.content, registerFragment);
-                }
-                fragmentTransaction.commit();
-            }
-            dialog.dismiss();
-        });
+    private static void customFormFields(@NonNull View view) {
+        TextView txtFirstName = view.findViewById(R.id.userFirstName).findViewById(R.id.txtComponent);
+        EditText eTxtFirstName = view.findViewById(R.id.userFirstName).findViewById(R.id.eTxtComponent);
 
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
+        txtFirstName.setText("Tên");
+        eTxtFirstName.setText("Abc");
+
+        TextView txtLastName = view.findViewById(R.id.userLastName).findViewById(R.id.txtComponent);
+        EditText eTxtLastName = view.findViewById(R.id.userLastName).findViewById(R.id.eTxtComponent);
+
+        txtLastName.setText("Họ");
+        eTxtLastName.setText("Abc");
+
+        TextView txtDateOfBirth = view.findViewById(R.id.userDateOfBirth).findViewById(R.id.txtComponent);
+        EditText eTxtDateOfBirth = view.findViewById(R.id.userDateOfBirth).findViewById(R.id.eTxtComponent);
+
+        txtDateOfBirth.setText("Ngày sinh");
+        eTxtDateOfBirth.setText("Abc");
+
+        TextView txtGender = view.findViewById(R.id.txtUserGender);
+        RadioButton male = view.findViewById(R.id.male);
+        RadioButton female = view.findViewById(R.id.female);
+
+        txtGender.setText("Giới tính");
+        male.setChecked(true);
+
+        TextView txtPhoneNumber = view.findViewById(R.id.userPhoneNumber).findViewById(R.id.txtComponent);
+        EditText eTxtPhoneNumber = view.findViewById(R.id.userPhoneNumber).findViewById(R.id.eTxtComponent);
+
+        txtPhoneNumber.setText("Số điện thoại");
+        eTxtPhoneNumber.setText("0909009900");
+
+        TextView txtAddress = view.findViewById(R.id.userAddress).findViewById(R.id.txtComponent);
+        EditText eTxtAddress = view.findViewById(R.id.userAddress).findViewById(R.id.eTxtComponent);
+
+        txtAddress.setText("Địa chỉ");
+        eTxtAddress.setText("Abc");
+
+        TextView txtEmail = view.findViewById(R.id.userEmail).findViewById(R.id.txtComponent);
+        EditText eTxtEmail = view.findViewById(R.id.userEmail).findViewById(R.id.eTxtComponent);
+
+        txtEmail.setText("Email");
+        eTxtEmail.setText("Abc");
     }
 }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.btl.login.MainActivity">
+
+    <group
+        android:id="@+id/mainFeature"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/home"
+            android:icon="@drawable/ic_plus"
+            android:title="@string/nav_home_item" />
+
+        <item
+            android:id="@+id/input_score"
+            android:icon="@drawable/ic_user"
+            android:title="@string/nav_input_score_item" />
+
+        <item
+            android:id="@+id/statistics"
+            android:icon="@drawable/ic_profile"
+            android:title="@string/nav_statistic_item" />
+    </group>
+
+    <group
+        android:id="@+id/access"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/log_in"
+            android:icon="@drawable/ic_plus"
+            android:title="@string/app_name" />
+
+        <item
+            android:id="@+id/register"
+            android:icon="@drawable/ic_plus"
+            android:title="@string/txtRegister_txt" />
+
+        <item
+            android:id="@+id/log_out"
+            android:icon="@drawable/ic_plus"
+            android:title="@string/nav_log_out_item" />
+    </group>
+
+</menu>

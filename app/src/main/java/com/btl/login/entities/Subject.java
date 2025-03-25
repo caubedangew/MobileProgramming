@@ -3,9 +3,14 @@ package com.btl.login.entities;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import org.jetbrains.annotations.NotNull;
+
 @Entity
-public class Subject extends BaseProperties{
+public class Subject extends BaseProperties {
+
+    @NotNull
     private String subjectName;
+
     private float creditNumber;
 
     public String getSubjectName() {
