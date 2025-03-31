@@ -14,12 +14,23 @@ import org.jetbrains.annotations.NotNull;
                 onUpdate = ForeignKey.CASCADE
         )
 })
-public class Teacher extends BaseInformation {
+public class StudentClass extends BaseProperties {
+    @NotNull
+    private String className;
+
     private int majorId;
 
-    public Teacher(@NotNull String firstName, @NotNull String lastName, int majorId) {
-        super(firstName, lastName);
+    public StudentClass(@NotNull String className, int majorId) {
+        this.className = className;
         this.majorId = majorId;
+    }
+
+    public @NotNull String getClassName() {
+        return className;
+    }
+
+    public void setClassName(@NotNull String className) {
+        this.className = className;
     }
 
     public int getMajorId() {

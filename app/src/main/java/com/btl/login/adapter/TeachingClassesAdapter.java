@@ -8,15 +8,16 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.btl.login.R;
+import com.btl.login.entities.OpenClass;
 
 import java.util.ArrayList;
 
 public class TeachingClassesAdapter extends BaseAdapter {
-    private ArrayList<Object> listTeachingClasses;
+    private ArrayList<OpenClass> listTeachingClasses;
     private Context context;
     private LayoutInflater inflater;
 
-    public TeachingClassesAdapter(Context context, ArrayList<Object> listTeachingClasses) {
+    public TeachingClassesAdapter(Context context, ArrayList<OpenClass> listTeachingClasses) {
         inflater = LayoutInflater.from(context);
         this.listTeachingClasses = listTeachingClasses;
     }

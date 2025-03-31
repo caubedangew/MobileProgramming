@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 
 import com.btl.login.adapter.TeachingSubjectsAdapter;
+import com.btl.login.entities.OpenClass;
 
 import java.util.ArrayList;
 
@@ -67,13 +68,10 @@ public class TeachingSubjectsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_teaching_subjects, container, false);
 
-        ArrayList<Object> listTeachingSubjects = new ArrayList<>();
-        listTeachingSubjects.add("");
-        listTeachingSubjects.add("");
-        listTeachingSubjects.add("");
-        listTeachingSubjects.add("");
+//        ArrayList<OpenClass> listTeachingSubjects = new ArrayList<>();
+//        listTeachingSubjects.add(new OpenClass());
 
-        TeachingSubjectsAdapter teachingSubjectsAdapter = new TeachingSubjectsAdapter(getContext(), listTeachingSubjects);
+        TeachingSubjectsAdapter teachingSubjectsAdapter = new TeachingSubjectsAdapter(getContext(), null);
 
         GridView teachingSubjects = view.findViewById(R.id.grid_teaching_subjects);
         teachingSubjects.setAdapter(teachingSubjectsAdapter);

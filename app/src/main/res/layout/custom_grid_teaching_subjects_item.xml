@@ -11,32 +11,38 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/purple_200"
         app:cardCornerRadius="30dp"
+        android:background="@drawable/custom_edit_text"
+        android:layout_margin="10dp"
         >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="15dp"
+            android:background="@drawable/custom_edit_text">
 
             <TextView
                 android:id="@+id/txtSubjectName"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
                 android:textSize="20sp"
+                android:textColor="@color/white"
                 android:text="Subject's name" />
 
             <TextView
                 android:id="@+id/txtCreditNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:text="Credit number" />
 
             <TextView
                 android:id="@+id/txtNumberTeachingClasses"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:text="Number teaching classes" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>

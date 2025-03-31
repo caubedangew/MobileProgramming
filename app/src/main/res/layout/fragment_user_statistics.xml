@@ -3,26 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="10dp"
     android:orientation="vertical"
-    tools:context=".TeachingSubjectsFragment"
-    android:layout_margin="10dp">
+    tools:context=".UserStatisticsFragment">
 
+    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:id="@+id/txtTeachingSubjectsTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/txtTeachingSubjectsTitle_txt"
-        android:textSize="22sp"
-        android:textStyle="bold"
         android:textAlignment="center"
+        android:textSize="22sp"
         android:textColor="@color/purple_200"
+        android:textStyle="bold"
         android:layout_marginBottom="10dp"
-        />
+        android:text="@string/txtStatisticsTitle_txt" />
 
-    <GridView
-        android:id="@+id/grid_teaching_subjects"
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/statisticsChart"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:numColumns="2" />
+        android:layout_height="500dp" />
 
 </LinearLayout>

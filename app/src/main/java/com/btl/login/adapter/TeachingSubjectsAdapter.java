@@ -9,14 +9,15 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.btl.login.R;
+import com.btl.login.entities.Subject;
 
 import java.util.ArrayList;
 
 public class TeachingSubjectsAdapter extends BaseAdapter {
-    private ArrayList<Object> listSubjects;
+    private ArrayList<Subject> listSubjects;
     private Context context;
     private LayoutInflater inflater;
-    public TeachingSubjectsAdapter(Context context, ArrayList<Object> listSubjects) {
+    public TeachingSubjectsAdapter(Context context, ArrayList<Subject> listSubjects) {
         inflater = LayoutInflater.from(context);
         this.listSubjects = listSubjects;
     }
@@ -43,9 +44,9 @@ public class TeachingSubjectsAdapter extends BaseAdapter {
         TextView txtCreditNumber = view.findViewById(R.id.txtCreditNumber);
         TextView txtNumberTeachingClasses = view.findViewById(R.id.txtNumberTeachingClasses);
 
-        txtSubjectName.setText("ABC");
-        txtCreditNumber.setText("CDE");
-        txtNumberTeachingClasses.setText("XYZ");
+        txtSubjectName.setText(listSubjects.get(position).getSubjectName());
+        txtCreditNumber.setText(String.valueOf(listSubjects.get(position).getCreditNumber()));
+        txtNumberTeachingClasses.setText("Số lượng lớp dạy học là: " + "3");
 
         return view;
     }

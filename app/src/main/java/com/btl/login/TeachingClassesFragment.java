@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.btl.login.adapter.TeachingClassesAdapter;
+import com.btl.login.entities.OpenClass;
 
 import java.util.ArrayList;
 
@@ -66,22 +67,22 @@ public class TeachingClassesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_teaching_classes, container, false);
-        ArrayList<Object> listTeachingClasses = new ArrayList<>();
-        listTeachingClasses.add("");
-        listTeachingClasses.add("");
-        listTeachingClasses.add("");
-        listTeachingClasses.add("");
-        listTeachingClasses.add("");
+//        ArrayList<OpenClass> listTeachingClasses = new ArrayList<>();
+//        listTeachingClasses.add(new OpenClass());
+//        listTeachingClasses.add("");
+//        listTeachingClasses.add("");
+//        listTeachingClasses.add("");
+//        listTeachingClasses.add("");
 
-        TeachingClassesAdapter teachingClassesAdapter = new TeachingClassesAdapter(getContext(), listTeachingClasses);
+        TeachingClassesAdapter teachingClassesAdapter = new TeachingClassesAdapter(getContext(), null);
 
         ListView listView = view.findViewById(R.id.listTeachingSubjects);
         listView.setAdapter(teachingClassesAdapter);
         listView.setOnItemClickListener((parent, view1, position, id) -> {
-            TeachingClassesFragment teachingClassesFragment = new TeachingClassesFragment();
+            InputScoreFragment inputScoreFragment = new InputScoreFragment();
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, teachingClassesFragment);
+            fragmentTransaction.replace(R.id.fragment_container, inputScoreFragment);
             fragmentTransaction.commit();
         });
         return view;

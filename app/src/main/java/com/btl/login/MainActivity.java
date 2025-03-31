@@ -43,13 +43,13 @@ public class MainActivity extends AppCompatActivity {
         toggle.syncState();
 
         Fragment userFragment = new UserFragment();
-//        Fragment homeFragment = new HomeFragment();
-//        Fragment feature1Fragment = new Feature1Fragment();
+        Fragment teachingSubjectsFragment = new TeachingSubjectsFragment();
+        Fragment statisticsFragment = new UserStatisticsFragment();
         setCurrentFragment(userFragment);
 
-        defineNavigationTab(navigationView, new Fragment[] {userFragment, null, null});
+        defineNavigationTab(navigationView, new Fragment[]{userFragment, teachingSubjectsFragment, statisticsFragment});
 
-        AppDatabase appDatabase = Room.databaseBuilder(this, AppDatabase.class, "studentManagementDatabase").build();
+        AppDatabase appDatabase = AppDatabase.getDatabase(getApplicationContext());
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             // Called when the back button is pressed.
@@ -76,7 +76,9 @@ public class MainActivity extends AppCompatActivity {
             if (R.id.home == id) {
                 setCurrentFragment(listFragment[0]);
             } else if (R.id.statistics == id) {
+                setCurrentFragment(listFragment[2]);
             } else if (R.id.input_score == id) {
+                setCurrentFragment(listFragment[1]);
             } else return false;
             return true; // Return true to indicate that the item was handled
         });

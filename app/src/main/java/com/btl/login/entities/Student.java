@@ -1,9 +1,31 @@
 package com.btl.login.entities;
 
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 
-@Entity
-public class Student extends BaseInformation{
-    private int class_id;
+import org.jetbrains.annotations.NotNull;
 
+@Entity(foreignKeys = {
+        @ForeignKey(
+                entity = StudentClass.class,
+                parentColumns = "id",
+                childColumns = "studentClassId",
+                onUpdate = ForeignKey.CASCADE,
+                onDelete = ForeignKey.CASCADE)
+})
+public class Student extends BaseInformation {
+    private int studentClassId;
+
+    public Student(@NotNull String firstName, @NotNull String lastName, int studentClassId) {
+        super(firstName, lastName);
+        this.studentClassId = studentClassId;
+    }
+
+    public int getStudentClassId() {
+        return studentClassId;
+    }
+
+    public void setStudentClassId(int studentClassId) {
+        this.studentClassId = studentClassId;
+    }
 }
