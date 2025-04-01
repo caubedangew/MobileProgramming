@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/registerCard"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".RegisterPage">
+    >
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -34,16 +33,16 @@
                 android:textColor="@color/purple_200"/>
 
             <EditText
-                android:id="@+id/eTxtUsername"
+                android:id="@+id/eTxtEmail"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:ems="10"
                 android:inputType="text"
-                android:hint="@string/eTxtUsername_hint"
+                android:hint="@string/eTxtEmail_hint"
                 android:background="@drawable/custom_edit_text"
                 android:padding="8dp"
                 android:layout_marginTop="20dp"
-                android:drawableStart="@drawable/ic_user"
+                android:drawableStart="@drawable/ic_email"
                 android:drawablePadding="8dp" />
 
             <EditText
@@ -69,7 +68,7 @@
                 android:background="@drawable/custom_edit_text"
                 android:padding="8dp"
                 android:layout_marginTop="20dp"
-                android:drawableStart="@drawable/ic_profile"
+                android:drawableStart="@drawable/ic_user"
                 android:drawablePadding="8dp"/>
 
             <EditText
@@ -83,7 +82,7 @@
                 android:background="@drawable/custom_edit_text"
                 android:layout_marginTop="20dp"
                 android:drawablePadding="8dp"
-                android:drawableStart="@drawable/ic_profile"/>
+                android:drawableStart="@drawable/ic_user"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -101,8 +100,8 @@
 
                 <ImageView
                     android:id="@+id/imageViewAvatar"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
 
                     android:src="@drawable/ic_plus"
                     android:padding="10dp"

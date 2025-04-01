@@ -2,6 +2,7 @@ package com.btl.login.entities;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 
 @Entity(foreignKeys = {
         @ForeignKey(
@@ -18,7 +19,7 @@ import androidx.room.ForeignKey;
                 onUpdate = ForeignKey.CASCADE,
                 onDelete = ForeignKey.CASCADE
         ),
-})
+}, indices = {@Index(value={"studentId", "openClassId"}, unique = true)})
 public class SubjectRegistration extends BaseProperties{
     private int openClassId;
 

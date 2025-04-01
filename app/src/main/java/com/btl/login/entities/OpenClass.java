@@ -3,7 +3,6 @@ package com.btl.login.entities;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
-import androidx.room.Ignore;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -16,9 +15,9 @@ import org.jetbrains.annotations.NotNull;
                 onDelete = ForeignKey.CASCADE
         ),
         @ForeignKey(
-                entity = SubjectScore.class,
+                entity = Subject.class,
                 parentColumns = "id",
-                childColumns = "subjectScoreId",
+                childColumns = "subjectId",
                 onDelete = ForeignKey.CASCADE,
                 onUpdate = ForeignKey.CASCADE
         )
@@ -26,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 public class OpenClass extends BaseProperties{
     private int semesterId;
 
-    private int subjectScoreId;
+    private int subjectId;
 
     @ColumnInfo(defaultValue = "0")
     private int capacity;
@@ -34,9 +33,9 @@ public class OpenClass extends BaseProperties{
     @NotNull
     private String openClassName;
 
-    public OpenClass(int semesterId, int subjectScoreId, int capacity, @NotNull String openClassName) {
+    public OpenClass(int semesterId, int subjectId, int capacity, @NotNull String openClassName) {
         this.semesterId = semesterId;
-        this.subjectScoreId = subjectScoreId;
+        this.subjectId = subjectId;
         this.capacity = capacity;
         this.openClassName = openClassName;
     }
@@ -50,12 +49,12 @@ public class OpenClass extends BaseProperties{
         this.semesterId = semesterId;
     }
 
-    public int getSubjectScoreId() {
-        return subjectScoreId;
+    public int getSubjectId() {
+        return subjectId;
     }
 
-    public void setSubjectScoreId(int subjectScoreId) {
-        this.subjectScoreId = subjectScoreId;
+    public void setSubjectId(int subjectId) {
+        this.subjectId = subjectId;
     }
 
     public int getCapacity() {

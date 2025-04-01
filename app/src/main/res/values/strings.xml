@@ -1,7 +1,7 @@
 <resources>
     <!--    Đăng nhập-->
     <string name="app_name">Đăng nhập</string>
-    <string name="eTxtUsername_hint">Tên tài khoản</string>
+    <string name="eTxtEmail_hint">Email</string>
     <string name="eTxtPassword_hint">Mật khẩu</string>
 
     <!--    Đăng ký-->

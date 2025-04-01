@@ -7,7 +7,6 @@ import androidx.room.Query;
 
 import com.btl.login.entities.Major;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Dao

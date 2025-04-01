@@ -6,7 +6,6 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import com.btl.login.entities.Teacher;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Dao

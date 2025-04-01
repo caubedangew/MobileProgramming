@@ -12,9 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.btl.login.adapter.TeachingClassesAdapter;
-import com.btl.login.entities.OpenClass;
-
-import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.

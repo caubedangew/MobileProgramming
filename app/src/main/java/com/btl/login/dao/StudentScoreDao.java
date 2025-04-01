@@ -5,10 +5,8 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.btl.login.entities.AcademicYear;
 import com.btl.login.entities.StudentScore;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Dao

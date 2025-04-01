@@ -13,7 +13,7 @@
             android:title="@string/nav_home_item" />
 
         <item
-            android:id="@+id/input_score"
+            android:id="@+id/inputScore"
             android:icon="@drawable/ic_user"
             android:title="@string/nav_input_score_item" />
 
@@ -27,7 +27,7 @@
         android:id="@+id/access"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/log_in"
+            android:id="@+id/login"
             android:icon="@drawable/ic_plus"
             android:title="@string/app_name" />
 
@@ -37,7 +37,7 @@
             android:title="@string/txtRegister_txt" />
 
         <item
-            android:id="@+id/log_out"
+            android:id="@+id/logout"
             android:icon="@drawable/ic_plus"
             android:title="@string/nav_log_out_item" />
     </group>

@@ -2,19 +2,14 @@ package com.btl.login.entities;
 
 import androidx.room.Entity;
 import androidx.room.Ignore;
+import androidx.room.Index;
 
 import org.jetbrains.annotations.NotNull;
 
-@Entity
+@Entity(indices = {@Index(value="departmentName", unique = true)})
 public class Department extends BaseProperties{
     @NotNull
     private String departmentName;
-
-
-    @Ignore
-    public Department() {
-        departmentName = "";
-    }
 
     public Department(@NotNull String departmentName) {
         this.departmentName = departmentName;

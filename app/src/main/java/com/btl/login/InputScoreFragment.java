@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Spinner;
 
 import com.btl.login.adapter.InputScoreAdapter;
+import com.btl.login.entities.Student;
 
 import java.util.ArrayList;
 
@@ -65,12 +66,12 @@ public class InputScoreFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_input_score, container, false);
 
-        ArrayList<Object> listStudents = new ArrayList<>();
-        listStudents.add("");
-        listStudents.add("");
-        listStudents.add("");
-        listStudents.add("");
-        listStudents.add("");
+        ArrayList<Student> listStudents = new ArrayList<>();
+//        listStudents.add("");
+//        listStudents.add("");
+//        listStudents.add("");
+//        listStudents.add("");
+//        listStudents.add("");
 
         InputScoreAdapter inputScoreAdapter = new InputScoreAdapter(getContext(), listStudents);
         Spinner spinner_list_students = view.findViewById(R.id.spinner_list_students);

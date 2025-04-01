@@ -2,6 +2,7 @@ package com.btl.login.entities;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -12,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
                 childColumns = "studentClassId",
                 onUpdate = ForeignKey.CASCADE,
                 onDelete = ForeignKey.CASCADE)
-})
+}, indices = {@Index(value="email", unique = true)})
 public class Student extends BaseInformation {
     private int studentClassId;
 

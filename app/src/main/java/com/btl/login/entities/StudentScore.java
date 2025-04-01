@@ -4,6 +4,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 
+import org.jetbrains.annotations.NotNull;
+
 @Entity(foreignKeys = {
         @ForeignKey(
                 entity = OpenClass.class,
@@ -18,18 +20,27 @@ import androidx.room.ForeignKey;
                 childColumns = "studentId",
                 onDelete = ForeignKey.CASCADE,
                 onUpdate = ForeignKey.CASCADE
-        )
+        ),
+        @ForeignKey(
+                entity = SubjectScore.class,
+                parentColumns = "id",
+                childColumns = "subjectScoreId",
+                onDelete = ForeignKey.CASCADE,
+                onUpdate = ForeignKey.CASCADE
+        ),
 })
 public class StudentScore extends BaseProperties {
     @ColumnInfo(defaultValue = "0")
     private float score;
     private int openClassId;
     private int studentId;
+    private int subjectScoreId;
 
-    public StudentScore(float score, int openClassId, int studentId) {
+    public StudentScore(float score, int openClassId, int studentId, int subjectScoreId) {
         this.score = score;
         this.openClassId = openClassId;
         this.studentId = studentId;
+        this.subjectScoreId = subjectScoreId;
     }
 
     public float getScore() {
@@ -54,5 +65,13 @@ public class StudentScore extends BaseProperties {
 
     public void setStudentId(int studentId) {
         this.studentId = studentId;
+    }
+
+    public int getSubjectScoreId() {
+        return subjectScoreId;
+    }
+
+    public void setSubjectScoreId(int subjectScoreId) {
+        this.subjectScoreId = subjectScoreId;
     }
 }

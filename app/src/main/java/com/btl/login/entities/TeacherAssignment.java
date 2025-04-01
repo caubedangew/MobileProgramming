@@ -2,6 +2,7 @@ package com.btl.login.entities;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 
 @Entity(foreignKeys = {
         @ForeignKey(
@@ -18,7 +19,7 @@ import androidx.room.ForeignKey;
                 onDelete = ForeignKey.CASCADE,
                 onUpdate = ForeignKey.CASCADE
         )
-})
+}, indices = {@Index(value={"teacherId", "openClassId"}, unique = true)})
 public class TeacherAssignment extends BaseProperties{
     private int teacherId;
 

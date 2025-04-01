@@ -10,11 +10,6 @@ public class AcademicYear extends BaseProperties{
     @NotNull
     private String academicYearName;
 
-    @Ignore
-    public AcademicYear() {
-        academicYearName = "";
-    }
-
     public AcademicYear(@NotNull String academicYearName) {
         this.academicYearName = academicYearName;
     }
