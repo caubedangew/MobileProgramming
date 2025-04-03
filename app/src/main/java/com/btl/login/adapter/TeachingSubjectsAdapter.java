@@ -13,9 +13,9 @@ import com.btl.login.entities.Subject;
 import java.util.ArrayList;
 
 public class TeachingSubjectsAdapter extends BaseAdapter {
-    private ArrayList<Subject> listSubjects;
+    private final ArrayList<Subject> listSubjects;
     private Context context;
-    private LayoutInflater inflater;
+    private final LayoutInflater inflater;
     public TeachingSubjectsAdapter(Context context, ArrayList<Subject> listSubjects) {
         inflater = LayoutInflater.from(context);
         this.listSubjects = listSubjects;

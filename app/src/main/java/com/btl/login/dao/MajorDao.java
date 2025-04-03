@@ -22,4 +22,7 @@ public interface MajorDao {
 
     @Delete
     void deleteMajor(Major major);
+
+    @Query("DELETE FROM major")
+    void deleteAllMajors();
 }

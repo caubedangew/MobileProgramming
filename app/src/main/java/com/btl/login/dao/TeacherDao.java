@@ -16,9 +16,15 @@ public interface TeacherDao {
     @Query("SELECT * FROM teacher WHERE id=:teacherId")
     Teacher getTeacherById(int teacherId);
 
+    @Query("SELECT * FROM teacher WHERE email=:email")
+    Teacher getTeacherByEmail(String email);
+
     @Insert
     void addTeachers(Teacher... teachers);
 
     @Delete
     void deleteTeacher(Teacher teacher);
+
+    @Query("DELETE FROM teacher")
+    void deleteAllTeachers();
 }

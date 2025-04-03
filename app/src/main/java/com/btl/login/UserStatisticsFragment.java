@@ -68,7 +68,7 @@ public class UserStatisticsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_user_statistics, container, false);;
+        View view = inflater.inflate(R.layout.fragment_user_statistics, container, false);
 
         BarDataSet barDataSet = new BarDataSet(getBarEntries(), "Data");
 

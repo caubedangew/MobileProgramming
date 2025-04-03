@@ -13,9 +13,9 @@ import com.btl.login.entities.OpenClass;
 import java.util.ArrayList;
 
 public class TeachingClassesAdapter extends BaseAdapter {
-    private ArrayList<OpenClass> listTeachingClasses;
+    private final ArrayList<OpenClass> listTeachingClasses;
     private Context context;
-    private LayoutInflater inflater;
+    private final LayoutInflater inflater;
 
     public TeachingClassesAdapter(Context context, ArrayList<OpenClass> listTeachingClasses) {
         inflater = LayoutInflater.from(context);

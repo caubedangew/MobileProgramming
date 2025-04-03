@@ -71,7 +71,7 @@ public class TeachingSubjectsFragment extends Fragment {
         TeachingSubjectsAdapter teachingSubjectsAdapter = new TeachingSubjectsAdapter(getContext(), null);
 
         GridView teachingSubjects = view.findViewById(R.id.grid_teaching_subjects);
-        teachingSubjects.setAdapter(teachingSubjectsAdapter);
+//        teachingSubjects.setAdapter(teachingSubjectsAdapter);
         teachingSubjects.setOnItemClickListener((parent, view1, position, id) -> {
             TeachingClassesFragment teachingClassesFragment = new TeachingClassesFragment();
             FragmentManager fragmentManager = getFragmentManager();

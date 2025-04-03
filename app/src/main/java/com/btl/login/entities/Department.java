@@ -12,6 +12,7 @@ public class Department extends BaseProperties{
     private String departmentName;
 
     public Department(@NotNull String departmentName) {
+        super();
         this.departmentName = departmentName;
     }
 

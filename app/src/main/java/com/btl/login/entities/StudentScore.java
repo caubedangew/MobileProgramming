@@ -37,6 +37,7 @@ public class StudentScore extends BaseProperties {
     private int subjectScoreId;
 
     public StudentScore(float score, int openClassId, int studentId, int subjectScoreId) {
+        super();
         this.score = score;
         this.openClassId = openClassId;
         this.studentId = studentId;

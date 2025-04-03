@@ -10,6 +10,7 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
         maven { url = uri("https://jitpack.io") }
+        maven { url = uri("https://cloudinary.github.io/cloudinary_java/maven/") }
     }
 }
 plugins {
@@ -21,6 +22,7 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven { url = uri("https://jitpack.io") }
+        maven { url = uri("https://cloudinary.github.io/cloudinary_java/maven/") }
     }
 }
 

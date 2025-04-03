@@ -28,6 +28,7 @@ public class SubjectScore extends BaseProperties {
     private int subjectId;
 
     public SubjectScore(float weight, @NotNull String scoreType, @NotNull String description, int subjectId) {
+        super();
         this.weight = weight;
         this.scoreType = scoreType;
         this.description = description;

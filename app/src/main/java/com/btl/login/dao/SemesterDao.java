@@ -22,4 +22,7 @@ public interface SemesterDao {
 
     @Delete
     void deleteSemester(Semester semester);
+
+    @Query("DELETE FROM semester")
+    void deleteAllSemesters();
 }

@@ -22,4 +22,7 @@ public interface DepartmentDao {
 
     @Delete
     void deleteDepartment(Department department);
+
+    @Query("DELETE FROM department")
+    void deleteAllDepartments();
 }

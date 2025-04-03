@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -21,6 +22,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.btl.login.userViewModel.UserViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -39,6 +41,7 @@ public class LoginFragment extends Fragment {
     EditText eTxtEmail, eTxtPassword;
     private static final String ARG_PARAM1 = "email";
     private String email;
+    private UserViewModel userViewModel;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -86,6 +89,8 @@ public class LoginFragment extends Fragment {
         txtRegisterRedirect.setText(spannableString);
         txtRegisterRedirect.setMovementMethod(LinkMovementMethod.getInstance());
 
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+
         eTxtEmail = view.findViewById(R.id.eTxtEmail);
         if (getArguments() != null) {
             eTxtEmail.setText(getArguments().getString(ARG_PARAM1));
@@ -102,13 +107,17 @@ public class LoginFragment extends Fragment {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        UserFragment userFragment = new UserFragment();
+                        eTxtEmail.setText("");
+                        eTxtPassword.setText("");
+                        userViewModel.setLoggedIn(true);
+                        InputScoreFragment inputScoreFragment = new InputScoreFragment();
                         FragmentManager fragmentManager = getFragmentManager();
                         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.fragment_container, userFragment);
+                        fragmentTransaction.replace(R.id.fragment_container, inputScoreFragment);
                         fragmentTransaction.commit();
                     } else {
-                        Toast.makeText(getContext(), "Authentication failed!", Toast.LENGTH_LONG).show();
+                        eTxtPassword.setText("");
+                        Toast.makeText(getContext(), "Email or Password is incorrect", Toast.LENGTH_LONG).show();
                     }
                 });
     }

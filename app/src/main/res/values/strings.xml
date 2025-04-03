@@ -16,6 +16,7 @@
     <string name="nav_home_item">Trang chủ</string>
     <string name="nav_input_score_item">Nhập điểm cho sinh viên</string>
     <string name="nav_log_out_item">Đăng xuất</string>
+    <string name="nav_user_item">Thông tin cá nhân</string>
 
     <!--    Navigation Text-->
     <string name="nav_open">Mở</string>
@@ -32,4 +33,8 @@
 
     <!--    UserStatistics-->
     <string name="txtStatisticsTitle_txt">Thống kê điểm số</string>
+
+    <!--    Profile-->
+    <string name="btnChangeInfo_txt">Chỉnh sửa thông tin cá nhân</string>
+    <string name="btnSubmitChanging_txt">Xác nhận</string>
 </resources>

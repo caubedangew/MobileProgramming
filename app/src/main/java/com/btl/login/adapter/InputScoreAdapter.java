@@ -14,9 +14,9 @@ import com.btl.login.entities.Student;
 import java.util.ArrayList;
 
 public class InputScoreAdapter extends BaseAdapter {
-    private ArrayList<Student> listStudents;
+    private final ArrayList<Student> listStudents;
     private Context context;
-    private LayoutInflater inflater;
+    private final LayoutInflater inflater;
 
     public InputScoreAdapter(Context context, ArrayList<Student> listStudents) {
         inflater = LayoutInflater.from(context);

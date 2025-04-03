@@ -26,6 +26,7 @@ public class TeacherAssignment extends BaseProperties{
     private int openClassId;
 
     public TeacherAssignment(int teacherId, int openClassId) {
+        super();
         this.teacherId = teacherId;
         this.openClassId = openClassId;
     }

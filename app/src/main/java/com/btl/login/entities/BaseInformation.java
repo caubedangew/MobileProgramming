@@ -28,6 +28,7 @@ public abstract class BaseInformation extends BaseProperties {
 
     public BaseInformation(@NotNull String firstName, @NotNull String lastName, String dateOfBirth,
                            boolean gender, @NotNull String email, String phoneNumber, String address) {
+        super();
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
@@ -37,9 +38,11 @@ public abstract class BaseInformation extends BaseProperties {
         this.address = address;
     }
 
-    public BaseInformation(@NotNull String firstName, @NotNull String lastName) {
+    public BaseInformation(@NotNull String firstName, @NotNull String lastName, @NotNull String email ) {
+        super();
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email = email;
     }
 
     public @NotNull String getFirstName() {

@@ -45,7 +45,7 @@ import com.btl.login.entities.TeacherAssignment;
         SubjectScore.class,
         Teacher.class,
         TeacherAssignment.class
-}, version = 1, exportSchema = false)
+}, version = 4, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -65,7 +65,6 @@ public abstract class AppDatabase extends RoomDatabase {
         if (INSTANCE == null) {
             INSTANCE =
                     Room.databaseBuilder(context, AppDatabase.class, "studentManagementDatabase")
-                            // recreate the database if necessary
                             .fallbackToDestructiveMigration()
                             .build();
         }

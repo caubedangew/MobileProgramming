@@ -34,6 +34,7 @@ public class OpenClass extends BaseProperties{
     private String openClassName;
 
     public OpenClass(int semesterId, int subjectId, int capacity, @NotNull String openClassName) {
+        super();
         this.semesterId = semesterId;
         this.subjectId = subjectId;
         this.capacity = capacity;
