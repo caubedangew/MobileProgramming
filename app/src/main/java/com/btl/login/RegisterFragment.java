@@ -60,9 +60,9 @@ import java.util.Objects;
  */
 public class RegisterFragment extends Fragment {
     AppDatabase appDatabase;
-    private static final int REQUEST_CAMERA = 1;
-    private static final int REQUEST_GALLERY = 2;
-    private static final int REQUEST_PERMISSION_CODE = 100;
+    public static final int REQUEST_CAMERA = 1;
+    public static final int REQUEST_GALLERY = 2;
+    public static final int REQUEST_PERMISSION_CODE = 100;
 
     Button btnRegister;
     EditText eTxtEmail, eTxtPassword, eTxtFirstName, eTxtLastName;
@@ -176,6 +176,7 @@ public class RegisterFragment extends Fragment {
                                     uploadImageToCloudinary(user, firestore);
                                 }).start();
                             }
+                            createUserInstance(user.getEmail(), eTxtFirstName.getText().toString(), eTxtLastName.getText().toString());
                         } else {
                             Toast.makeText(getContext(), "This email has been used on another account",
                                     Toast.LENGTH_SHORT).show();
@@ -194,7 +195,6 @@ public class RegisterFragment extends Fragment {
     }
 
     private void uploadImageToCloudinary(FirebaseUser user, FirebaseFirestore firestore) {
-        Log.d("Upload", "uploadImageToCloudinary method started.");
         Cloudinary cloudinary = CloudinaryConfig.getCloudinaryClient();
 
         File file = null;
@@ -208,8 +208,6 @@ public class RegisterFragment extends Fragment {
                 Map uploadResult = cloudinary.uploader().upload(file, ObjectUtils.emptyMap());
                 String imageUrl = (String) uploadResult.get("url");
                 updateUserProfile(user.getUid(), imageUrl, firestore, user);
-                createUserInstance(user.getEmail(), eTxtFirstName.getText().toString(), eTxtLastName.getText().toString());
-                Log.d("Cloudinary", "Image uploaded successfully: " + imageUrl);
             } catch (Exception e) {
                 Log.e("Cloudinary", "Error uploading image", e);
             }
@@ -222,17 +220,17 @@ public class RegisterFragment extends Fragment {
         Teacher teacher = new Teacher(firstName, lastName, email, 1);
         appDatabase.teacherDao().addTeachers(teacher);
         LoginFragment loginFragment = LoginFragment.newInstance(eTxtEmail.getText().toString());
+        redirectToLoginFragment(loginFragment);
+        Toast.makeText(getContext(), "Tạo tài khoản thành công!", Toast.LENGTH_LONG).show();
     }
 
     private void updateUserProfile(String userId, String url, FirebaseFirestore firestore, FirebaseUser user) {
         firestore.runTransaction((Transaction.Function<Void>) transaction -> {
             DocumentReference userRef = firestore.collection("users").document(userId);
-            transaction.update(userRef, "profileImageUrl", url);
+            transaction.update(userRef, "profileImageUrl", url.replace("http://", "https://"));
             return null;
         }).addOnSuccessListener(aVoid -> {
             Log.d("Firestore", "Profile updated successfully");
-            LoginFragment loginFragment = LoginFragment.newInstance(eTxtEmail.getText().toString());
-            redirectToLoginFragment(loginFragment);
         }).addOnFailureListener(e -> {
             Log.d("Firestore", "Transaction failed", e);
             deleteUserAccount(user);

@@ -11,7 +11,7 @@ public abstract class BaseInformation extends BaseProperties {
     @NotNull
     private String lastName;
 
-    private String dateOfBirth;
+    private Long dateOfBirth;
 
     @ColumnInfo(defaultValue = "true")
     private boolean gender;
@@ -26,7 +26,7 @@ public abstract class BaseInformation extends BaseProperties {
         lastName = "";
     }
 
-    public BaseInformation(@NotNull String firstName, @NotNull String lastName, String dateOfBirth,
+    public BaseInformation(@NotNull String firstName, @NotNull String lastName, Long dateOfBirth,
                            boolean gender, @NotNull String email, String phoneNumber, String address) {
         super();
         this.firstName = firstName;
@@ -61,11 +61,11 @@ public abstract class BaseInformation extends BaseProperties {
         this.lastName = lastName;
     }
 
-    public String getDateOfBirth() {
+    public Long getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(Long dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 

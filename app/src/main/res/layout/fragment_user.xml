@@ -19,13 +19,17 @@
         />
 
     <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imgAvatar"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:background="@color/black"
         app:shapeAppearanceOverlay="@style/circle"
         android:layout_gravity="center_horizontal"
         android:layout_marginVertical="10dp"
         />
+
+    <include
+        android:id="@+id/userEmail"
+        layout="@layout/custom_edit_text" />
 
     <include
         android:id="@+id/userFirstName"
@@ -77,10 +81,6 @@
                 android:text="Nữ" />
         </RadioGroup>
     </LinearLayout>
-
-    <include
-        android:id="@+id/userEmail"
-        layout="@layout/custom_edit_text" />
 
     <include
         android:id="@+id/userAddress"

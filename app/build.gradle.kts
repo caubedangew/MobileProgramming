@@ -90,6 +90,9 @@ dependencies {
 
     // Cloudinary
     implementation("com.cloudinary:cloudinary-android:2.2.0")
+
+    // Glide for show image from URL
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 }
 java {
     toolchain {

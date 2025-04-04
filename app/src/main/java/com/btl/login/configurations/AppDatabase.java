@@ -45,7 +45,7 @@ import com.btl.login.entities.TeacherAssignment;
         SubjectScore.class,
         Teacher.class,
         TeacherAssignment.class
-}, version = 4, exportSchema = false)
+}, version = 5, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
 

@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         Fragment loginFragment = new LoginFragment();
         Fragment registerFragment = new RegisterFragment();
 
-        setCurrentFragment(registerFragment);
+        setCurrentFragment(LoginFragment.newInstance("lttvu3003@gmail.com.vn"));
 
         defineNavigationTab(navView, new Fragment[]{userFragment, teachingSubjectsFragment, statisticsFragment, loginFragment, registerFragment, userFragment});
 
