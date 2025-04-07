@@ -235,183 +235,184 @@ public class UserFragment extends Fragment {
     }
 
     private void customFormFields(@NonNull View view, Teacher currentTeacher) {
+        if (currentTeacher != null) {
+            TextView txtFirstName = view.findViewById(R.id.userFirstName).findViewById(R.id.txtComponent);
+            eTxtFirstName = view.findViewById(R.id.userFirstName).findViewById(R.id.eTxtComponent);
 
-        TextView txtFirstName = view.findViewById(R.id.userFirstName).findViewById(R.id.txtComponent);
-        eTxtFirstName = view.findViewById(R.id.userFirstName).findViewById(R.id.eTxtComponent);
+            txtFirstName.setText("Tên");
+            eTxtFirstName.setText(currentTeacher.getFirstName());
+            eTxtFirstName.setEnabled(false);
 
-        txtFirstName.setText("Tên");
-        eTxtFirstName.setText(currentTeacher.getFirstName());
-        eTxtFirstName.setEnabled(false);
+            TextView txtLastName = view.findViewById(R.id.userLastName).findViewById(R.id.txtComponent);
+            eTxtLastName = view.findViewById(R.id.userLastName).findViewById(R.id.eTxtComponent);
 
-        TextView txtLastName = view.findViewById(R.id.userLastName).findViewById(R.id.txtComponent);
-        eTxtLastName = view.findViewById(R.id.userLastName).findViewById(R.id.eTxtComponent);
+            txtLastName.setText("Họ");
+            eTxtLastName.setText(currentTeacher.getLastName());
+            eTxtLastName.setEnabled(false);
 
-        txtLastName.setText("Họ");
-        eTxtLastName.setText(currentTeacher.getLastName());
-        eTxtLastName.setEnabled(false);
+            TextView txtDateOfBirth = view.findViewById(R.id.userDateOfBirth).findViewById(R.id.txtComponent);
+            eTxtDateOfBirth = view.findViewById(R.id.userDateOfBirth).findViewById(R.id.eTxtComponent);
 
-        TextView txtDateOfBirth = view.findViewById(R.id.userDateOfBirth).findViewById(R.id.txtComponent);
-        eTxtDateOfBirth = view.findViewById(R.id.userDateOfBirth).findViewById(R.id.eTxtComponent);
+            txtDateOfBirth.setText("Ngày sinh");
+            eTxtDateOfBirth.setText(currentTeacher.getDateOfBirth() != null && currentTeacher.getDateOfBirth() != 0 ? DateUtils.convertTimestampToDate(currentTeacher.getDateOfBirth()) : null);
+            eTxtDateOfBirth.setEnabled(false);
+            eTxtDateOfBirth.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-        txtDateOfBirth.setText("Ngày sinh");
-        eTxtDateOfBirth.setText(currentTeacher.getDateOfBirth() != 0 ? DateUtils.convertTimestampToDate(currentTeacher.getDateOfBirth()) : null);
-        eTxtDateOfBirth.setEnabled(false);
-        eTxtDateOfBirth.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String temp = s.toString();
-
-                StringBuilder stringBuilder = new StringBuilder();
-
-                for (int i = 0; i < temp.length(); i++) {
-                    if (i > 0 && i < 6 && i % 2 == 0) {
-                        stringBuilder.append("/");
-                    }
-                    stringBuilder.append(temp.charAt(i));
                 }
 
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    String temp = s.toString();
+
+                    StringBuilder stringBuilder = new StringBuilder();
+
+                    for (int i = 0; i < temp.length(); i++) {
+                        if (i > 0 && i < 6 && i % 2 == 0) {
+                            stringBuilder.append("/");
+                        }
+                        stringBuilder.append(temp.charAt(i));
+                    }
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+
+            TextView txtGender = view.findViewById(R.id.txtUserGender);
+            male = view.findViewById(R.id.male);
+            female = view.findViewById(R.id.female);
+
+            txtGender.setText("Giới tính");
+            male.setChecked(currentTeacher.isGender());
+            female.setChecked(!currentTeacher.isGender());
+            male.setEnabled(false);
+            female.setEnabled(false);
+
+            TextView txtPhoneNumber = view.findViewById(R.id.userPhoneNumber).findViewById(R.id.txtComponent);
+            eTxtPhoneNumber = view.findViewById(R.id.userPhoneNumber).
+
+                    findViewById(R.id.eTxtComponent);
+
+            txtPhoneNumber.setText("Số điện thoại");
+            eTxtPhoneNumber.setText(currentTeacher.getPhoneNumber());
+            eTxtPhoneNumber.setEnabled(false);
+
+            TextView txtAddress = view.findViewById(R.id.userAddress).findViewById(R.id.txtComponent);
+            eTxtAddress = view.findViewById(R.id.userAddress).
+
+                    findViewById(R.id.eTxtComponent);
+
+            txtAddress.setText("Địa chỉ");
+            eTxtAddress.setText(currentTeacher.getAddress());
+            eTxtAddress.setEnabled(false);
+
+            TextView txtEmail = view.findViewById(R.id.userEmail).findViewById(R.id.txtComponent);
+            eTxtEmail = view.findViewById(R.id.userEmail).
+
+                    findViewById(R.id.eTxtComponent);
+
+            txtEmail.setText("Email");
+            eTxtEmail.setText(currentUser.getEmail());
+            eTxtEmail.setEnabled(false);
+        }
+    }
+
+    private void redirectToSpecifiedFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQUEST_CAMERA) {
+                Bitmap bitmap = (Bitmap) Objects.requireNonNull(data.getExtras()).get("data");
+                imgAvatar.setImageBitmap(bitmap);
+
+                imageUri = getImageUriFromBitmap(bitmap);
+            } else if (requestCode == REQUEST_GALLERY) {
+                imageUri = data.getData();
+                imgAvatar.setImageURI(imageUri);
             }
-
-        @Override
-        public void afterTextChanged (Editable s){
-
-        }
-    });
-
-    TextView txtGender = view.findViewById(R.id.txtUserGender);
-    male =view.findViewById(R.id.male);
-    female =view.findViewById(R.id.female);
-
-        txtGender.setText("Giới tính");
-        male.setChecked(currentTeacher.isGender());
-        female.setChecked(!currentTeacher.isGender());
-        male.setEnabled(false);
-        female.setEnabled(false);
-
-    TextView txtPhoneNumber = view.findViewById(R.id.userPhoneNumber).findViewById(R.id.txtComponent);
-    eTxtPhoneNumber =view.findViewById(R.id.userPhoneNumber).
-
-    findViewById(R.id.eTxtComponent);
-
-        txtPhoneNumber.setText("Số điện thoại");
-        eTxtPhoneNumber.setText(currentTeacher.getPhoneNumber());
-        eTxtPhoneNumber.setEnabled(false);
-
-    TextView txtAddress = view.findViewById(R.id.userAddress).findViewById(R.id.txtComponent);
-    eTxtAddress =view.findViewById(R.id.userAddress).
-
-    findViewById(R.id.eTxtComponent);
-
-        txtAddress.setText("Địa chỉ");
-        eTxtAddress.setText(currentTeacher.getAddress());
-        eTxtAddress.setEnabled(false);
-
-    TextView txtEmail = view.findViewById(R.id.userEmail).findViewById(R.id.txtComponent);
-    eTxtEmail =view.findViewById(R.id.userEmail).
-
-    findViewById(R.id.eTxtComponent);
-
-        txtEmail.setText("Email");
-        eTxtEmail.setText(currentUser.getEmail());
-        eTxtEmail.setEnabled(false);
-}
-
-private void redirectToSpecifiedFragment(Fragment fragment) {
-    FragmentManager fragmentManager = getFragmentManager();
-    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-    fragmentTransaction.replace(R.id.fragment_container, fragment);
-    fragmentTransaction.commit();
-}
-
-@Override
-public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
-
-    if (resultCode == Activity.RESULT_OK) {
-        if (requestCode == REQUEST_CAMERA) {
-            Bitmap bitmap = (Bitmap) Objects.requireNonNull(data.getExtras()).get("data");
-            imgAvatar.setImageBitmap(bitmap);
-
-            imageUri = getImageUriFromBitmap(bitmap);
-        } else if (requestCode == REQUEST_GALLERY) {
-            imageUri = data.getData();
-            imgAvatar.setImageURI(imageUri);
         }
     }
-}
 
-private void uploadImageToCloudinary(FirebaseUser user, FirebaseFirestore firestore) {
-    Cloudinary cloudinary = CloudinaryConfig.getCloudinaryClient();
+    private void uploadImageToCloudinary(FirebaseUser user, FirebaseFirestore firestore) {
+        Cloudinary cloudinary = CloudinaryConfig.getCloudinaryClient();
 
-    File file = null;
-    if (imageUri.getScheme().equals("content")) {
-        file = new File(getRealPathFromURI(imageUri));
-    } else {
-        file = new File(imageUri.getPath());
-    }
-    if (file.exists()) {
-        try {
-            Map uploadResult = cloudinary.uploader().upload(file, ObjectUtils.emptyMap());
-            String imageUrl = (String) uploadResult.get("url");
-            if (imageUrl != null) {
-                firestore.collection("users").document(user.getUid())
-                        .update("profileImageUrl", imageUrl.replace("http://", "https://"))
-                        .addOnSuccessListener(unused -> {
-                            Log.i("Cloudinary", "Upload Successfully!!!");
-                        }).addOnFailureListener(e -> {
-                            e.printStackTrace();
-                        });
-            }
-        } catch (Exception e) {
-            Log.e("Cloudinary", "Error uploading image", e);
-        }
-    } else {
-        Log.e("Cloudinary", "File not found: " + imageUri.getPath());
-    }
-}
-
-private Uri getImageUriFromBitmap(Bitmap bitmap) {
-    File file = new File(requireContext().getCacheDir(), "temp.jpg");
-    try (FileOutputStream out = new FileOutputStream(file)) {
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-    return Uri.fromFile(file);
-}
-
-public String getRealPathFromURI(Uri uri) {
-    String[] projection = {MediaStore.Images.Media.DATA};
-    Cursor cursor = getContext().getContentResolver().query(uri, projection, null, null, null);
-    String path = null;
-    if (cursor != null) {
-        cursor.moveToFirst();
-        int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        path = cursor.getString(columnIndex);
-        cursor.close();
-    }
-    return path;
-}
-
-@Override
-public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    Log.d("Try to request", "Process requesting permissions");
-
-    if (requestCode == REQUEST_PERMISSION_CODE) {
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            new Thread(() -> {
-                uploadImageToCloudinary(user, firestore);
-            }).start();
+        File file = null;
+        if (imageUri.getScheme().equals("content")) {
+            file = new File(getRealPathFromURI(imageUri));
         } else {
-            Toast.makeText(getContext(), "Không thể cấp quyền truy cập vào bộ nhớ", Toast.LENGTH_LONG).show();
+            file = new File(imageUri.getPath());
+        }
+        if (file.exists()) {
+            try {
+                Map uploadResult = cloudinary.uploader().upload(file, ObjectUtils.emptyMap());
+                String imageUrl = (String) uploadResult.get("url");
+                if (imageUrl != null) {
+                    firestore.collection("users").document(user.getUid())
+                            .update("profileImageUrl", imageUrl.replace("http://", "https://"))
+                            .addOnSuccessListener(unused -> {
+                                Log.i("Cloudinary", "Upload Successfully!!!");
+                            }).addOnFailureListener(e -> {
+                                e.printStackTrace();
+                            });
+                }
+            } catch (Exception e) {
+                Log.e("Cloudinary", "Error uploading image", e);
+            }
+        } else {
+            Log.e("Cloudinary", "File not found: " + imageUri.getPath());
         }
     }
-}
+
+    private Uri getImageUriFromBitmap(Bitmap bitmap) {
+        File file = new File(requireContext().getCacheDir(), "temp.jpg");
+        try (FileOutputStream out = new FileOutputStream(file)) {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return Uri.fromFile(file);
+    }
+
+    public String getRealPathFromURI(Uri uri) {
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContext().getContentResolver().query(uri, projection, null, null, null);
+        String path = null;
+        if (cursor != null) {
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            path = cursor.getString(columnIndex);
+            cursor.close();
+        }
+        return path;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.d("Try to request", "Process requesting permissions");
+
+        if (requestCode == REQUEST_PERMISSION_CODE) {
+            FirebaseUser user = mAuth.getCurrentUser();
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                new Thread(() -> {
+                    uploadImageToCloudinary(user, firestore);
+                }).start();
+            } else {
+                Toast.makeText(getContext(), "Không thể cấp quyền truy cập vào bộ nhớ", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 }

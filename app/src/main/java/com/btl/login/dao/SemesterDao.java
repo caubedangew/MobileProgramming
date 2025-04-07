@@ -17,6 +17,9 @@ public interface SemesterDao {
     @Query("SELECT * FROM semester WHERE id=:semesterId")
     Semester getSemesterById(int semesterId);
 
+    @Query("SELECT * FROM semester WHERE semesterName LIKE '%' || :semesterName || '%' AND academicYearId=:academicYearId")
+    Semester getSemesterByNameAndAcademicYearId(String semesterName, int academicYearId);
+
     @Insert
     void addSemesters(Semester... semesters);
 

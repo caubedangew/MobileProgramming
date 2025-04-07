@@ -3,6 +3,7 @@ package com.btl.login.entities;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -28,15 +29,15 @@ import org.jetbrains.annotations.NotNull;
                 onDelete = ForeignKey.CASCADE,
                 onUpdate = ForeignKey.CASCADE
         ),
-})
+}, indices = {@Index(value = {"openClassId", "studentId", "subjectScoreId"}, unique = true)})
 public class StudentScore extends BaseProperties {
     @ColumnInfo(defaultValue = "0")
-    private float score;
+    private double score;
     private int openClassId;
     private int studentId;
     private int subjectScoreId;
 
-    public StudentScore(float score, int openClassId, int studentId, int subjectScoreId) {
+    public StudentScore(double score, int openClassId, int studentId, int subjectScoreId) {
         super();
         this.score = score;
         this.openClassId = openClassId;
@@ -44,11 +45,11 @@ public class StudentScore extends BaseProperties {
         this.subjectScoreId = subjectScoreId;
     }
 
-    public float getScore() {
+    public double getScore() {
         return score;
     }
 
-    public void setScore(float score) {
+    public void setScore(double score) {
         this.score = score;
     }
 

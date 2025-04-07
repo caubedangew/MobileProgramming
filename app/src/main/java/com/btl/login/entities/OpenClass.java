@@ -3,6 +3,7 @@ package com.btl.login.entities;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -20,12 +21,21 @@ import org.jetbrains.annotations.NotNull;
                 childColumns = "subjectId",
                 onDelete = ForeignKey.CASCADE,
                 onUpdate = ForeignKey.CASCADE
+        ),
+        @ForeignKey(
+                entity = StudentClass.class,
+                parentColumns = "id",
+                childColumns = "classId",
+                onDelete = ForeignKey.CASCADE,
+                onUpdate = ForeignKey.CASCADE
         )
-})
-public class OpenClass extends BaseProperties{
+}, indices = @Index(value = {"semesterId", "subjectId", "classId"}, unique = true))
+public class OpenClass extends BaseProperties {
     private int semesterId;
 
     private int subjectId;
+
+    private int classId;
 
     @ColumnInfo(defaultValue = "0")
     private int capacity;
@@ -33,12 +43,13 @@ public class OpenClass extends BaseProperties{
     @NotNull
     private String openClassName;
 
-    public OpenClass(int semesterId, int subjectId, int capacity, @NotNull String openClassName) {
+    public OpenClass(@NotNull String openClassName, int capacity, int semesterId, int subjectId, int classId) {
         super();
         this.semesterId = semesterId;
         this.subjectId = subjectId;
         this.capacity = capacity;
         this.openClassName = openClassName;
+        this.classId = classId;
     }
 
 
@@ -72,5 +83,13 @@ public class OpenClass extends BaseProperties{
 
     public void setOpenClassName(@NotNull String openClassName) {
         this.openClassName = openClassName;
+    }
+
+    public int getClassId() {
+        return classId;
+    }
+
+    public void setClassId(int classId) {
+        this.classId = classId;
     }
 }

@@ -22,14 +22,17 @@
     <string name="nav_open">Mở</string>
     <string name="nav_close">Đóng</string>
 
+<!--    Teaching Subjects-->
+    <string name="txtSearchSubjectName_txt" >Tên môn học: </string>
+    <string name="eTxtSearchSubjectName_hint">Nhập tên môn học</string>
     <string name="txtTeachingSubjectsTitle_txt">Danh sách các môn học giảng dạy trong học kì II năm học 2024 - 2025</string>
+    <string name="btnSearch_txt">Tìm kiếm</string>
 
     <!--    Input Score-->
     <string name="txtProgressScoreTitle_txt">Điểm quá trình</string>
     <string name="txtMiddleSemesterScoreTitle_txt">Điểm giữa kỳ</string>
     <string name="txtFinalSemesterScoreTitle_txt">Điểm cuối kỳ</string>
-    <string name="btnSave_txt">Lưu</string>
-    <string name="btnSaveAndContinue_txt">Lưu và nhập tiếp</string>
+    <string name="btnSave_txt">Hoàn tất nhập điểm</string>
 
     <!--    UserStatistics-->
     <string name="txtStatisticsTitle_txt">Thống kê điểm số</string>

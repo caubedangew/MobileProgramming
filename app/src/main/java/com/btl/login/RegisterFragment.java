@@ -19,6 +19,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.text.Spannable;
@@ -52,6 +54,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -218,10 +222,16 @@ public class RegisterFragment extends Fragment {
 
     private void createUserInstance(String email, String firstName, String lastName) {
         Teacher teacher = new Teacher(firstName, lastName, email, 1);
-        appDatabase.teacherDao().addTeachers(teacher);
-        LoginFragment loginFragment = LoginFragment.newInstance(eTxtEmail.getText().toString());
-        redirectToLoginFragment(loginFragment);
-        Toast.makeText(getContext(), "Tạo tài khoản thành công!", Toast.LENGTH_LONG).show();
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+        executorService.execute(() -> {
+            appDatabase.teacherDao().addTeachers(teacher);
+            handler.post(() -> {
+                LoginFragment loginFragment = LoginFragment.newInstance(eTxtEmail.getText().toString());
+                redirectToLoginFragment(loginFragment);
+                Toast.makeText(getContext(), "Tạo tài khoản thành công!", Toast.LENGTH_LONG).show();
+            });
+        });
     }
 
     private void updateUserProfile(String userId, String url, FirebaseFirestore firestore, FirebaseUser user) {

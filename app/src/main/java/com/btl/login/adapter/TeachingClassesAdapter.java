@@ -8,16 +8,19 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.btl.login.R;
+import com.btl.login.dto.TeachingClassesDTO;
 import com.btl.login.entities.OpenClass;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TeachingClassesAdapter extends BaseAdapter {
-    private final ArrayList<OpenClass> listTeachingClasses;
+    private final List<TeachingClassesDTO> listTeachingClasses;
+    private Integer numberStudentHavingFullScores;
     private Context context;
     private final LayoutInflater inflater;
 
-    public TeachingClassesAdapter(Context context, ArrayList<OpenClass> listTeachingClasses) {
+    public TeachingClassesAdapter(Context context, List<TeachingClassesDTO> listTeachingClasses) {
         inflater = LayoutInflater.from(context);
         this.listTeachingClasses = listTeachingClasses;
     }
@@ -44,9 +47,9 @@ public class TeachingClassesAdapter extends BaseAdapter {
         TextView txtNumberStudentsInClass = view.findViewById(R.id.txtNumberStudentInClass);
         TextView txtNumberStudentsHaveScore = view.findViewById(R.id.txtNumberStudentHaveScore);
 
-        txtClassesName.setText("ABc");
-        txtNumberStudentsInClass.setText("Số lượng sinh viên đăng ký học là: 60");
-        txtNumberStudentsHaveScore.setText("Số lượng sinh viên đã được nhâp điểm là: 30");
+        txtClassesName.setText(listTeachingClasses.get(position).getClassName());
+        txtNumberStudentsInClass.setText("Số lượng sinh viên đăng ký học là: " + listTeachingClasses.get(position).getNumberSubjectRegistration());
+        txtNumberStudentsHaveScore.setText("Số lượng sinh viên đã được nhâp điểm là: " + listTeachingClasses.get(position).getNumberStudentHaveScore());
 
         return view;
     }

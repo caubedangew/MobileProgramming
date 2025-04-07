@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 })
 public class SubjectScore extends BaseProperties {
     @ColumnInfo(defaultValue = "0")
-    private float weight;
+    private double weight;
 
     @NotNull
     private String scoreType;
@@ -27,7 +27,7 @@ public class SubjectScore extends BaseProperties {
 
     private int subjectId;
 
-    public SubjectScore(float weight, @NotNull String scoreType, @NotNull String description, int subjectId) {
+    public SubjectScore(double weight, @NotNull String scoreType, @NotNull String description, int subjectId) {
         super();
         this.weight = weight;
         this.scoreType = scoreType;
@@ -35,11 +35,11 @@ public class SubjectScore extends BaseProperties {
         this.subjectId = subjectId;
     }
 
-    public float getWeight() {
+    public double getWeight() {
         return weight;
     }
 
-    public void setWeight(float weight) {
+    public void setWeight(double weight) {
         this.weight = weight;
     }
 

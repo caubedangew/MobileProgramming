@@ -8,6 +8,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 import com.btl.login.dao.AcademicYearDao;
+import com.btl.login.dao.OpenClassDao;
 import com.btl.login.dao.StudentClassDao;
 import com.btl.login.dao.DepartmentDao;
 import com.btl.login.dao.MajorDao;
@@ -15,7 +16,9 @@ import com.btl.login.dao.SemesterDao;
 import com.btl.login.dao.StudentDao;
 import com.btl.login.dao.StudentScoreDao;
 import com.btl.login.dao.SubjectDao;
+import com.btl.login.dao.SubjectRegistrationDao;
 import com.btl.login.dao.SubjectScoreDao;
+import com.btl.login.dao.TeacherAssignmentDao;
 import com.btl.login.dao.TeacherDao;
 import com.btl.login.entities.AcademicYear;
 import com.btl.login.entities.Department;
@@ -45,7 +48,7 @@ import com.btl.login.entities.TeacherAssignment;
         SubjectScore.class,
         Teacher.class,
         TeacherAssignment.class
-}, version = 5, exportSchema = false)
+}, version = 7, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -60,6 +63,9 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract StudentScoreDao studentScoreDao();
     public abstract SubjectScoreDao subjectScoreDao();
     public abstract TeacherDao teacherDao();
+    public abstract OpenClassDao openClassDao();
+    public abstract TeacherAssignmentDao teacherAssignmentDao();
+    public abstract SubjectRegistrationDao subjectRegistrationDao();
 
     public static AppDatabase getDatabase(Context context) {
         if (INSTANCE == null) {
