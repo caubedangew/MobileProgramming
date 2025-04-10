@@ -25,11 +25,12 @@
             <TextView
                 android:id="@+id/txtSubjectName"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="55dp"
                 android:textAlignment="center"
                 android:textSize="20sp"
                 android:textColor="@color/white"
-                android:text="Subject's name" />
+                android:text="Subject's name"
+                />
 
             <TextView
                 android:id="@+id/txtCreditNumber"

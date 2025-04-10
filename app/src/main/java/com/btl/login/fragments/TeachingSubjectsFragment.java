@@ -1,4 +1,4 @@
-package com.btl.login;
+package com.btl.login.fragments;
 
 import android.os.Bundle;
 
@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 
+import com.btl.login.MainActivity;
+import com.btl.login.R;
 import com.btl.login.adapter.TeachingSubjectsAdapter;
 import com.btl.login.configurations.AppDatabase;
 import com.btl.login.dto.SubjectsTaughtByTeacherDTO;
@@ -40,6 +42,7 @@ public class TeachingSubjectsFragment extends Fragment {
     String searchSubjectName = "";
 
     List<SubjectsTaughtByTeacherDTO> listTeachingSubjects;
+    String title = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,16 +90,21 @@ public class TeachingSubjectsFragment extends Fragment {
             GridView teachingSubjects = view.findViewById(R.id.grid_teaching_subjects);
             teachingSubjects.setAdapter(teachingSubjectsAdapter);
             teachingSubjects.setOnItemClickListener((parent, view1, position, id) -> {
-                TeachingClassesFragment teachingClassesFragment = TeachingClassesFragment.newInstance(userId, listTeachingSubjects.get(position).getId());
-                redirectToSpecifiedFragment(teachingClassesFragment);
+                title = listTeachingSubjects.get(position).getSubjectName() + " học kỳ II năm học 2024 - 2025";
+                TeachingClassesFragment teachingClassesFragment = TeachingClassesFragment.newInstance(userId, listTeachingSubjects.get(position).getId(), title);
+                redirectToSpecifiedFragment(teachingClassesFragment, true);
             });
         });
     }
 
-    private void redirectToSpecifiedFragment(Fragment fragment) {
+    private void redirectToSpecifiedFragment(Fragment fragment, boolean addToBackStack) {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment);
+        if (addToBackStack) {
+            fragmentTransaction.addToBackStack(null);
+        }
         fragmentTransaction.commit();
+        ((MainActivity) getActivity()).checkBackStack();
     }
 }

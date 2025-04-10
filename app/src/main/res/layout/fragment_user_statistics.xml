@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:layout_margin="10dp"
     android:orientation="vertical"
-    tools:context=".UserStatisticsFragment">
+    tools:context=".fragments.UserStatisticsFragment">
 
     <TextView
         android:layout_width="match_parent"
@@ -17,9 +17,15 @@
         android:layout_marginBottom="10dp"
         android:text="@string/txtStatisticsTitle_txt" />
 
+    <Spinner
+        android:id="@+id/spinnerSemester"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/statisticsChart"
         android:layout_width="match_parent"
-        android:layout_height="500dp" />
+        android:layout_height="600dp"
+        android:padding="20dp"/>
 
 </LinearLayout>

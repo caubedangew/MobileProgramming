@@ -21,9 +21,14 @@
     <!--    Navigation Text-->
     <string name="nav_open">Mở</string>
     <string name="nav_close">Đóng</string>
+    <string name="anonymous">Anonymous</string>
+    <string name="requireLogin">Please login to use our system</string>
 
-<!--    Teaching Subjects-->
-    <string name="txtSearchSubjectName_txt" >Tên môn học: </string>
+    <!--    Home    -->
+    <string name="txtMessageRecommendToUpdateData">Chúng tôi có vẻ chưa có đủ thông tin về bạn. Nhấn vào đây để cập nhật thông tin</string>
+
+    <!--    Teaching Subjects-->
+    <string name="txtSearchSubjectName_txt">Tên môn học: </string>
     <string name="eTxtSearchSubjectName_hint">Nhập tên môn học</string>
     <string name="txtTeachingSubjectsTitle_txt">Danh sách các môn học giảng dạy trong học kì II năm học 2024 - 2025</string>
     <string name="btnSearch_txt">Tìm kiếm</string>
@@ -40,4 +45,5 @@
     <!--    Profile-->
     <string name="btnChangeInfo_txt">Chỉnh sửa thông tin cá nhân</string>
     <string name="btnSubmitChanging_txt">Xác nhận</string>
+
 </resources>

@@ -20,6 +20,12 @@ public interface SemesterDao {
     @Query("SELECT * FROM semester WHERE semesterName LIKE '%' || :semesterName || '%' AND academicYearId=:academicYearId")
     Semester getSemesterByNameAndAcademicYearId(String semesterName, int academicYearId);
 
+    @Query("SELECT semesterName || ' ' ||  academicYearName " +
+            "FROM Semester " +
+            "JOIN AcademicYear ON AcademicYear.id = Semester.academicYearId " +
+            "WHERE AcademicYear.id < 5")
+    List<String> getSemesterNameAndAcademicYearName();
+
     @Insert
     void addSemesters(Semester... semesters);
 

@@ -9,6 +9,7 @@ import androidx.room.TypeConverters;
 
 import com.btl.login.dao.AcademicYearDao;
 import com.btl.login.dao.OpenClassDao;
+import com.btl.login.dao.StatisticsDao;
 import com.btl.login.dao.StudentClassDao;
 import com.btl.login.dao.DepartmentDao;
 import com.btl.login.dao.MajorDao;
@@ -66,6 +67,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract OpenClassDao openClassDao();
     public abstract TeacherAssignmentDao teacherAssignmentDao();
     public abstract SubjectRegistrationDao subjectRegistrationDao();
+    public abstract StatisticsDao statisticsDao();
 
     public static AppDatabase getDatabase(Context context) {
         if (INSTANCE == null) {

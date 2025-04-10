@@ -1,4 +1,4 @@
-package com.btl.login;
+package com.btl.login.fragments;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -20,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.btl.login.R;
 import com.btl.login.adapter.InputScoreAdapter;
 import com.btl.login.configurations.AppDatabase;
 import com.btl.login.dto.StudentInClassDTO;
@@ -40,12 +41,13 @@ import java.util.concurrent.Executors;
 public class InputScoreFragment extends Fragment {
     private static final String SUBJECT_ID_PARAM = "subjectId";
     private static final String OPEN_CLASS_PARAM = "openClassId";
+    private static final String TITLE = "title";
 
     private int subjectId, openClassId, studentId;
     ;
-
+    String title;
     EditText eTxtProgressScore, eTxtMiddleScore, eTxtFinalScore;
-    TextView txtProgressDescription, txtMiddleDescription, txtFinalDescription,
+    TextView txtTitle, txtProgressDescription, txtMiddleDescription, txtFinalDescription,
             txtProgressWeight, txtMiddleWeight, txtFinalWeight;
     Button btnInputScore;
     private List<SubjectScore> subjectScore;
@@ -55,11 +57,12 @@ public class InputScoreFragment extends Fragment {
 
     }
 
-    public static InputScoreFragment newInstance(int openClassId, int subjectScoreId) {
+    public static InputScoreFragment newInstance(int openClassId, int subjectScoreId, String title) {
         InputScoreFragment fragment = new InputScoreFragment();
         Bundle args = new Bundle();
         args.putInt(OPEN_CLASS_PARAM, openClassId);
         args.putInt(SUBJECT_ID_PARAM, subjectScoreId);
+        args.putString(TITLE, title);
         fragment.setArguments(args);
         return fragment;
     }
@@ -70,6 +73,7 @@ public class InputScoreFragment extends Fragment {
         if (getArguments() != null) {
             openClassId = getArguments().getInt(OPEN_CLASS_PARAM);
             subjectId = getArguments().getInt(SUBJECT_ID_PARAM);
+            title = getArguments().getString(TITLE);
         }
     }
 
@@ -78,6 +82,7 @@ public class InputScoreFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_input_score, container, false);
 
+        txtTitle = view.findViewById(R.id.txtInputScoreTitle);
         txtProgressDescription = view.findViewById(R.id.txtProgressDescription);
         txtMiddleDescription = view.findViewById(R.id.txtMiddleSemesterDescription);
         txtFinalDescription = view.findViewById(R.id.txtFinalSemesterDescription);
@@ -96,6 +101,8 @@ public class InputScoreFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         AppDatabase appDatabase = AppDatabase.getDatabase(getContext());
+
+        txtTitle.setText("Quá trình nhập điểm cho " + title);
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());

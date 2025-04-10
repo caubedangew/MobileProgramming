@@ -1,4 +1,4 @@
-package com.btl.login;
+package com.btl.login.fragments;
 
 import android.os.Bundle;
 
@@ -13,7 +13,6 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,13 +21,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.btl.login.MainActivity;
+import com.btl.login.R;
 import com.btl.login.userViewModel.UserViewModel;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -74,11 +71,15 @@ public class LoginFragment extends Fragment {
         ClickableSpan clickableSpan = new ClickableSpan() {
             @Override
             public void onClick(@NonNull View widget) {
+                ((Toolbar) requireActivity().findViewById(R.id.toolbar)).setTitle("Đăng ký");
+                ((NavigationView) requireActivity().findViewById(R.id.nav_view)).getMenu().findItem(R.id.register).setChecked(true);
+                ((NavigationView) requireActivity().findViewById(R.id.nav_view)).getMenu().findItem(R.id.login).setChecked(false);
                 RegisterFragment registerFragment = new RegisterFragment();
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container, registerFragment);
                 fragmentTransaction.commit();
+                ((MainActivity) getActivity()).checkBackStack();
             }
         };
 
@@ -104,21 +105,32 @@ public class LoginFragment extends Fragment {
     }
 
     private void loginUser(String email, String password) {
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        eTxtEmail.setText("");
-                        eTxtPassword.setText("");
-                        userViewModel.setLoggedIn(true);
-                        InputScoreFragment inputScoreFragment = new InputScoreFragment();
-                        FragmentManager fragmentManager = getFragmentManager();
-                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.fragment_container, inputScoreFragment);
-                        fragmentTransaction.commit();
-                    } else {
-                        eTxtPassword.setText("");
-                        Toast.makeText(getContext(), "Email or Password is incorrect", Toast.LENGTH_LONG).show();
-                    }
-                });
+        if (eTxtEmail.getText().toString().isEmpty()) {
+            Toast.makeText(getContext(), "Email không được phép bỏ trống", Toast.LENGTH_LONG).show();
+        } else if (eTxtPassword.getText().toString().isEmpty()) {
+            Toast.makeText(getContext(), "Password không được phép bỏ trống", Toast.LENGTH_LONG).show();
+        } else {
+            btnLogin.setEnabled(false);
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            eTxtEmail.setText("");
+                            eTxtPassword.setText("");
+                            userViewModel.setLoggedIn(true);
+                            HomeFragment homeFragment = new HomeFragment();
+                            ((Toolbar) requireActivity().findViewById(R.id.toolbar)).setTitle("Trang chủ");
+                            ((NavigationView) requireActivity().findViewById(R.id.nav_view)).getMenu().findItem(R.id.home).setChecked(true);
+                            FragmentManager fragmentManager = getFragmentManager();
+                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                            fragmentTransaction.replace(R.id.fragment_container, homeFragment);
+                            fragmentTransaction.commit();
+                            ((MainActivity) getActivity()).checkBackStack();
+                        } else {
+                            btnLogin.setEnabled(true);
+                            eTxtPassword.setText("");
+                            Toast.makeText(getContext(), "Email or Password is incorrect", Toast.LENGTH_LONG).show();
+                        }
+                    });
+        }
     }
 }

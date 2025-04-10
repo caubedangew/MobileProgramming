@@ -47,6 +47,7 @@ public class InputScoreAdapter extends BaseAdapter {
 
         txtStudentName.setText(listStudents.get(position).getFullName());
         txtStudentId.setText(String.valueOf(listStudents.get(position).getId()));
+        imgAlreadyHaveScore.setImageResource(R.drawable.ic_tick);
 
         return view;
     }

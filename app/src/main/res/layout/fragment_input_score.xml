@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".InputScoreFragment"
+    tools:context=".fragments.InputScoreFragment"
     android:layout_margin="10dp">
 
     <TextView
@@ -138,7 +138,6 @@
             android:layout_height="wrap_content"
             app:cornerRadius="25dp"
             android:backgroundTint="@color/purple_200"
-            android:layout_marginEnd="10dp"
             android:text="@string/btnSave_txt" />
 
 </LinearLayout>

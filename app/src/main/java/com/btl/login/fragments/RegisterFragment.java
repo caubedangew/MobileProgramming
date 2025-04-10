@@ -1,4 +1,4 @@
-package com.btl.login;
+package com.btl.login.fragments;
 
 import android.Manifest;
 import android.app.Activity;
@@ -13,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -22,7 +21,6 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
@@ -37,11 +35,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.btl.login.MainActivity;
+import com.btl.login.R;
 import com.btl.login.configurations.AppDatabase;
 import com.btl.login.configurations.CloudinaryConfig;
 import com.btl.login.entities.Teacher;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -143,6 +144,7 @@ public class RegisterFragment extends Fragment {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, loginFragment);
         fragmentTransaction.commit();
+        ((MainActivity) getActivity()).checkBackStack();
     }
 
     @Override
@@ -159,6 +161,7 @@ public class RegisterFragment extends Fragment {
         if (email.isEmpty() || password.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || imageUri == null) {
             Toast.makeText(getContext(), "Vui lòng nhập đầy đủ các trường!!!", Toast.LENGTH_LONG).show();
         } else {
+            btnRegister.setEnabled(false);
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
@@ -187,6 +190,7 @@ public class RegisterFragment extends Fragment {
                         }
                     });
         }
+        btnRegister.setEnabled(true);
     }
 
     private void addRoleToFirestore(String userId, String role, FirebaseFirestore firestore) {
@@ -248,6 +252,8 @@ public class RegisterFragment extends Fragment {
     }
 
     private void redirectToLoginFragment(LoginFragment loginFragment) {
+        ((Toolbar) requireActivity().findViewById(R.id.toolbar)).setTitle("Đăng nhập");
+        ((NavigationView) requireActivity().findViewById(R.id.nav_view)).getMenu().findItem(R.id.login).setChecked(true);
         redirectToLoginPage(loginFragment);
     }
 

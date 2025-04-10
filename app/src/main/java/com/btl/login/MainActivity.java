@@ -1,14 +1,17 @@
 package com.btl.login;
 
-import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.AttributeSet;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -31,12 +34,24 @@ import com.btl.login.entities.SubjectRegistration;
 import com.btl.login.entities.SubjectScore;
 import com.btl.login.entities.Teacher;
 import com.btl.login.entities.TeacherAssignment;
+import com.btl.login.fragments.HomeFragment;
+import com.btl.login.fragments.LoginFragment;
+import com.btl.login.fragments.RegisterFragment;
+import com.btl.login.fragments.TeachingSubjectsFragment;
+import com.btl.login.fragments.UserFragment;
+import com.btl.login.fragments.UserStatisticsFragment;
 import com.btl.login.userViewModel.UserViewModel;
 import com.btl.login.utils.DateUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -49,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
     NavigationView navView;
     Menu navMenu;
     AppDatabase appDatabase;
+    FloatingActionButton btnMenu;
+    View headerNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,11 +81,17 @@ public class MainActivity extends AppCompatActivity {
                 navMenu.findItem(R.id.register).setVisible(false);
                 navMenu.findItem(R.id.user).setVisible(true);
                 navMenu.findItem(R.id.logout).setVisible(true);
+                navMenu.findItem(R.id.home).setVisible(true);
+                navMenu.findItem(R.id.inputScore).setVisible(true);
+                navMenu.findItem(R.id.statistics).setVisible(true);
             } else {
                 navMenu.findItem(R.id.login).setVisible(true);
                 navMenu.findItem(R.id.register).setVisible(true);
                 navMenu.findItem(R.id.user).setVisible(false);
                 navMenu.findItem(R.id.logout).setVisible(false);
+                navMenu.findItem(R.id.home).setVisible(false);
+                navMenu.findItem(R.id.inputScore).setVisible(false);
+                navMenu.findItem(R.id.statistics).setVisible(false);
             }
         });
     }
@@ -86,9 +109,14 @@ public class MainActivity extends AppCompatActivity {
     private void init() {
         navView = findViewById(R.id.nav_view);
         navMenu = navView.getMenu();
+        navMenu.findItem(R.id.login).setChecked(true);
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        btnMenu = findViewById(R.id.btnMenu);
+        btnMenu.setVisibility(View.GONE);
         drawerLayout = findViewById(R.id.drawer_layout);
         toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Đăng nhập");
+        headerNavigation = navView.getHeaderView(0);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.nav_open, R.string.nav_close);
@@ -97,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
 
         toggle.syncState();
 
+        Fragment homeFragment = new HomeFragment();
         Fragment userFragment = new UserFragment();
         Fragment teachingSubjectsFragment = new TeachingSubjectsFragment();
         Fragment statisticsFragment = new UserStatisticsFragment();
@@ -105,22 +134,66 @@ public class MainActivity extends AppCompatActivity {
 
         setCurrentFragment(LoginFragment.newInstance("lttvu3003@gmail.com.vn"));
 
-        defineNavigationTab(navView, new Fragment[]{userFragment, teachingSubjectsFragment, statisticsFragment, loginFragment, registerFragment, userFragment});
+        defineNavigationTab(navView, new Fragment[]{homeFragment, teachingSubjectsFragment, statisticsFragment, loginFragment, registerFragment, userFragment});
 
-        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
-            // Called when the back button is pressed.
-            @Override
-            public void handleOnBackPressed() {
-                // Check if the drawer is open
-                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    // Close the drawer if it's open
-                    drawerLayout.closeDrawer(GravityCompat.START);
-                } else {
-                    // Finish the activity if the drawer is closed
-                    finish();
-                }
+        getSupportFragmentManager().addOnBackStackChangedListener(this::checkBackStack);
+
+        userViewModel.getIsLoggedIn().observe(this, isLoggedIn -> {
+            ShapeableImageView imgAvatar = headerNavigation.findViewById(R.id.imgAvatar);
+            TextView txtUserName = headerNavigation.findViewById(R.id.userName),
+                    txtUserEmail = headerNavigation.findViewById(R.id.userEmail);
+            if (isLoggedIn) {
+                imgAvatar.setVisibility(View.VISIBLE);
+                FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+                firestore.collection("users").document(currentUser.getUid()).get()
+                        .addOnCompleteListener(task -> {
+                            DocumentSnapshot snapshot = task.getResult();
+                            if (snapshot.exists()) {
+                                if (!snapshot.getString("profileImageUrl").isEmpty()) {
+                                    Glide.with(this)
+                                            .load(Uri.parse(snapshot.getString("profileImageUrl").replace("http://", "https://")))
+                                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                            .into(imgAvatar);
+                                }
+                            } else {
+                                Toast.makeText(this, "Document của user này không tồn tại!!!", Toast.LENGTH_LONG).show();
+                            }
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.e("Error in getting document", e.getMessage());
+                        });
+                ExecutorService executorService = Executors.newSingleThreadExecutor();
+                Handler handler = new Handler(Looper.getMainLooper());
+                String email = currentUser.getEmail();
+                executorService.execute(() -> {
+                    Teacher teacher = appDatabase.teacherDao().getTeacherByEmail(email);
+                    handler.post(() -> txtUserName.setText(teacher.getLastName() + " " + teacher.getFirstName()));
+                });
+                txtUserEmail.setText(email);
+            } else {
+                imgAvatar.setVisibility(View.GONE);
+                txtUserName.setText(getString(R.string.anonymous));
+                txtUserEmail.setText(getString(R.string.requireLogin));
             }
         });
+    }
+
+    public void checkBackStack() {
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+
+        if (count > 0) {
+            toolbar.setNavigationIcon(R.drawable.ic_back);
+            btnMenu.setVisibility(View.VISIBLE);
+            btnMenu.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
+
+            toolbar.setNavigationOnClickListener(v -> onBackPressed());
+        } else {
+            toolbar.setNavigationIcon(R.drawable.ic_menu);
+            btnMenu.setVisibility(View.GONE);
+
+            toolbar.setNavigationOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
+        }
     }
 
     private void defineNavigationTab(NavigationView navigationView, Fragment[] listFragment) {
@@ -145,6 +218,7 @@ public class MainActivity extends AppCompatActivity {
                 mAuth.signOut();
                 userViewModel.setLoggedIn(false);
                 setCurrentFragment(listFragment[3]);
+                toolbar.setTitle("Đăng nhập");
             } else return false;
             return true; // Return true to indicate that the item was handled
         });
@@ -385,7 +459,7 @@ public class MainActivity extends AppCompatActivity {
             OpenClass[] openClasses = new OpenClass[30];
             for (int i = 0; i < 30; i++)
                 openClasses[i] = new OpenClass("ABC", Integer.parseInt(String.valueOf(Math.round(Math.random() * 69 + 1))),
-                        11, i == 0? 25 : Integer.parseInt(String.valueOf(Math.round(Math.random() * 49 + 1))), (i * 3) + 1);
+                        11, i == 0 ? 25 : Integer.parseInt(String.valueOf(Math.round(Math.random() * 49 + 1))), (i * 3) + 1);
             appDatabase.openClassDao().addOpenClasses(openClasses);
         }
         List<TeacherAssignment> listTeacherAssignment = appDatabase.teacherAssignmentDao().getAllTeacherAssignments();

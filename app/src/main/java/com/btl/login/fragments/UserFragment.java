@@ -1,8 +1,8 @@
-package com.btl.login;
+package com.btl.login.fragments;
 
-import static com.btl.login.RegisterFragment.REQUEST_CAMERA;
-import static com.btl.login.RegisterFragment.REQUEST_GALLERY;
-import static com.btl.login.RegisterFragment.REQUEST_PERMISSION_CODE;
+import static com.btl.login.fragments.RegisterFragment.REQUEST_CAMERA;
+import static com.btl.login.fragments.RegisterFragment.REQUEST_GALLERY;
+import static com.btl.login.fragments.RegisterFragment.REQUEST_PERMISSION_CODE;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -16,6 +16,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -36,6 +37,8 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.btl.login.MainActivity;
+import com.btl.login.R;
 import com.btl.login.configurations.AppDatabase;
 import com.btl.login.configurations.CloudinaryConfig;
 import com.btl.login.entities.Teacher;
@@ -92,30 +95,7 @@ public class UserFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        AtomicReference<View> view = new AtomicReference<>();
-        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
-        userViewModel.getIsLoggedIn().observe(requireActivity(), isLoggedIn -> {
-            if (isLoggedIn) {
-                view.set(inflater.inflate(R.layout.fragment_user, container, false));
-            } else {
-                final CharSequence[] options = {"Login", "Register", "Cancel"};
-                AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-                builder.setTitle("Which options do you want?");
-                builder.setItems(options, (dialog, which) -> {
-                    if (options[which].equals("Login")) {
-                        LoginFragment loginFragment = new LoginFragment();
-                        redirectToSpecifiedFragment(loginFragment);
-                    } else if (options[which].equals("Register")) {
-                        RegisterFragment registerFragment = new RegisterFragment();
-                        redirectToSpecifiedFragment(registerFragment);
-                    } else if (options[which].equals("Cancel")) {
-                        dialog.dismiss();
-                    }
-                });
-                builder.show();
-            }
-        });
-        return view.get();
+        return inflater.inflate(R.layout.fragment_user, container, false);
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -166,6 +146,7 @@ public class UserFragment extends Fragment {
 
         btnChangeInfo.setOnClickListener(v -> {
             btnSubmitChanging.setVisibility(View.VISIBLE);
+            btnSubmitChanging.setEnabled(true);
             btnChangeInfo.setEnabled(false);
             eTxtFirstName.setEnabled(true);
             eTxtLastName.setEnabled(true);
@@ -178,6 +159,7 @@ public class UserFragment extends Fragment {
         });
 
         btnSubmitChanging.setOnClickListener(v -> {
+            btnSubmitChanging.setEnabled(false);
             updateUserData(view, currentTeacher);
             btnSubmitChanging.setVisibility(View.GONE);
             btnChangeInfo.setEnabled(true);
@@ -210,7 +192,7 @@ public class UserFragment extends Fragment {
         if (currentTeacher != null) {
             currentTeacher.setFirstName(eTxtFirstName.getText().toString());
             currentTeacher.setLastName(eTxtLastName.getText().toString());
-            currentTeacher.setDateOfBirth(eTxtDateOfBirth.getText().toString().isEmpty() ? DateUtils.convertDateToTimestamp(eTxtDateOfBirth.getText().toString()) : null);
+            currentTeacher.setDateOfBirth(!eTxtDateOfBirth.getText().toString().equals("00/00/0000") ? DateUtils.convertDateToTimestamp(eTxtDateOfBirth.getText().toString()) : null);
             currentTeacher.setGender(male.isChecked());
             currentTeacher.setPhoneNumber(eTxtPhoneNumber.getText().toString());
             currentTeacher.setAddress(eTxtAddress.getText().toString());
@@ -254,9 +236,10 @@ public class UserFragment extends Fragment {
             eTxtDateOfBirth = view.findViewById(R.id.userDateOfBirth).findViewById(R.id.eTxtComponent);
 
             txtDateOfBirth.setText("Ngày sinh");
-            eTxtDateOfBirth.setText(currentTeacher.getDateOfBirth() != null && currentTeacher.getDateOfBirth() != 0 ? DateUtils.convertTimestampToDate(currentTeacher.getDateOfBirth()) : null);
+            eTxtDateOfBirth.setText(currentTeacher.getDateOfBirth() != null && currentTeacher.getDateOfBirth() != 0 ? DateUtils.convertTimestampToDate(currentTeacher.getDateOfBirth()) : "00/00/0000");
             eTxtDateOfBirth.setEnabled(false);
             eTxtDateOfBirth.addTextChangedListener(new TextWatcher() {
+                private boolean isUpdating;
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -264,22 +247,49 @@ public class UserFragment extends Fragment {
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    String temp = s.toString();
-
-                    StringBuilder stringBuilder = new StringBuilder();
-
-                    for (int i = 0; i < temp.length(); i++) {
-                        if (i > 0 && i < 6 && i % 2 == 0) {
-                            stringBuilder.append("/");
-                        }
-                        stringBuilder.append(temp.charAt(i));
-                    }
-
                 }
 
                 @Override
                 public void afterTextChanged(Editable s) {
+                    if (isUpdating) return;
 
+                    isUpdating = true;
+
+                    String current = s.toString();
+                    String clean = current.replaceAll("[^\\d]", "");
+
+                    int cursorPosition = eTxtDateOfBirth.getSelectionStart();
+
+                    StringBuilder formatted = new StringBuilder("00/00/0000");
+
+                    int i = 0;
+                    for (char c : clean.toCharArray()) {
+                        while (i < formatted.length() && formatted.charAt(i) == '/') i++;
+                        if (i < formatted.length()) {
+                            formatted.setCharAt(i, c);
+                            i++;
+                        }
+                    }
+
+                    eTxtDateOfBirth.removeTextChangedListener(this);
+                    eTxtDateOfBirth.setText(formatted.toString());
+
+                    // Tính toán lại vị trí con trỏ
+                    int newCursorPosition = cursorPosition;
+                    if (cursorPosition < formatted.length()) {
+                        if (formatted.charAt(cursorPosition) == '/') {
+                            newCursorPosition++;
+                        }
+                    }
+
+                    if (newCursorPosition > formatted.length()) {
+                        newCursorPosition = formatted.length();
+                    }
+
+                    eTxtDateOfBirth.setSelection(newCursorPosition);
+                    eTxtDateOfBirth.addTextChangedListener(this);
+
+                    isUpdating = false;
                 }
             });
 
@@ -327,6 +337,8 @@ public class UserFragment extends Fragment {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment);
         fragmentTransaction.commit();
+
+        ((MainActivity) requireActivity()).checkBackStack();
     }
 
     @Override
