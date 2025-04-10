@@ -22,4 +22,7 @@ public interface AcademicYearDao {
 
     @Delete
     void deleteAcademicYear(AcademicYear academicYear);
+
+    @Query("DELETE FROM academicYear")
+    void deleteAllAcademicYears();
 }

@@ -4,6 +4,8 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
+
 import com.btl.login.entities.Teacher;
 
 import java.util.List;
@@ -16,9 +18,18 @@ public interface TeacherDao {
     @Query("SELECT * FROM teacher WHERE id=:teacherId")
     Teacher getTeacherById(int teacherId);
 
+    @Query("SELECT * FROM teacher WHERE email=:email")
+    Teacher getTeacherByEmail(String email);
+
     @Insert
     void addTeachers(Teacher... teachers);
 
     @Delete
     void deleteTeacher(Teacher teacher);
+
+    @Query("DELETE FROM teacher")
+    void deleteAllTeachers();
+
+    @Update
+    void updateTeacher(Teacher teacher);
 }

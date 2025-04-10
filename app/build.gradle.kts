@@ -81,13 +81,18 @@ dependencies {
     // MPAndroidChart
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
+    // Firebase
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
 
     implementation("com.google.firebase:firebase-auth")
 
     implementation("com.google.firebase:firebase-firestore")
 
-    implementation("com.google.firebase:firebase-storage")
+    // Cloudinary
+    implementation("com.cloudinary:cloudinary-android:2.2.0")
+
+    // Glide for show image from URL
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 }
 java {
     toolchain {

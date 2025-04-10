@@ -9,26 +9,27 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/home"
-            android:icon="@drawable/ic_plus"
+            android:icon="@drawable/ic_home"
             android:title="@string/nav_home_item" />
 
         <item
             android:id="@+id/inputScore"
-            android:icon="@drawable/ic_user"
+            android:icon="@drawable/ic_input_score"
             android:title="@string/nav_input_score_item" />
 
         <item
             android:id="@+id/statistics"
-            android:icon="@drawable/ic_profile"
+            android:icon="@drawable/ic_statistics"
             android:title="@string/nav_statistic_item" />
     </group>
 
     <group
         android:id="@+id/access"
         android:checkableBehavior="single">
+
         <item
             android:id="@+id/login"
-            android:icon="@drawable/ic_plus"
+            android:icon="@drawable/ic_login"
             android:title="@string/app_name" />
 
         <item
@@ -37,9 +38,16 @@
             android:title="@string/txtRegister_txt" />
 
         <item
+            android:id="@+id/user"
+            android:icon="@drawable/ic_user_info"
+            android:title="@string/nav_user_item"
+            android:visible="false"/>
+
+        <item
             android:id="@+id/logout"
-            android:icon="@drawable/ic_plus"
-            android:title="@string/nav_log_out_item" />
+            android:icon="@drawable/ic_logout"
+            android:title="@string/nav_log_out_item"
+            android:visible="false"/>
     </group>
 
 </menu>

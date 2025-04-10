@@ -4,14 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".TeachingSubjectsFragment"
+    tools:context=".fragments.TeachingSubjectsFragment"
     android:layout_margin="10dp">
 
     <TextView
         android:id="@+id/txtTeachingClassesTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/txtTeachingSubjectsTitle_txt"
         android:textSize="22sp"
         android:textStyle="bold"
         android:textAlignment="center"

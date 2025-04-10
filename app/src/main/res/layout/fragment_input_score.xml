@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".InputScoreFragment"
+    tools:context=".fragments.InputScoreFragment"
     android:layout_margin="10dp">
 
     <TextView
@@ -28,7 +28,9 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:stretchColumns="2, 3">
+        android:stretchColumns="2, 3"
+        android:paddingVertical="20dp"
+        >
 
 
         <TableRow
@@ -44,8 +46,8 @@
 
             <TextView
                 android:id="@+id/txtProgressDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="200dp"
+                android:layout_height="100dp"
                 android:text="Gồm điểm quá trình"
                 android:paddingHorizontal="10dp"/>
 
@@ -61,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="number" />
+                android:inputType="numberDecimal" />
         </TableRow>
 
         <TableRow
@@ -76,8 +78,8 @@
 
             <TextView
                 android:id="@+id/txtMiddleSemesterDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="200dp"
+                android:layout_height="100dp"
                 android:text="Gồm điểm quá trình"
                 android:paddingHorizontal="10dp"/>
 
@@ -93,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="number" />
+                android:inputType="numberDecimal" />
         </TableRow>
 
         <TableRow
@@ -108,8 +110,8 @@
 
             <TextView
                 android:id="@+id/txtFinalSemesterDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="200dp"
+                android:layout_height="100dp"
                 android:text="Gồm điểm quá trình"
                 android:paddingHorizontal="10dp"/>
 
@@ -125,32 +127,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="number" />
+                android:inputType="numberDecimal" />
         </TableRow>
     </TableLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
-
         <Button
+            android:layout_gravity="center"
             android:id="@+id/btnSave"
-            android:layout_width="120dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:cornerRadius="25dp"
             android:backgroundTint="@color/purple_200"
-            android:layout_marginEnd="10dp"
             android:text="@string/btnSave_txt" />
-
-        <Button
-            android:id="@+id/btnSaveAndContinue"
-            android:layout_width="220dp"
-            android:layout_height="wrap_content"
-            app:cornerRadius="25dp"
-            android:backgroundTint="@color/purple_200"
-            android:text="@string/btnSaveAndContinue_txt" />
-    </LinearLayout>
 
 </LinearLayout>

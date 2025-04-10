@@ -26,6 +26,7 @@ public class SubjectRegistration extends BaseProperties{
     private int studentId;
 
     public SubjectRegistration(int openClassId, int studentId) {
+        super();
         this.openClassId = openClassId;
         this.studentId = studentId;
     }

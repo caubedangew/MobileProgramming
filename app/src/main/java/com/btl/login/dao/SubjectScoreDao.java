@@ -17,6 +17,9 @@ public interface SubjectScoreDao {
     @Query("SELECT * FROM subjectScore WHERE id=:subjectScoreId")
     SubjectScore getSubjectScoreById(int subjectScoreId);
 
+    @Query("SELECT * FROM subjectScore WHERE subjectId=:subjectId")
+    List<SubjectScore> getSubjectScoreBySubjectId(int subjectId);
+
     @Insert
     void addSubjectScores(SubjectScore... subjectScores);
 

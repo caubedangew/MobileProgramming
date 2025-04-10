@@ -19,24 +19,18 @@ public class Semester extends BaseProperties {
     @NotNull
     private String semesterName;
     @NotNull
-    private String startDate;
+    private Long startDate;
     @NotNull
-    private String endDate;
+    private Long endDate;
 
     private int academicYearId;
 
-    @Ignore
-    public Semester() {
-        semesterName = "";
-        startDate = "";
-        endDate = "";
-    }
-
-    public Semester(@NotNull String semesterName, @NotNull String startDate, @NotNull String endDate, int academicYearId) {
+    public Semester(@NotNull String semesterName, @NotNull Long startDate, @NotNull Long endDate, int academicYearId) {
+        super();
         this.semesterName = semesterName;
+        this.academicYearId = academicYearId;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.academicYearId = academicYearId;
     }
 
     public @NotNull String getSemesterName() {
@@ -47,19 +41,19 @@ public class Semester extends BaseProperties {
         this.semesterName = semesterName;
     }
 
-    public @NotNull String getStartDate() {
+    public @NotNull Long getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(@NotNull String startDate) {
+    public void setStartDate(@NotNull Long startDate) {
         this.startDate = startDate;
     }
 
-    public @NotNull String getEndDate() {
+    public @NotNull Long getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(@NotNull String endDate) {
+    public void setEndDate(@NotNull Long endDate) {
         this.endDate = endDate;
     }
 

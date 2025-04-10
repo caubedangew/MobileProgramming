@@ -9,16 +9,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.btl.login.R;
-import com.btl.login.entities.Student;
+import com.btl.login.dto.StudentInClassDTO;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class InputScoreAdapter extends BaseAdapter {
-    private ArrayList<Student> listStudents;
+    private final List<StudentInClassDTO> listStudents;
     private Context context;
-    private LayoutInflater inflater;
+    private final LayoutInflater inflater;
 
-    public InputScoreAdapter(Context context, ArrayList<Student> listStudents) {
+    public InputScoreAdapter(Context context, List<StudentInClassDTO> listStudents) {
         inflater = LayoutInflater.from(context);
         this.listStudents = listStudents;
     }
@@ -45,8 +45,9 @@ public class InputScoreAdapter extends BaseAdapter {
         TextView txtStudentId = view.findViewById(R.id.txtStudentId);
         ImageView imgAlreadyHaveScore = view.findViewById(R.id.imgAlreadyHaveScore);
 
-        txtStudentName.setText(listStudents.get(position).getFirstName() + " " + listStudents.get(position).getFirstName());
-        txtStudentId.setText(listStudents.get(position).getId());
+        txtStudentName.setText(listStudents.get(position).getFullName());
+        txtStudentId.setText(String.valueOf(listStudents.get(position).getId()));
+        imgAlreadyHaveScore.setImageResource(R.drawable.ic_tick);
 
         return view;
     }

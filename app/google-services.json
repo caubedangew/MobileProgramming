@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "710765045888",
+    "firebase_url": "https://studentmanagement-5c7ef-default-rtdb.firebaseio.com",
     "project_id": "studentmanagement-5c7ef",
     "storage_bucket": "studentmanagement-5c7ef.firebasestorage.app"
   },

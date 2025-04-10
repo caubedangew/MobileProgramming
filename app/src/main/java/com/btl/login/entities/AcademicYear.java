@@ -11,6 +11,7 @@ public class AcademicYear extends BaseProperties{
     private String academicYearName;
 
     public AcademicYear(@NotNull String academicYearName) {
+        super();
         this.academicYearName = academicYearName;
     }
 

@@ -8,26 +8,26 @@ import org.jetbrains.annotations.NotNull;
 
 @Entity(foreignKeys = {
         @ForeignKey(
-                entity = Major.class,
+                entity = Department.class,
                 parentColumns = "id",
-                childColumns = "majorId",
+                childColumns = "departmentId",
                 onDelete = ForeignKey.CASCADE,
                 onUpdate = ForeignKey.CASCADE
         )
 }, indices = {@Index(value="email", unique = true)})
 public class Teacher extends BaseInformation {
-    private int majorId;
+    private int departmentId;
 
-    public Teacher(@NotNull String firstName, @NotNull String lastName, int majorId) {
-        super(firstName, lastName);
-        this.majorId = majorId;
+    public Teacher(@NotNull String firstName, @NotNull String lastName, String email, int departmentId) {
+        super(firstName, lastName, email);
+        this.departmentId = departmentId;
     }
 
-    public int getMajorId() {
-        return majorId;
+    public int getDepartmentId() {
+        return departmentId;
     }
 
-    public void setMajorId(int majorId) {
-        this.majorId = majorId;
+    public void setDepartmentId(int departmentId) {
+        this.departmentId = departmentId;
     }
 }

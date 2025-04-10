@@ -15,14 +15,10 @@ public class Subject extends BaseProperties {
     private String subjectName;
 
     @ColumnInfo(defaultValue = "0")
-    private float creditNumber;
+    private double creditNumber;
 
-    @Ignore
-    public Subject() {
-        this.subjectName = "Example";
-    }
-
-    public Subject(@NotNull String subjectName, float creditNumber) {
+    public Subject(@NotNull String subjectName, double creditNumber) {
+        super();
         this.creditNumber = creditNumber;
         this.subjectName = subjectName;
     }
@@ -32,11 +28,11 @@ public class Subject extends BaseProperties {
         return subjectName;
     }
 
-    public float getCreditNumber() {
+    public double getCreditNumber() {
         return creditNumber;
     }
 
-    public void setCreditNumber(float creditNumber) {
+    public void setCreditNumber(double creditNumber) {
         this.creditNumber = creditNumber;
     }
 

@@ -10,12 +10,16 @@ public abstract class BaseProperties {
     private int id;
     @ColumnInfo(defaultValue = "true")
     private boolean active;
-    @ColumnInfo(defaultValue = "CURRENT_TIMESTAMP")
-    private Date createdBy;
-    @ColumnInfo(defaultValue = "CURRENT_TIMESTAMP")
-    private Date updatedBy;
+    private Long createdBy;
+    private Long updatedBy;
 
-    public Date getCreatedBy() {
+    public BaseProperties() {
+        this.updatedBy = System.currentTimeMillis();;
+        this.createdBy = System.currentTimeMillis();;
+        this.active = true;
+    }
+
+    public Long getCreatedBy() {
         return createdBy;
     }
 
@@ -23,15 +27,15 @@ public abstract class BaseProperties {
         return id;
     }
 
-    public Date getUpdatedBy() {
+    public Long getUpdatedBy() {
         return updatedBy;
     }
 
-    public void setCreatedBy(Date createdBy) {
+    public void setCreatedBy(Long createdBy) {
         this.createdBy = createdBy;
     }
 
-    public void setUpdatedBy(Date updatedBy) {
+    public void setUpdatedBy(Long updatedBy) {
         this.updatedBy = updatedBy;
     }
 

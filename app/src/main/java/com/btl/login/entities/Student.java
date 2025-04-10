@@ -17,8 +17,8 @@ import org.jetbrains.annotations.NotNull;
 public class Student extends BaseInformation {
     private int studentClassId;
 
-    public Student(@NotNull String firstName, @NotNull String lastName, int studentClassId) {
-        super(firstName, lastName);
+    public Student(@NotNull String firstName, @NotNull String lastName, String email, int studentClassId) {
+        super(firstName, lastName, email);
         this.studentClassId = studentClassId;
     }
 

@@ -21,6 +21,7 @@ public class StudentClass extends BaseProperties {
     private int majorId;
 
     public StudentClass(@NotNull String className, int majorId) {
+        super();
         this.className = className;
         this.majorId = majorId;
     }
