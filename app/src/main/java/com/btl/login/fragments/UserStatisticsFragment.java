@@ -112,12 +112,10 @@ public class UserStatisticsFragment extends Fragment {
 
         executorService.execute(() -> {
             List<Double> test = appDatabase.statisticsDao().getAverageScoreOfOneStudent(11, 31);
-            int number = appDatabase.statisticsDao().numberStudentInClass(31);
-            int numberClass = appDatabase.statisticsDao().numberClassOfSubjectOnTheSemester(31);
+            List<Integer> number = appDatabase.statisticsDao().numberStudentInClass(11, 31);
             handler.post(() -> {
-                Log.d("TEST", String.valueOf(test.size()));
-                Log.d("STUDENT", String.valueOf(number));
-                Log.d("CLASS", String.valueOf(numberClass));
+                Log.d("TEST", String.valueOf(test.get(0)));
+                Log.d("STUDENT", String.valueOf(number.get(0)));
             });
         });
 
@@ -150,7 +148,6 @@ public class UserStatisticsFragment extends Fragment {
         executorService.execute(() -> {
             List<String> statisticsResult = appDatabase.statisticsDao().getStatisticsBySemester(11, 31);
             handler.post(() -> {
-                Log.d("SIZE", String.valueOf(statisticsResult.size()));
                 List<String> labels = new ArrayList<>(statisticsResult);
                 labels.add(0, "");
                 xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));

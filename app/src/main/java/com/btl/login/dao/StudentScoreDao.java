@@ -30,7 +30,7 @@ public interface StudentScoreDao {
     @Delete
     void deleteStudentScore(StudentScore studentScore);
 
-    @Query("SELECT subjectRegistration.studentId as id, (student.firstName || ' ' || student.lastName) as fullName " +
+    @Query("SELECT subjectRegistration.studentId as id, (student.firstName || ' ' || student.lastName) as fullName, COUNT(*) " +
             "FROM student " +
             "JOIN subjectRegistration ON subjectRegistration.studentId = student.id " +
             "WHERE subjectRegistration.openClassId=:openClassId " +
