@@ -5,13 +5,12 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class UserViewModel extends ViewModel {
-    private MutableLiveData<Boolean> isLoggedIn = new MutableLiveData<>(false);
+    private final MutableLiveData<Boolean> isLoggedIn = new MutableLiveData<>(false);
+    private final MutableLiveData<String> userRole = new MutableLiveData<>(null);
 
-    public void setLoggedIn(boolean loggedIn) {
-        isLoggedIn.setValue(loggedIn);
-    }
+    public void setLoggedIn(boolean loggedIn) { isLoggedIn.setValue(loggedIn); }
+    public LiveData<Boolean> getIsLoggedIn() { return isLoggedIn; }
 
-    public LiveData<Boolean> getIsLoggedIn() {
-        return isLoggedIn;
-    }
+    public void setUserRole(String role) { userRole.setValue(role); }
+    public LiveData<String> getUserRole() { return userRole; }
 }

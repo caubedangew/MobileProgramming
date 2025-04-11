@@ -25,4 +25,10 @@ public interface MajorDao {
 
     @Query("DELETE FROM major")
     void deleteAllMajors();
+
+    @Query("SELECT id FROM major WHERE majorName = :majorName")
+    int getMajorIdByName(String majorName);
+
+    @Query("SELECT majorName FROM major")
+    List<String> getAllMajorNames();
 }

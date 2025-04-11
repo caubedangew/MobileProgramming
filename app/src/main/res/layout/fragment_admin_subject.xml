@@ -1,0 +1,71 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".fragments.SubjectFragment">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quản Lý Môn học"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+    <EditText
+        android:id="@+id/eTxtSubjName"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:inputType="text"
+        android:hint="@string/eTxtSubjectName"
+        android:background="@drawable/custom_edit_text"
+        android:padding="8dp"
+        android:layout_marginTop="20dp"
+        android:drawablePadding="8dp" />
+
+    <Spinner
+        android:id="@+id/spinnerCreditNumbers"
+        android:layout_width="match_parent"
+        android:ems="10"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/custom_edit_text"
+        android:padding="8dp" />
+
+    <!-- Horizontal layout for action buttons -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btnAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cornerRadius="25dp"
+            android:backgroundTint="@color/purple_200"
+            android:layout_marginEnd="10dp"
+            android:text="@string/btnAdd_txt" />
+
+        <Button
+            android:id="@+id/btnEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cornerRadius="25dp"
+            android:backgroundTint="@color/purple_200"
+            android:text="@string/btnEdit_txt" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listViewSubjects"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp"
+        android:layout_marginTop="10dp" />
+</LinearLayout>

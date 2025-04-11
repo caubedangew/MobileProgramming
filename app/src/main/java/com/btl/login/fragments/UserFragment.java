@@ -111,39 +111,53 @@ public class UserFragment extends Fragment {
         imgAvatar = view.findViewById(R.id.imgAvatar);
         imgAvatar.setEnabled(false);
 
-        if (currentUser != null) {
+        // Kiểm tra người dùng hiện tại
+        if (currentUser != null && currentUser.getEmail() != null) {
             ExecutorService executorService = Executors.newSingleThreadExecutor();
             Handler handler = new Handler(Looper.getMainLooper());
 
+            // Lấy thông tin Teacher từ cơ sở dữ liệu
             executorService.execute(() -> {
                 currentTeacher = appDatabase.teacherDao().getTeacherByEmail(currentUser.getEmail());
                 handler.post(() -> {
-                    customFormFields(view, currentTeacher);
+                    if (currentTeacher != null) {
+                        customFormFields(view, currentTeacher);
+                    } else {
+                        Log.d("UserFragment", "currentTeacher is null.");
+                    }
                 });
             });
+
+            // Lấy thông tin từ Firestore
             firestore.collection("users").document(currentUser.getUid()).get()
                     .addOnCompleteListener(task -> {
                         DocumentSnapshot snapshot = task.getResult();
-                        if (snapshot.exists()) {
-                            if (!snapshot.getString("profileImageUrl").isEmpty()) {
-                                currentUri = Uri.parse(snapshot.getString("profileImageUrl").replace("http://", "https://"));
-                                imageUri = Uri.parse(snapshot.getString("profileImageUrl").replace("http://", "https://"));
+                        if (snapshot != null && snapshot.exists()) {
+                            String profileImageUrl = snapshot.getString("profileImageUrl");
+                            if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
+                                currentUri = Uri.parse(profileImageUrl.replace("http://", "https://"));
+                                imageUri = Uri.parse(profileImageUrl.replace("http://", "https://"));
                                 Glide.with(requireContext())
                                         .load(currentUri)
                                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                                         .into(imgAvatar);
+                            } else {
+                                Log.d("UserFragment", "profileImageUrl is null or empty.");
                             }
                         } else {
-                            Toast.makeText(getContext(), "Document của user này không tồn tại!!!", Toast.LENGTH_LONG).show();
+                            Log.d("UserFragment", "Document does not exist.");
+                            Toast.makeText(getContext(), "Document của user này không tồn tại!", Toast.LENGTH_LONG).show();
                         }
                     })
                     .addOnFailureListener(e -> {
                         Log.e("Error in getting document", e.getMessage());
+                        Toast.makeText(getContext(), "Lỗi khi truy vấn Firestore: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     });
         } else {
             Toast.makeText(getContext(), "Không lấy được dữ liệu của user đang đăng nhập", Toast.LENGTH_LONG).show();
         }
 
+        // Xử lý sự kiện nút "Change Info"
         btnChangeInfo.setOnClickListener(v -> {
             btnSubmitChanging.setVisibility(View.VISIBLE);
             btnSubmitChanging.setEnabled(true);
@@ -158,6 +172,7 @@ public class UserFragment extends Fragment {
             female.setEnabled(true);
         });
 
+        // Xử lý sự kiện nút "Submit Changing"
         btnSubmitChanging.setOnClickListener(v -> {
             btnSubmitChanging.setEnabled(false);
             updateUserData(view, currentTeacher);
@@ -165,6 +180,7 @@ public class UserFragment extends Fragment {
             btnChangeInfo.setEnabled(true);
         });
 
+        // Xử lý sự kiện khi nhấn vào avatar
         imgAvatar.setOnClickListener(v -> {
             final CharSequence[] options = {"Take Photo", "Choose From Gallery", "Cancel"};
             AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
@@ -174,8 +190,9 @@ public class UserFragment extends Fragment {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     if (intent.resolveActivity(requireContext().getPackageManager()) != null) {
                         startActivityForResult(intent, REQUEST_CAMERA);
-                    } else
-                        Toast.makeText(getContext(), intent.resolveActivity(requireContext().getPackageManager()).toString(), Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getContext(), "Không tìm thấy ứng dụng hỗ trợ chụp ảnh!", Toast.LENGTH_LONG).show();
+                    }
                 } else if (options[which].equals("Choose From Gallery")) {
                     Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*");
@@ -190,12 +207,13 @@ public class UserFragment extends Fragment {
 
     private void updateUserData(@NonNull View view, Teacher currentTeacher) {
         if (currentTeacher != null) {
-            currentTeacher.setFirstName(eTxtFirstName.getText().toString());
-            currentTeacher.setLastName(eTxtLastName.getText().toString());
-            currentTeacher.setDateOfBirth(!eTxtDateOfBirth.getText().toString().equals("00/00/0000") ? DateUtils.convertDateToTimestamp(eTxtDateOfBirth.getText().toString()) : null);
+            currentTeacher.setFirstName(eTxtFirstName.getText() != null ? eTxtFirstName.getText().toString() : "");
+            currentTeacher.setLastName(eTxtLastName.getText() != null ? eTxtLastName.getText().toString() : "");
+            currentTeacher.setDateOfBirth(!eTxtDateOfBirth.getText().toString().equals("00/00/0000") ?
+                    DateUtils.convertDateToTimestamp(eTxtDateOfBirth.getText().toString()) : null);
             currentTeacher.setGender(male.isChecked());
-            currentTeacher.setPhoneNumber(eTxtPhoneNumber.getText().toString());
-            currentTeacher.setAddress(eTxtAddress.getText().toString());
+            currentTeacher.setPhoneNumber(eTxtPhoneNumber.getText() != null ? eTxtPhoneNumber.getText().toString() : "");
+            currentTeacher.setAddress(eTxtAddress.getText() != null ? eTxtAddress.getText().toString() : "");
             currentTeacher.setUpdatedBy(System.currentTimeMillis());
 
             ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -204,14 +222,20 @@ public class UserFragment extends Fragment {
             executorService.execute(() -> {
                 appDatabase.teacherDao().updateTeacher(currentTeacher);
                 handler.post(() -> {
-                    customFormFields(view, currentTeacher);
+                    if (currentTeacher != null) {
+                        customFormFields(view, currentTeacher);
+                    }
                 });
             });
         }
-        if (!currentUri.equals(imageUri)) {
+
+        if (currentUri != null && imageUri != null && !currentUri.equals(imageUri)) {
             new Thread(() -> {
-//                CloudinaryConfig.deleteImage(currentUri.toString().substring(currentUri.toString().lastIndexOf("/") + 1, currentUri.toString().lastIndexOf(".")));
-                uploadImageToCloudinary(currentUser, firestore);
+                if (currentUser != null && firestore != null) {
+                    uploadImageToCloudinary(currentUser, firestore);
+                } else {
+                    Log.e("updateUserData", "Cloudinary upload failed due to null values.");
+                }
             }).start();
         }
     }
@@ -333,96 +357,175 @@ public class UserFragment extends Fragment {
     }
 
     private void redirectToSpecifiedFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, fragment);
-        fragmentTransaction.commit();
+        if (isAdded() && fragment != null) {
+            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, fragment);
+            fragmentTransaction.commit();
 
-        ((MainActivity) requireActivity()).checkBackStack();
+            // Kiểm tra BackStack trong MainActivity
+            ((MainActivity) requireActivity()).checkBackStack();
+        } else {
+            Log.e("FragmentRedirect", "Fragment hoặc Activity không hợp lệ.");
+        }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        Log.d("onActivityResult", "requestCode: " + requestCode + ", resultCode: " + resultCode);
+
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == REQUEST_CAMERA) {
-                Bitmap bitmap = (Bitmap) Objects.requireNonNull(data.getExtras()).get("data");
-                imgAvatar.setImageBitmap(bitmap);
-
-                imageUri = getImageUriFromBitmap(bitmap);
+                if (data != null && data.getExtras() != null) {
+                    Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                    imgAvatar.setImageBitmap(bitmap);
+                    imageUri = getImageUriFromBitmap(bitmap);
+                } else {
+                    Log.e("onActivityResult", "Dữ liệu camera không hợp lệ.");
+                    Toast.makeText(getContext(), "Không lấy được ảnh từ camera.", Toast.LENGTH_SHORT).show();
+                }
             } else if (requestCode == REQUEST_GALLERY) {
-                imageUri = data.getData();
-                imgAvatar.setImageURI(imageUri);
+                if (data != null && data.getData() != null) {
+                    imageUri = data.getData();
+                    imgAvatar.setImageURI(imageUri);
+                } else {
+                    Log.e("onActivityResult", "Dữ liệu thư viện ảnh không hợp lệ.");
+                    Toast.makeText(getContext(), "Không lấy được ảnh từ thư viện.", Toast.LENGTH_SHORT).show();
+                }
             }
+        } else if (resultCode == Activity.RESULT_CANCELED) {
+            Log.d("onActivityResult", "Người dùng đã hủy thao tác.");
+        } else {
+            Log.e("onActivityResult", "Kết quả trả về không hợp lệ: resultCode = " + resultCode);
         }
     }
 
     private void uploadImageToCloudinary(FirebaseUser user, FirebaseFirestore firestore) {
         Cloudinary cloudinary = CloudinaryConfig.getCloudinaryClient();
 
+        if (imageUri == null || imageUri.getScheme() == null) {
+            Log.e("Cloudinary", "imageUri is null or invalid");
+            Toast.makeText(getContext(), "URI của hình ảnh không hợp lệ.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         File file = null;
         if (imageUri.getScheme().equals("content")) {
-            file = new File(getRealPathFromURI(imageUri));
+            String realPath = getRealPathFromURI(imageUri);
+            if (realPath != null && !realPath.isEmpty()) {
+                file = new File(realPath);
+            } else {
+                Log.e("Cloudinary", "Invalid real path from URI.");
+                Toast.makeText(getContext(), "Không thể lấy đường dẫn thực từ URI.", Toast.LENGTH_LONG).show();
+                return;
+            }
         } else {
             file = new File(imageUri.getPath());
         }
-        if (file.exists()) {
-            try {
-                Map uploadResult = cloudinary.uploader().upload(file, ObjectUtils.emptyMap());
-                String imageUrl = (String) uploadResult.get("url");
-                if (imageUrl != null) {
-                    firestore.collection("users").document(user.getUid())
-                            .update("profileImageUrl", imageUrl.replace("http://", "https://"))
-                            .addOnSuccessListener(unused -> {
-                                Log.i("Cloudinary", "Upload Successfully!!!");
-                            }).addOnFailureListener(e -> {
-                                e.printStackTrace();
-                            });
-                }
-            } catch (Exception e) {
-                Log.e("Cloudinary", "Error uploading image", e);
+
+        if (file == null || !file.exists()) {
+            Log.e("Cloudinary", "File not found: " + (imageUri.getPath() != null ? imageUri.getPath() : "null"));
+            Toast.makeText(getContext(), "File không tồn tại. Hãy kiểm tra lại!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        try {
+            Map uploadResult = cloudinary.uploader().upload(file, ObjectUtils.emptyMap());
+            String imageUrl = (String) uploadResult.get("url");
+
+            if (imageUrl != null) {
+                firestore.collection("users").document(user.getUid())
+                        .update("profileImageUrl", imageUrl.replace("http://", "https://"))
+                        .addOnSuccessListener(unused -> {
+                            Log.i("Cloudinary", "Upload Successfully!!!");
+                            Toast.makeText(getContext(), "Upload ảnh thành công!", Toast.LENGTH_SHORT).show();
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.e("Firestore", "Error updating Firestore", e);
+                            Toast.makeText(getContext(), "Không thể cập nhật URL ảnh lên Firestore.", Toast.LENGTH_LONG).show();
+                        });
             }
-        } else {
-            Log.e("Cloudinary", "File not found: " + imageUri.getPath());
+        } catch (Exception e) {
+            Log.e("Cloudinary", "Error uploading image", e);
+            Toast.makeText(getContext(), "Lỗi khi upload ảnh lên Cloudinary.", Toast.LENGTH_LONG).show();
         }
     }
 
     private Uri getImageUriFromBitmap(Bitmap bitmap) {
-        File file = new File(requireContext().getCacheDir(), "temp.jpg");
-        try (FileOutputStream out = new FileOutputStream(file)) {
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (bitmap == null) {
+            Log.e("getImageUriFromBitmap", "Bitmap is null.");
+            Toast.makeText(requireContext(), "Hình ảnh không hợp lệ.", Toast.LENGTH_LONG).show();
+            return null; // Trả về null nếu bitmap không hợp lệ
         }
+
+        File file = new File(requireContext().getCacheDir(), "temp_" + System.currentTimeMillis() + ".jpg");
+        try (FileOutputStream out = new FileOutputStream(file)) {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, out); // Giảm chất lượng nén xuống 80
+        } catch (IOException e) {
+            Log.e("getImageUriFromBitmap", "Error writing bitmap to file", e);
+            Toast.makeText(requireContext(), "Lỗi khi lưu hình ảnh!", Toast.LENGTH_LONG).show();
+            return null; // Trả về null nếu xảy ra lỗi
+        }
+
+        if (!file.exists()) {
+            Log.e("getImageUriFromBitmap", "File not created successfully.");
+            Toast.makeText(requireContext(), "Không thể tạo tệp hình ảnh.", Toast.LENGTH_LONG).show();
+            return null;
+        }
+
         return Uri.fromFile(file);
     }
 
     public String getRealPathFromURI(Uri uri) {
+        if (uri == null) {
+            Log.e("getRealPathFromURI", "URI không hợp lệ.");
+            return null;
+        }
+
         String[] projection = {MediaStore.Images.Media.DATA};
         Cursor cursor = getContext().getContentResolver().query(uri, projection, null, null, null);
         String path = null;
+
         if (cursor != null) {
-            cursor.moveToFirst();
-            int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            path = cursor.getString(columnIndex);
-            cursor.close();
+            try {
+                if (cursor.moveToFirst()) {
+                    int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                    path = cursor.getString(columnIndex);
+                }
+            } catch (IllegalArgumentException e) {
+                Log.e("getRealPathFromURI", "Cột DATA không tồn tại.", e);
+            } finally {
+                cursor.close();
+            }
+        } else {
+            Log.e("getRealPathFromURI", "Không thể truy vấn URI: " + uri.toString());
         }
+
         return path;
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Log.d("Try to request", "Process requesting permissions");
+        Log.d("onRequestPermissionsResult", "Process requesting permissions");
 
         if (requestCode == REQUEST_PERMISSION_CODE) {
             FirebaseUser user = mAuth.getCurrentUser();
+
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                new Thread(() -> {
-                    uploadImageToCloudinary(user, firestore);
-                }).start();
+                if (user != null) {
+                    Log.i("onRequestPermissionsResult", "Quyền được chấp thuận.");
+                    new Thread(() -> {
+                        uploadImageToCloudinary(user, firestore);
+                    }).start();
+                } else {
+                    Log.e("onRequestPermissionsResult", "Người dùng chưa đăng nhập.");
+                    Toast.makeText(getContext(), "Người dùng chưa đăng nhập.", Toast.LENGTH_LONG).show();
+                }
             } else {
+                Log.w("onRequestPermissionsResult", "Quyền bị từ chối.");
                 Toast.makeText(getContext(), "Không thể cấp quyền truy cập vào bộ nhớ", Toast.LENGTH_LONG).show();
             }
         }
