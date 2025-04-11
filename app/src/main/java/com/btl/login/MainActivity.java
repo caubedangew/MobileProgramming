@@ -34,6 +34,7 @@ import com.btl.login.entities.SubjectRegistration;
 import com.btl.login.entities.SubjectScore;
 import com.btl.login.entities.Teacher;
 import com.btl.login.entities.TeacherAssignment;
+import com.btl.login.fragments.AdminFragment;
 import com.btl.login.fragments.HomeFragment;
 import com.btl.login.fragments.LoginFragment;
 import com.btl.login.fragments.RegisterFragment;
@@ -75,8 +76,9 @@ public class MainActivity extends AppCompatActivity {
 
         init();
 
+        // Quan sát trạng thái đăng nhập
         userViewModel.getIsLoggedIn().observe(this, isLoggedIn -> {
-            if (isLoggedIn) {
+            if (isLoggedIn != null && isLoggedIn) {
                 navMenu.findItem(R.id.login).setVisible(false);
                 navMenu.findItem(R.id.register).setVisible(false);
                 navMenu.findItem(R.id.user).setVisible(true);
@@ -92,6 +94,16 @@ public class MainActivity extends AppCompatActivity {
                 navMenu.findItem(R.id.home).setVisible(false);
                 navMenu.findItem(R.id.inputScore).setVisible(false);
                 navMenu.findItem(R.id.statistics).setVisible(false);
+                navMenu.findItem(R.id.admin).setVisible(false); // Ẩn Admin khi chưa đăng nhập
+            }
+        });
+
+        // Quan sát vai trò để hiển thị Admin
+        userViewModel.getUserRole().observe(this, role -> {
+            if (role != null) {
+                navMenu.findItem(R.id.admin).setVisible("admin".equals(role));
+            } else {
+                navMenu.findItem(R.id.admin).setVisible(false);
             }
         });
     }
@@ -99,6 +111,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        // Khởi chạy ExecutorService để thực thi tác vụ
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             appDatabase = AppDatabase.getDatabase(getApplicationContext());
@@ -106,124 +120,132 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // Phương thức khởi tạo giao diện và các thành phần
     private void init() {
         navView = findViewById(R.id.nav_view);
         navMenu = navView.getMenu();
         navMenu.findItem(R.id.login).setChecked(true);
+
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         btnMenu = findViewById(R.id.btnMenu);
         btnMenu.setVisibility(View.GONE);
+
         drawerLayout = findViewById(R.id.drawer_layout);
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Đăng nhập");
+
         headerNavigation = navView.getHeaderView(0);
 
+        // Thiết lập ActionBarDrawerToggle
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.nav_open, R.string.nav_close);
-
         drawerLayout.addDrawerListener(toggle);
-
         toggle.syncState();
 
+        // Khởi tạo các Fragment
         Fragment homeFragment = new HomeFragment();
         Fragment userFragment = new UserFragment();
         Fragment teachingSubjectsFragment = new TeachingSubjectsFragment();
         Fragment statisticsFragment = new UserStatisticsFragment();
         Fragment loginFragment = new LoginFragment();
         Fragment registerFragment = new RegisterFragment();
+        Fragment adminFragment = new AdminFragment();
 
-        setCurrentFragment(LoginFragment.newInstance("lttvu3003@gmail.com.vn"));
+        // Fragment mặc định khi mở app
+        setCurrentFragment(LoginFragment.newInstance("cuong.le@university.com"));
 
-        defineNavigationTab(navView, new Fragment[]{homeFragment, teachingSubjectsFragment, statisticsFragment, loginFragment, registerFragment, userFragment});
-
-        getSupportFragmentManager().addOnBackStackChangedListener(this::checkBackStack);
-
-        userViewModel.getIsLoggedIn().observe(this, isLoggedIn -> {
-            ShapeableImageView imgAvatar = headerNavigation.findViewById(R.id.imgAvatar);
-            TextView txtUserName = headerNavigation.findViewById(R.id.userName),
-                    txtUserEmail = headerNavigation.findViewById(R.id.userEmail);
-            if (isLoggedIn) {
-                imgAvatar.setVisibility(View.VISIBLE);
-                FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-                FirebaseUser currentUser = mAuth.getCurrentUser();
-                firestore.collection("users").document(currentUser.getUid()).get()
-                        .addOnCompleteListener(task -> {
-                            DocumentSnapshot snapshot = task.getResult();
-                            if (snapshot.exists()) {
-                                if (!snapshot.getString("profileImageUrl").isEmpty()) {
-                                    Glide.with(this)
-                                            .load(Uri.parse(snapshot.getString("profileImageUrl").replace("http://", "https://")))
-                                            .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                            .into(imgAvatar);
-                                }
-                            } else {
-                                Toast.makeText(this, "Document của user này không tồn tại!!!", Toast.LENGTH_LONG).show();
-                            }
-                        })
-                        .addOnFailureListener(e -> {
-                            Log.e("Error in getting document", e.getMessage());
-                        });
-                ExecutorService executorService = Executors.newSingleThreadExecutor();
-                Handler handler = new Handler(Looper.getMainLooper());
-                String email = currentUser.getEmail();
-                executorService.execute(() -> {
-                    Teacher teacher = appDatabase.teacherDao().getTeacherByEmail(email);
-                    handler.post(() -> txtUserName.setText(teacher.getLastName() + " " + teacher.getFirstName()));
-                });
-                txtUserEmail.setText(email);
-            } else {
-                imgAvatar.setVisibility(View.GONE);
-                txtUserName.setText(getString(R.string.anonymous));
-                txtUserEmail.setText(getString(R.string.requireLogin));
-            }
+        // Thiết lập logic cho các tab điều hướng
+        defineNavigationTab(navView, new Fragment[]{
+                homeFragment,
+                teachingSubjectsFragment,
+                statisticsFragment,
+                loginFragment,
+                registerFragment,
+                userFragment,
+                adminFragment
         });
+
+        // Lắng nghe BackStack để xử lý nút điều hướng
+        getSupportFragmentManager().addOnBackStackChangedListener(this::checkBackStack);
     }
 
+    // Phương thức kiểm tra trạng thái của BackStack
     public void checkBackStack() {
         int count = getSupportFragmentManager().getBackStackEntryCount();
-
         if (count > 0) {
             toolbar.setNavigationIcon(R.drawable.ic_back);
             btnMenu.setVisibility(View.VISIBLE);
             btnMenu.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
-
             toolbar.setNavigationOnClickListener(v -> onBackPressed());
         } else {
             toolbar.setNavigationIcon(R.drawable.ic_menu);
             btnMenu.setVisibility(View.GONE);
-
             toolbar.setNavigationOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
         }
     }
 
+    // Phương thức điều hướng dựa trên vai trò
     private void defineNavigationTab(NavigationView navigationView, Fragment[] listFragment) {
-        navigationView.setNavigationItemSelectedListener(item -> {
-            drawerLayout.close();
-            toolbar.setTitle(item.getTitle());
-            item.setChecked(!item.isChecked());
-            int id = item.getItemId();
-            if (R.id.home == id) {
-                setCurrentFragment(listFragment[0]);
-            } else if (R.id.statistics == id) {
-                setCurrentFragment(listFragment[2]);
-            } else if (R.id.inputScore == id) {
-                setCurrentFragment(listFragment[1]);
-            } else if (R.id.login == id) {
-                setCurrentFragment(listFragment[3]);
-            } else if (R.id.register == id) {
-                setCurrentFragment(listFragment[4]);
-            } else if (R.id.user == id) {
-                setCurrentFragment(listFragment[5]);
-            } else if (R.id.logout == id) {
-                mAuth.signOut();
-                userViewModel.setLoggedIn(false);
-                setCurrentFragment(listFragment[3]);
-                toolbar.setTitle("Đăng nhập");
-            } else return false;
-            return true; // Return true to indicate that the item was handled
+        userViewModel.getUserRole().observe(this, userRole -> {
+            navigationView.setNavigationItemSelectedListener(item -> {
+                drawerLayout.close();
+                toolbar.setTitle(item.getTitle());
+                item.setChecked(!item.isChecked());
+                int id = item.getItemId();
+
+                if ("admin".equals(userRole)) {
+                    if (R.id.admin == id) {
+                        setCurrentFragment(listFragment[0]); // AdminFragment
+                    } else if (R.id.statistics == id) {
+                        setCurrentFragment(listFragment[2]);
+                    } else if (R.id.inputScore == id) {
+                        setCurrentFragment(listFragment[1]);
+                    } else if (R.id.login == id) {
+                        setCurrentFragment(listFragment[3]);
+                    } else if (R.id.register == id) {
+                        setCurrentFragment(listFragment[4]);
+                    } else if (R.id.user == id) {
+                        setCurrentFragment(listFragment[5]);
+                    } else if (R.id.home == id) {
+                        setCurrentFragment(listFragment[6]); // HomeFragment được đưa xuống cuối
+                    } else if (R.id.logout == id) {
+                        mAuth.signOut();
+                        userViewModel.setLoggedIn(false);
+                        setCurrentFragment(listFragment[3]);
+                        toolbar.setTitle("Đăng nhập");
+                    } else return false;
+                } else if ("teacher".equals(userRole)) {
+                    if (R.id.home == id) {
+                        setCurrentFragment(listFragment[0]); // HomeFragment
+                    } else if (R.id.statistics == id) {
+                        setCurrentFragment(listFragment[2]);
+                    } else if (R.id.inputScore == id) {
+                        setCurrentFragment(listFragment[1]);
+                    } else if (R.id.login == id) {
+                        setCurrentFragment(listFragment[3]);
+                    } else if (R.id.register == id) {
+                        setCurrentFragment(listFragment[4]);
+                    } else if (R.id.user == id) {
+                        setCurrentFragment(listFragment[5]);
+                    } else if (R.id.admin == id) {
+                        setCurrentFragment(listFragment[6]); // AdminFragment được đưa xuống cuối
+                    } else if (R.id.logout == id) {
+                        mAuth.signOut();
+                        userViewModel.setLoggedIn(false);
+                        setCurrentFragment(listFragment[3]);
+                        toolbar.setTitle("Đăng nhập");
+                    } else return false;
+                } else {
+                    Toast.makeText(this, "Vai trò không hợp lệ!", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+
+                return true;
+            });
         });
     }
 
+    // Phương thức thay đổi Fragment hiện tại
     private void setCurrentFragment(Fragment fragment) {
         getSupportFragmentManager()
                 .beginTransaction()

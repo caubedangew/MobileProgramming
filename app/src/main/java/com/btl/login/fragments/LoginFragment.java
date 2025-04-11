@@ -14,6 +14,7 @@ import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -26,6 +27,7 @@ import com.btl.login.R;
 import com.btl.login.userViewModel.UserViewModel;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -114,21 +116,49 @@ public class LoginFragment extends Fragment {
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            eTxtEmail.setText("");
-                            eTxtPassword.setText("");
-                            userViewModel.setLoggedIn(true);
-                            HomeFragment homeFragment = new HomeFragment();
-                            ((Toolbar) requireActivity().findViewById(R.id.toolbar)).setTitle("Trang chủ");
-                            ((NavigationView) requireActivity().findViewById(R.id.nav_view)).getMenu().findItem(R.id.home).setChecked(true);
-                            FragmentManager fragmentManager = getFragmentManager();
-                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                            fragmentTransaction.replace(R.id.fragment_container, homeFragment);
-                            fragmentTransaction.commit();
-                            ((MainActivity) getActivity()).checkBackStack();
+                            String userId = mAuth.getCurrentUser().getUid();
+                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                            // Lấy vai trò từ Firestore
+                            db.collection("users").document(userId).get()
+                                    .addOnSuccessListener(document -> {
+                                        if (document.exists()) {
+                                            String role = document.getString("role");
+
+                                            // Kiểm tra vai trò (teacher hoặc admin)
+                                            if ("admin".equals(role)) {
+                                                userViewModel.setLoggedIn(true);
+                                                userViewModel.setUserRole("admin");
+
+                                                FragmentManager fragmentManager = getParentFragmentManager();
+                                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                                fragmentTransaction.replace(R.id.fragment_container, new AdminFragment());
+                                                fragmentTransaction.commit();
+
+                                            } else if ("teacher".equals(role)) {
+                                                userViewModel.setLoggedIn(true);
+                                                userViewModel.setUserRole("teacher");
+
+                                                FragmentManager fragmentManager = getParentFragmentManager();
+                                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                                fragmentTransaction.replace(R.id.fragment_container, new HomeFragment());
+                                                fragmentTransaction.commit();
+
+                                            } else {
+                                                Toast.makeText(getContext(), "Vai trò không hợp lệ!", Toast.LENGTH_SHORT).show();
+                                            }
+                                        } else {
+                                            Toast.makeText(getContext(), "Không tìm thấy thông tin người dùng!", Toast.LENGTH_LONG).show();
+                                        }
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Toast.makeText(getContext(), "Lỗi khi truy vấn Firestore: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                                        btnLogin.setEnabled(true);
+                                    });
                         } else {
                             btnLogin.setEnabled(true);
                             eTxtPassword.setText("");
-                            Toast.makeText(getContext(), "Email or Password is incorrect", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), "Email hoặc mật khẩu không đúng", Toast.LENGTH_LONG).show();
                         }
                     });
         }

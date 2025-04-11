@@ -1,0 +1,48 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <!-- Tiêu đề -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nhập thông tin sinh viên"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="10dp" />
+
+    <!-- Họ -->
+    <EditText
+        android:id="@+id/eTxtFirstName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Họ"
+        android:layout_marginBottom="5dp" />
+
+    <!-- Tên -->
+    <EditText
+        android:id="@+id/eTxtLastName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Tên"
+        android:layout_marginBottom="5dp" />
+
+    <!-- Email -->
+    <EditText
+        android:id="@+id/eTxtEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:layout_marginBottom="5dp" />
+
+    <!-- Lớp -->
+    <EditText
+        android:id="@+id/eTxtInputClass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Lớp"
+        android:layout_marginBottom="5dp" />
+</LinearLayout>

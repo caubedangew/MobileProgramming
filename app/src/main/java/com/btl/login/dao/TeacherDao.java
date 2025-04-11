@@ -6,6 +6,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.btl.login.dto.TeacherDTO;
 import com.btl.login.entities.Teacher;
 
 import java.util.List;
@@ -32,4 +33,14 @@ public interface TeacherDao {
 
     @Update
     void updateTeacher(Teacher teacher);
+
+    @Query("SELECT COUNT(*) FROM teacher WHERE email = :email")
+    int checkEmailExists(String email);
+
+    @Query("SELECT teacher.id, teacher.firstName, teacher.lastName, teacher.email, " +
+            "COALESCE(teacher.departmentId, 0) AS departmentId, " +
+            "COALESCE(department.departmentName, 'Chưa xác định') AS departmentName " +
+            "FROM teacher " +
+            "LEFT JOIN department ON teacher.departmentId = department.id")
+    List<TeacherDTO> getTeachersWithDepartmentName();
 }

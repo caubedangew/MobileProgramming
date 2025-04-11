@@ -1,0 +1,65 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    android:elevation="2dp"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <!-- Thông tin sinh viên -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvStudentName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tên: Nguyễn Văn A"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:id="@+id/tvStudentEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email: nguyenvana@example.com"
+                android:textSize="14sp"
+                android:textColor="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/tvStudentClass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lớp: CNTT01"
+                android:textSize="14sp"
+                android:textColor="@android:color/darker_gray" />
+        </LinearLayout>
+
+        <!-- Nút xóa -->
+        <ImageView
+            android:id="@+id/imgDeleteStudent"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:src="@android:drawable/ic_delete"
+            android:contentDescription="Xóa sinh viên"
+            android:padding="8dp"
+            android:background="?selectableItemBackgroundBorderless" />
+    </LinearLayout>
+
+    <!-- Đường phân cách -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+</LinearLayout>

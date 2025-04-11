@@ -112,7 +112,7 @@ public class UserStatisticsFragment extends Fragment {
 
         executorService.execute(() -> {
             List<Double> test = appDatabase.statisticsDao().getAverageScoreOfOneStudent(11, 31);
-            List<Integer> number = appDatabase.statisticsDao().numberStudentInClass(11, 31);
+            List<Long> number = appDatabase.statisticsDao().numberStudentInClass(11, 31);
             handler.post(() -> {
                 Log.d("TEST", String.valueOf(test.get(0)));
                 Log.d("STUDENT", String.valueOf(number.get(0)));

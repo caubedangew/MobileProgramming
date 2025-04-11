@@ -4,7 +4,9 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
+import com.btl.login.dto.StudentDTO;
 import com.btl.login.entities.Student;
 
 import java.util.List;
@@ -22,4 +24,17 @@ public interface StudentDao {
 
     @Delete
     void deleteStudent(Student student);
+
+    @Query("SELECT s.id, s.firstName, s.lastName, s.email, c.className " +
+            "FROM Student s INNER JOIN StudentClass c ON s.studentClassId = c.id")
+    List<StudentDTO> getAllStudentsWithClassName();
+
+    @Query("SELECT COUNT(*) FROM student WHERE email = :email")
+    int checkEmailExists(String email);
+
+    @Update
+    void updateStudent(Student student);
+
+    @Query("DELETE FROM student WHERE id = :studentId")
+    void deleteStudentById(int studentId);
 }

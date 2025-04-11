@@ -50,4 +50,12 @@
             android:visible="false"/>
     </group>
 
+    <group>
+        <item
+            android:id="@+id/admin"
+            android:icon="@drawable/ic_plus"
+            android:title="@string/nav_admin"
+            android:visible="false"/>
+    </group>
+
 </menu>

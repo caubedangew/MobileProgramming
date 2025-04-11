@@ -30,11 +30,10 @@ public interface StatisticsDao {
             "GROUP BY OpenClass.subjectId")
     List<Double> getAverageScoreOfOneStudent(int semesterId, int teacherId);
 
-    @Query("SELECT OpenClass.subjectId, COUNT(*) as studentNumber " +
-                "FROM SubjectRegistration " +
-                "JOIN OpenClass ON OpenClass.id = SubjectRegistration.openClassId " +
-                "JOIN TeacherAssignment ON TeacherAssignment.openClassId = openClass.id " +
-                "WHERE semesterId=:semesterId AND TeacherAssignment.teacherId=:teacherId " +
-            "GROUP BY OpenClass.subjectId")
-    List<Integer> numberStudentInClass(int semesterId, int teacherId);
+    @Query("SELECT COUNT(*) as studentNumber " +
+            "FROM SubjectRegistration " +
+            "JOIN OpenClass ON OpenClass.id = SubjectRegistration.openClassId " +
+            "JOIN TeacherAssignment ON TeacherAssignment.openClassId = openClass.id " +
+            "WHERE semesterId=:semesterId AND TeacherAssignment.teacherId=:teacherId")
+    List<Long> numberStudentInClass(int semesterId, int teacherId);
 }

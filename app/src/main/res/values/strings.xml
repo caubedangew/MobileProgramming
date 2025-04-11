@@ -17,6 +17,8 @@
     <string name="nav_input_score_item">Nhập điểm cho sinh viên</string>
     <string name="nav_log_out_item">Đăng xuất</string>
     <string name="nav_user_item">Thông tin cá nhân</string>
+    <string name="nav_admin">Admin</string>
+
 
     <!--    Navigation Text-->
     <string name="nav_open">Mở</string>
@@ -45,5 +47,15 @@
     <!--    Profile-->
     <string name="btnChangeInfo_txt">Chỉnh sửa thông tin cá nhân</string>
     <string name="btnSubmitChanging_txt">Xác nhận</string>
+
+    <string name="eTxtSubjectName">Tên môn học</string>
+    <string name="eTxtClassName">Tên lớp</string>
+    <string name="btnAdd_txt">Thêm</string>
+    <string name="btnEdit_txt">Sửa</string>
+    <string-array name="roles_array">
+        <item>admin</item>
+        <item>teacher</item>
+    </string-array>
+
 
 </resources>

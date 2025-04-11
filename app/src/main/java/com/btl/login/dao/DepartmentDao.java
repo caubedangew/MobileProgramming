@@ -25,4 +25,10 @@ public interface DepartmentDao {
 
     @Query("DELETE FROM department")
     void deleteAllDepartments();
+
+    @Query("SELECT departmentName FROM department")
+    List<String> getAllDepartmentNames();
+
+    @Query("SELECT id FROM department WHERE departmentName = :departmentName")
+    int getDepartmentIdByName(String departmentName);
 }

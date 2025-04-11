@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dp"
+    android:background="#FFFFFF"
+    android:elevation="2dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:background="@drawable/custom_card_background">
+
+        <TextView
+            android:id="@+id/tv_subject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tên môn học"
+            android:textSize="16sp"
+            android:textColor="#333333"
+            android:padding="6dp"
+            android:gravity="center_vertical" />
+
+        <TextView
+            android:id="@+id/tv_credit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Số tìn chỉ"
+            android:textSize="16sp"
+            android:textColor="#000000"
+            android:padding="5dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end">
+
+            <ImageView
+                android:id="@+id/img_delete"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@android:drawable/ic_delete"
+                android:padding="5dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
