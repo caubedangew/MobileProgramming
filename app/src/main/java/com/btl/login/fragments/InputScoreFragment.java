@@ -3,12 +3,6 @@ package com.btl.login.fragments;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
@@ -20,6 +14,11 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
 
 import com.btl.login.R;
 import com.btl.login.adapter.InputScoreAdapter;
@@ -43,16 +42,15 @@ public class InputScoreFragment extends Fragment {
     private static final String SUBJECT_ID_PARAM = "subjectId";
     private static final String OPEN_CLASS_PARAM = "openClassId";
     private static final String TITLE = "title";
-
-    private int subjectId, openClassId, studentId;
-    ;
     String title;
+    ;
     EditText eTxtProgressScore, eTxtMiddleScore, eTxtFinalScore;
     TextView txtTitle, txtProgressDescription, txtMiddleDescription, txtFinalDescription,
             txtProgressWeight, txtMiddleWeight, txtFinalWeight;
     Button btnInputScore;
-    private List<SubjectScore> subjectScore;
     boolean haveProgressScore, haveMiddleScore, haveFinalScore;
+    private int subjectId, openClassId, studentId;
+    private List<SubjectScore> subjectScore;
 
     public InputScoreFragment() {
 

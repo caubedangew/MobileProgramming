@@ -45,7 +45,7 @@ public class AdminFragment extends Fragment {
         layoutRoles.setOnClickListener(v -> navigateToRoleFragment());
         layoutStudents.setOnClickListener(v -> navigateToStudentFragment());
         layoutCTS.setOnClickListener(v -> navigateToCTSFragment());
-        layoutScore.setOnClickListener(v -> navigateToScoreFragment());
+        layoutScore.setOnClickListener(v -> navigateToStudentScoreFragment());
         layoutStatistics.setOnClickListener(v -> navigateToStatisticsFragment());
         layoutLogout.setOnClickListener(v -> logout());
 
@@ -79,7 +79,7 @@ public class AdminFragment extends Fragment {
                 .commit();
     }
 
-    private void navigateToScoreFragment() {
+    private void navigateToStudentScoreFragment() {
         // Điều hướng đến ScoreFragment
         requireActivity().getSupportFragmentManager()
                 .beginTransaction()

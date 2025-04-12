@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.AdminFragment">
@@ -23,21 +23,21 @@
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:background="@color/black"
-                app:shapeAppearanceOverlay="@style/circle"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginVertical="10dp" />
+                android:layout_marginVertical="10dp"
+                android:background="@color/black"
+                app:shapeAppearanceOverlay="@style/circle" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="sans-serif-medium"
                 android:gravity="center"
                 android:text="WELCOME ADMIN"
                 android:textColor="@android:color/holo_blue_light"
                 android:textSize="22dp"
-                android:textStyle="bold"
-                android:layout_gravity="center_horizontal"
-                android:fontFamily="sans-serif-medium" />
+                android:textStyle="bold" />
         </LinearLayout>
 
         <!-- Layout Vai trò -->
@@ -45,26 +45,26 @@
             android:id="@+id/layoutRoles"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_margin="20dp"
-            android:paddingHorizontal="5dp"
-            android:background="@drawable/home">
+            android:background="@drawable/home"
+            android:orientation="horizontal"
+            android:paddingHorizontal="5dp">
 
             <ImageView
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:src="@drawable/role"
+                android:padding="20dp"
                 android:scaleType="centerInside"
-                android:padding="20dp" />
+                android:src="@drawable/role" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textAlignment="center"
-                android:textSize="22dp"
+                android:layout_marginHorizontal="10dp"
                 android:text="Vai trò"
-                android:layout_marginHorizontal="10dp" />
+                android:textAlignment="center"
+                android:textSize="22dp" />
         </LinearLayout>
 
         <!-- Layout Danh sách sinh viên -->
@@ -72,26 +72,26 @@
             android:id="@+id/layoutStudents"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_margin="20dp"
-            android:paddingHorizontal="5dp"
-            android:background="@drawable/home">
+            android:background="@drawable/home"
+            android:orientation="horizontal"
+            android:paddingHorizontal="5dp">
 
             <ImageView
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:src="@drawable/student"
+                android:padding="20dp"
                 android:scaleType="centerInside"
-                android:padding="20dp" />
+                android:src="@drawable/student" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textAlignment="center"
-                android:textSize="22dp"
+                android:layout_marginHorizontal="10dp"
                 android:text="Danh sách sinh viên"
-                android:layout_marginHorizontal="10dp" />
+                android:textAlignment="center"
+                android:textSize="22dp" />
         </LinearLayout>
 
         <!-- Layout Danh sách lop, giao vien, mon hoc -->
@@ -99,27 +99,27 @@
             android:id="@+id/layoutCTS"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_margin="20dp"
-            android:paddingHorizontal="5dp"
-            android:background="@drawable/home">
+            android:background="@drawable/home"
+            android:orientation="horizontal"
+            android:paddingHorizontal="5dp">
 
             <ImageView
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:src="@drawable/student"
+                android:padding="20dp"
                 android:scaleType="centerInside"
-                android:padding="20dp" />
+                android:src="@drawable/student" />
 
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textAlignment="center"
-                android:textSize="22dp"
+                android:layout_marginHorizontal="10dp"
                 android:text="Danh sách lớp, giáo viên, môn học"
-                android:layout_marginHorizontal="10dp" />
+                android:textAlignment="center"
+                android:textSize="22dp" />
         </LinearLayout>
 
 
@@ -128,26 +128,26 @@
             android:id="@+id/layoutScore"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_margin="20dp"
-            android:paddingHorizontal="5dp"
-            android:background="@drawable/home">
+            android:background="@drawable/home"
+            android:orientation="horizontal"
+            android:paddingHorizontal="5dp">
 
             <ImageView
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:src="@drawable/score"
+                android:padding="20dp"
                 android:scaleType="centerInside"
-                android:padding="20dp" />
+                android:src="@drawable/score" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textAlignment="center"
-                android:textSize="22dp"
+                android:layout_marginHorizontal="10dp"
                 android:text="Điểm"
-                android:layout_marginHorizontal="10dp" />
+                android:textAlignment="center"
+                android:textSize="22dp" />
 
         </LinearLayout>
 
@@ -156,26 +156,26 @@
             android:id="@+id/layoutStatistics"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_margin="20dp"
-            android:paddingHorizontal="5dp"
-            android:background="@drawable/home">
+            android:background="@drawable/home"
+            android:orientation="horizontal"
+            android:paddingHorizontal="5dp">
 
             <ImageView
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:src="@drawable/bar"
+                android:padding="20dp"
                 android:scaleType="centerInside"
-                android:padding="20dp" />
+                android:src="@drawable/bar" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textAlignment="center"
-                android:textSize="22dp"
+                android:layout_marginHorizontal="10dp"
                 android:text="Thống kê"
-                android:layout_marginHorizontal="10dp" />
+                android:textAlignment="center"
+                android:textSize="22dp" />
         </LinearLayout>
 
         <!-- Layout Đăng xuất -->
@@ -183,26 +183,26 @@
             android:id="@+id/layoutLogout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_margin="20dp"
-            android:paddingHorizontal="5dp"
-            android:background="@drawable/home">
+            android:background="@drawable/home"
+            android:orientation="horizontal"
+            android:paddingHorizontal="5dp">
 
             <ImageView
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:src="@drawable/off"
+                android:padding="20dp"
                 android:scaleType="centerInside"
-                android:padding="20dp" />
+                android:src="@drawable/off" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textAlignment="center"
-                android:textSize="22dp"
+                android:layout_marginHorizontal="10dp"
                 android:text="Đăng xuất"
-                android:layout_marginHorizontal="10dp" />
+                android:textAlignment="center"
+                android:textSize="22dp" />
         </LinearLayout>
 
     </LinearLayout>

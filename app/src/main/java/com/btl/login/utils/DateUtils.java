@@ -6,6 +6,7 @@ import java.util.Locale;
 
 public class DateUtils {
     private static final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+
     public static long convertDateToTimestamp(String dateString) {
         try {
             Date date = sdf.parse(dateString);

@@ -35,6 +35,9 @@ import java.util.concurrent.Executors;
 
 public class StudentFragment extends Fragment implements OnStudentActionListener {
 
+    private final List<StudentDTO> studentList = new ArrayList<>();
+    private final List<StudentDTO> multipleStudentsList = new ArrayList<>();
+    private final ExecutorService executorService = Executors.newFixedThreadPool(4);
     private RecyclerView recyclerViewStudents, recyclerViewAddMultipleStudents;
     private Spinner spinnerClasses;
     private EditText eTxtFirstName, eTxtLastName, eTxtEmail, eTxtStudentCount;
@@ -43,9 +46,6 @@ public class StudentFragment extends Fragment implements OnStudentActionListener
     private StudentAdapter adapter;
     private AppDatabase appDatabase;
     private String selectedClassName;
-    private final List<StudentDTO> studentList = new ArrayList<>();
-    private final List<StudentDTO> multipleStudentsList = new ArrayList<>();
-    private final ExecutorService executorService = Executors.newFixedThreadPool(4);
     private StudentDTO selectedStudent;
     private MultipleStudentsAdapter multipleStudentsAdapter;
 
@@ -136,6 +136,7 @@ public class StudentFragment extends Fragment implements OnStudentActionListener
             });
         });
     }
+
     @Override
     public void onStudentSelect(StudentDTO student) {
         selectedStudent = student; // Lưu lại sinh viên được chọn
@@ -282,6 +283,7 @@ public class StudentFragment extends Fragment implements OnStudentActionListener
             Toast.makeText(requireContext(), "Vui lòng nhập một số hợp lệ!", Toast.LENGTH_SHORT).show();
         }
     }
+
     private void handleSaveMultipleStudents() {
         executorService.execute(() -> {
             boolean allValid = true; // Kiểm tra toàn bộ danh sách có hợp lệ

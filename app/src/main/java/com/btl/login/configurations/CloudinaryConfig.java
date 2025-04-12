@@ -1,7 +1,5 @@
 package com.btl.login.configurations;
 
-import android.annotation.SuppressLint;
-
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 

@@ -3,12 +3,11 @@ package com.btl.login.entities;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.Index;
 
 import org.jetbrains.annotations.NotNull;
 
-@Entity(indices = {@Index(value="subjectName", unique = true)})
+@Entity(indices = {@Index(value = "subjectName", unique = true)})
 public class Subject extends BaseProperties {
 
     @NotNull
@@ -28,15 +27,15 @@ public class Subject extends BaseProperties {
         return subjectName;
     }
 
+    public void setSubjectName(@NonNull String subjectName) {
+        this.subjectName = subjectName;
+    }
+
     public double getCreditNumber() {
         return creditNumber;
     }
 
     public void setCreditNumber(double creditNumber) {
         this.creditNumber = creditNumber;
-    }
-
-    public void setSubjectName(@NonNull String subjectName) {
-        this.subjectName = subjectName;
     }
 }

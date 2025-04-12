@@ -6,6 +6,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.btl.login.dto.SubjectDTO;
 import com.btl.login.dto.SubjectsTaughtByTeacherDTO;
 import com.btl.login.entities.Subject;
 
@@ -40,4 +41,7 @@ public interface SubjectDao {
 
     @Update
     void updateSubject(Subject subject);
+
+    @Query("SELECT subject.*, COALESCE(subject.creditNumber, 0) AS creditNumber FROM subject")
+    List<SubjectDTO> getSubjectsWithCreditNumber();
 }

@@ -10,20 +10,19 @@ import android.widget.TextView;
 
 import com.btl.login.R;
 import com.btl.login.dto.SubjectsTaughtByTeacherDTO;
-import com.btl.login.entities.OpenClass;
-import com.btl.login.entities.Subject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TeachingSubjectsAdapter extends BaseAdapter {
     private final List<SubjectsTaughtByTeacherDTO> listSubjects;
-    private Context context;
     private final LayoutInflater inflater;
+    private Context context;
+
     public TeachingSubjectsAdapter(Context context, List<SubjectsTaughtByTeacherDTO> listSubjects) {
         inflater = LayoutInflater.from(context);
         this.listSubjects = listSubjects;
     }
+
     @Override
     public int getCount() {
         return listSubjects.size();

@@ -1,6 +1,17 @@
 package com.btl.login.fragments;
 
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
@@ -8,19 +19,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
-
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
-import android.view.LayoutInflater;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.btl.login.MainActivity;
 import com.btl.login.R;
@@ -35,10 +33,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
  * create an instance of this fragment.
  */
 public class LoginFragment extends Fragment {
-    private FirebaseAuth mAuth;
+    private static final String ARG_PARAM1 = "email";
     Button btnLogin;
     EditText eTxtEmail, eTxtPassword;
-    private static final String ARG_PARAM1 = "email";
+    private FirebaseAuth mAuth;
     private String email;
     private UserViewModel userViewModel;
 

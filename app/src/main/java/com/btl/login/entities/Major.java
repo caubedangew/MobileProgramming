@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
                 onDelete = ForeignKey.CASCADE,
                 onUpdate = ForeignKey.CASCADE
         )
-}, indices = {@Index(value="majorName", unique = true)})
+}, indices = {@Index(value = "majorName", unique = true)})
 public class Major extends BaseProperties {
     @NotNull
     private String majorName;

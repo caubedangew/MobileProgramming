@@ -8,16 +8,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
@@ -34,6 +24,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.btl.login.MainActivity;
 import com.btl.login.R;
@@ -64,17 +63,16 @@ import java.util.concurrent.Executors;
  * create an instance of this fragment.
  */
 public class RegisterFragment extends Fragment {
-    AppDatabase appDatabase;
     public static final int REQUEST_CAMERA = 1;
     public static final int REQUEST_GALLERY = 2;
     public static final int REQUEST_PERMISSION_CODE = 100;
-
+    final FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    final FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    AppDatabase appDatabase;
     Button btnRegister;
     EditText eTxtEmail, eTxtPassword, eTxtFirstName, eTxtLastName;
     ImageView imageViewAvatar;
     Uri imageUri;
-    final FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    final FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
     public static RegisterFragment newInstance(String param1, String param2) {
         RegisterFragment fragment = new RegisterFragment();

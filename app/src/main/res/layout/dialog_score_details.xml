@@ -1,0 +1,131 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="horizontal">
+
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:stretchColumns="*">
+
+            <!-- Dòng Tiêu Đề -->
+            <TableRow android:layout_marginBottom="8dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Giáo Viên"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:padding="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Môn Học"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:padding="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Học Kỳ"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:padding="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Năm Học"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:padding="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Quá Trình"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:padding="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Giữa Kỳ"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:padding="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cuối Kỳ"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:padding="8dp" />
+            </TableRow>
+
+            <!-- Dòng Nội Dung -->
+            <TableRow>
+                <TextView
+                    android:id="@+id/tv_teacher_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="8dp" />
+
+                <TextView
+                    android:id="@+id/tv_subject_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="8dp" />
+
+                <TextView
+                    android:id="@+id/tv_semester_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="8dp" />
+
+                <TextView
+                    android:id="@+id/tv_academic_year_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="8dp" />
+
+                <TextView
+                    android:id="@+id/tv_process_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="8dp" />
+
+                <TextView
+                    android:id="@+id/tv_midterm_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="8dp" />
+
+                <TextView
+                    android:id="@+id/tv_final_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="8dp" />
+            </TableRow>
+
+        </TableLayout>
+    </HorizontalScrollView>
+</ScrollView>

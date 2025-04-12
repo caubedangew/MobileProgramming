@@ -8,22 +8,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import android.widget.ArrayAdapter;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.btl.login.R;
-import com.btl.login.dto.StudentClassWithMajorDTO;
-import com.btl.login.interfaces.OnClassDeleteListener;
+import com.btl.login.dto.StudentClassDTO;
+import com.btl.login.interfaces.OnClassActionListener;
 
 import java.util.List;
 
-public class ClassAdapter extends ArrayAdapter<StudentClassWithMajorDTO> {
+public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHolder> {
 
     private final Context context;
-    private final List<StudentClassWithMajorDTO> classList;
-    private final OnClassDeleteListener listener;
+    private final List<StudentClassDTO> classList;
+    private final OnClassActionListener listener;
 
-    public ClassAdapter(@NonNull Context context, List<StudentClassWithMajorDTO> classList, OnClassDeleteListener listener) {
-        super(context, R.layout.custom_list_class, classList);
+    public ClassAdapter(Context context, List<StudentClassDTO> classList, OnClassActionListener listener) {
         this.context = context;
         this.classList = classList;
         this.listener = listener; // Gán giá trị cho listener
@@ -31,30 +30,53 @@ public class ClassAdapter extends ArrayAdapter<StudentClassWithMajorDTO> {
 
     @NonNull
     @Override
-    public View getView(int position, @NonNull View convertView, @NonNull ViewGroup parent) {
-        if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.custom_list_class, parent, false);
-        }
+    public ClassViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.custom_list_class, parent, false);
+        return new ClassViewHolder(view);
+    }
 
-        // Liên kết các thành phần giao diện
-        TextView tvClassName = convertView.findViewById(R.id.tv_classname);
-        TextView tvMajor = convertView.findViewById(R.id.tv_major);
-        ImageView imgDelete = convertView.findViewById(R.id.img_delete);
-
+    @Override
+    public void onBindViewHolder(@NonNull ClassViewHolder holder, int position) {
         // Lấy dữ liệu lớp học tại vị trí hiện tại
-        StudentClassWithMajorDTO classWithMajor = classList.get(position);
+        StudentClassDTO studentClassDTO = classList.get(position);
 
         // Hiển thị dữ liệu vào giao diện
-        tvClassName.setText("Tên lớp: " + classWithMajor.getClassName());
-        tvMajor.setText("Ngành: " + classWithMajor.getMajorName());
+        holder.tvClassName.setText("Tên lớp: " + studentClassDTO.getStudentClass().getClassName());
+        holder.tvMajor.setText(
+                studentClassDTO.getMajorName() != null ? studentClassDTO.getMajorName() : "Chưa xác định"
+        );
+        // Xử lý sự kiện click vào item
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onClassClick(studentClassDTO);
 
-        // Xử lý sự kiện xóa lớp học
-        imgDelete.setOnClickListener(v -> {
-            if (listener != null){
-                listener.onClassDelete(classWithMajor, position);
+                listener.onClassTagForEdit(studentClassDTO);
             }
         });
 
-        return convertView;
+        // Xử lý sự kiện xóa lớp học
+        holder.imgDelete.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onClassDelete(studentClassDTO, position);
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return classList.size();
+    }
+
+    // ViewHolder class
+    public static class ClassViewHolder extends RecyclerView.ViewHolder {
+        TextView tvClassName, tvMajor;
+        ImageView imgDelete;
+
+        public ClassViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tvClassName = itemView.findViewById(R.id.tv_classname);
+            tvMajor = itemView.findViewById(R.id.tv_major);
+            imgDelete = itemView.findViewById(R.id.img_delete);
+        }
     }
 }

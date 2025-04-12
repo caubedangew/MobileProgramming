@@ -15,13 +15,14 @@ import java.util.List;
 
 public class InputScoreAdapter extends BaseAdapter {
     private final List<StudentInClassDTO> listStudents;
-    private Context context;
     private final LayoutInflater inflater;
+    private Context context;
 
     public InputScoreAdapter(Context context, List<StudentInClassDTO> listStudents) {
         inflater = LayoutInflater.from(context);
         this.listStudents = listStudents;
     }
+
     @Override
     public int getCount() {
         return listStudents.size();

@@ -43,4 +43,5 @@ public interface TeacherDao {
             "FROM teacher " +
             "LEFT JOIN department ON teacher.departmentId = department.id")
     List<TeacherDTO> getTeachersWithDepartmentName();
+
 }

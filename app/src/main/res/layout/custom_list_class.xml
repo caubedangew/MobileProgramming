@@ -1,51 +1,56 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?android:selectableItemBackground"
+    android:elevation="2dp"
     android:orientation="horizontal"
-    android:padding="10dp"
-    android:background="#FFFFFF"
-    android:elevation="2dp">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="8dp"
-        android:background="@drawable/custom_card_background">
+    android:padding="10dp">
 
+    <!-- Nhóm thông tin lớp -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <!-- Tên lớp -->
         <TextView
             android:id="@+id/tv_classname"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:contentDescription="Tên lớp"
             android:text="Tên lớp"
-            android:textSize="16sp"
             android:textColor="#333333"
-            android:padding="6dp"
-            android:gravity="center_vertical" />
+            android:textSize="16sp"
+            android:ellipsize="end"
+            android:maxLines="1" />
 
+        <!-- Ngành học -->
         <TextView
             android:id="@+id/tv_major"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ngành Học"
+            android:layout_marginBottom="4dp"
+            android:contentDescription="Ngành học"
+            android:text="Ngành học"
+            android:textColor="#333333"
             android:textSize="16sp"
-            android:textColor="#000000"
-            android:padding="5dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="end">
-
-            <ImageView
-                android:id="@+id/img_delete"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@android:drawable/ic_delete"
-                android:padding="5dp" />
-        </LinearLayout>
-
+            android:ellipsize="end"
+            android:maxLines="1" />
     </LinearLayout>
 
+    <!-- Biểu tượng xóa -->
+    <ImageView
+        android:id="@+id/img_delete"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:contentDescription="Xóa lớp"
+        android:padding="5dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_delete" />
 </LinearLayout>

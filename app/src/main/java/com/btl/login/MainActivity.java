@@ -1,17 +1,10 @@
 package com.btl.login;
 
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -43,30 +36,24 @@ import com.btl.login.fragments.UserFragment;
 import com.btl.login.fragments.UserStatisticsFragment;
 import com.btl.login.userViewModel.UserViewModel;
 import com.btl.login.utils.DateUtils;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
-    DrawerLayout drawerLayout;
-    public Toolbar toolbar;
     final FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    private UserViewModel userViewModel;
+    public Toolbar toolbar;
+    DrawerLayout drawerLayout;
     NavigationView navView;
     Menu navMenu;
     AppDatabase appDatabase;
     FloatingActionButton btnMenu;
     View headerNavigation;
+    private UserViewModel userViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

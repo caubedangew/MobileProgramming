@@ -6,9 +6,9 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.btl.login.dto.ScoreDTO;
 import com.btl.login.dto.StudentInClassDTO;
 import com.btl.login.dto.StudentScoreDTO;
-import com.btl.login.entities.Student;
 import com.btl.login.entities.StudentScore;
 
 import java.util.List;
@@ -45,4 +45,27 @@ public interface StudentScoreDao {
 
     @Update
     void updateStudentScore(StudentScore studentScore);
+    @Query("SELECT s.firstName || ' ' || s.lastName AS studentFullName, "
+            + "t.firstName || ' ' || t.lastName AS teacherFullName, "
+            + "sub.subjectName AS subjectName, "
+            + "sem.semesterName AS semesterName, "
+            + "ay.academicYearName AS academicYearName, "
+            + "(SELECT ss.score FROM StudentScore ss JOIN SubjectScore subj ON ss.subjectScoreId = subj.id WHERE subj.scoreType = 'Quá trình' AND ss.studentId = s.id AND ss.openClassId = oc.id) AS processScore, "
+            + "(SELECT ss.score FROM StudentScore ss JOIN SubjectScore subj ON ss.subjectScoreId = subj.id WHERE subj.scoreType = 'Giữa kỳ' AND ss.studentId = s.id AND ss.openClassId = oc.id) AS midtermScore, "
+            + "(SELECT ss.score FROM StudentScore ss JOIN SubjectScore subj ON ss.subjectScoreId = subj.id WHERE subj.scoreType = 'Cuối kỳ' AND ss.studentId = s.id AND ss.openClassId = oc.id) AS finalScore "
+            + "FROM Student s "
+            + "JOIN StudentClass c ON c.id = s.studentClassId "
+            + "JOIN OpenClass oc ON oc.classId = c.id "
+            + "JOIN TeacherAssignment ta ON ta.openClassId = oc.id "
+            + "JOIN Teacher t ON t.id = ta.teacherId "
+            + "JOIN Subject sub ON sub.id = oc.subjectId "
+            + "JOIN Semester sem ON sem.id = oc.semesterId "
+            + "JOIN AcademicYear ay ON ay.id = sem.academicYearId "
+            + "WHERE c.className = :className")
+    List<ScoreDTO> getScoresByClassName(String className);
+
+    @Query("SELECT className FROM StudentClass")
+    List<String> getAllClassNames();
+
 }
+

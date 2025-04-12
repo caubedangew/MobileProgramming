@@ -6,7 +6,7 @@ import androidx.room.ForeignKey;
 
 import org.jetbrains.annotations.NotNull;
 
-@Entity( foreignKeys = {
+@Entity(foreignKeys = {
         @ForeignKey(
                 entity = Subject.class,
                 parentColumns = "id",

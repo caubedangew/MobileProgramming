@@ -1,12 +1,11 @@
 package com.btl.login.entities;
 
 import androidx.room.Entity;
-import androidx.room.Ignore;
 
 import org.jetbrains.annotations.NotNull;
 
 @Entity
-public class AcademicYear extends BaseProperties{
+public class AcademicYear extends BaseProperties {
     @NotNull
     private String academicYearName;
 

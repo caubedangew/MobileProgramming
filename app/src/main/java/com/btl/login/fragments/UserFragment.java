@@ -12,16 +12,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
@@ -36,6 +26,13 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.btl.login.MainActivity;
 import com.btl.login.R;
@@ -58,10 +55,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -69,9 +64,9 @@ import java.util.concurrent.atomic.AtomicReference;
  * create an instance of this fragment.
  */
 public class UserFragment extends Fragment {
-    AppDatabase appDatabase;
     final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     final FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    AppDatabase appDatabase;
     Button btnChangeInfo, btnSubmitChanging;
     EditText eTxtFirstName, eTxtEmail, eTxtAddress, eTxtPhoneNumber, eTxtDateOfBirth, eTxtLastName;
     RadioButton male, female;
@@ -264,6 +259,7 @@ public class UserFragment extends Fragment {
             eTxtDateOfBirth.setEnabled(false);
             eTxtDateOfBirth.addTextChangedListener(new TextWatcher() {
                 private boolean isUpdating;
+
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 

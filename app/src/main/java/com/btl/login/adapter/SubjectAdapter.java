@@ -4,59 +4,77 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.btl.login.R;
-import com.btl.login.entities.Subject;
-import com.btl.login.interfaces.OnSubjectDeleteListener;
+import com.btl.login.dto.SubjectDTO;
+import com.btl.login.interfaces.OnSubjectActionListener;
 
 import java.util.List;
 
-public class SubjectAdapter extends ArrayAdapter<Subject> {
+public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectViewHolder> {
 
     private final Context context;
-    private final List<Subject> subjectList;
-    private final OnSubjectDeleteListener listener;
+    private final List<SubjectDTO> subjectList;
+    private final OnSubjectActionListener listener;
 
-    public SubjectAdapter(@NonNull Context context, List<Subject> subjectList, OnSubjectDeleteListener listener) {
-        super(context, R.layout.custom_list_subject, subjectList);
+    public SubjectAdapter(Context context, List<SubjectDTO> subjectList, OnSubjectActionListener listener) {
         this.context = context;
         this.subjectList = subjectList;
-        this.listener = listener; // Sử dụng interface listener
+        this.listener = listener; // Gán giá trị cho listener
     }
 
     @NonNull
     @Override
-    public View getView(int position, @NonNull View convertView, @NonNull ViewGroup parent) {
-        if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.custom_list_subject, parent, false);
-        }
+    public SubjectViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.custom_list_subject, parent, false); // Sử dụng subject_item.xml
+        return new SubjectViewHolder(view);
+    }
 
-        // Liên kết các thành phần giao diện
-        TextView tvSubjectName = convertView.findViewById(R.id.tv_subject);
-        TextView tvCredit = convertView.findViewById(R.id.tv_credit);
-        ImageView imgDelete = convertView.findViewById(R.id.img_delete);
-
+    @Override
+    public void onBindViewHolder(@NonNull SubjectViewHolder holder, int position) {
         // Lấy dữ liệu môn học tại vị trí hiện tại
-        Subject subject = getItem(position);
+        SubjectDTO subjectDTO = subjectList.get(position);
 
         // Hiển thị dữ liệu vào giao diện
-        if (subject != null) {
-            tvSubjectName.setText("Môn học: " + subject.getSubjectName());
-            tvCredit.setText("Tín chỉ: " + subject.getCreditNumber());
+        holder.tvSubjectName.setText("Tên môn học: " + subjectDTO.getSubject().getSubjectName());
+        holder.tvCreditNumber.setText("Số tín chỉ: " + subjectDTO.getSubject().getCreditNumber());
 
-            // Xử lý sự kiện xóa môn học thông qua listener
-            imgDelete.setOnClickListener(v -> {
-                if (listener != null) {
-                    listener.onSubjectDelete(subject, position);
-                }
-            });
+        // Xử lý sự kiện click vào item
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onSubjectClick(subjectDTO);
+                listener.onSubjectTagForEdit(subjectDTO);
+            }
+        });
+
+        // Xử lý sự kiện xóa môn học
+        holder.imgDelete.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onSubjectDelete(subjectDTO, position);
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return subjectList.size();
+    }
+
+    // ViewHolder class
+    public static class SubjectViewHolder extends RecyclerView.ViewHolder {
+        TextView tvSubjectName, tvCreditNumber;
+        ImageView imgDelete;
+
+        public SubjectViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tvSubjectName = itemView.findViewById(R.id.tv_subject_name);
+            tvCreditNumber = itemView.findViewById(R.id.tv_credit_number);
+            imgDelete = itemView.findViewById(R.id.img_delete_subject);
         }
-
-        return convertView;
     }
 }

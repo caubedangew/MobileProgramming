@@ -9,42 +9,40 @@
         android:id="@+id/card_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/purple_200"
-        app:cardCornerRadius="30dp"
-        android:background="@drawable/custom_edit_text"
         android:layout_margin="10dp"
-        >
+        android:background="@drawable/custom_edit_text"
+        android:backgroundTint="@color/purple_200"
+        app:cardCornerRadius="30dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/custom_edit_text"
             android:orientation="vertical"
-            android:padding="15dp"
-            android:background="@drawable/custom_edit_text">
+            android:padding="15dp">
 
             <TextView
                 android:id="@+id/txtSubjectName"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:textAlignment="center"
-                android:textSize="20sp"
-                android:textColor="@color/white"
                 android:text="Subject's name"
-                />
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/txtCreditNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:text="Credit number" />
+                android:text="Credit number"
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/txtNumberTeachingClasses"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:text="Number teaching classes" />
+                android:text="Number teaching classes"
+                android:textColor="@color/white" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

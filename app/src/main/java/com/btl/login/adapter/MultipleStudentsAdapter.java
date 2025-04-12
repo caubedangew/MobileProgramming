@@ -92,8 +92,11 @@ public class MultipleStudentsAdapter extends RecyclerView.Adapter<MultipleStuden
     // Helper TextWatcher class để giảm lặp code
     private abstract static class SimpleTextWatcher implements TextWatcher {
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
         @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) { }
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
     }
 }

@@ -1,71 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:padding="16dp"
     tools:context=".fragments.SubjectFragment">
 
+    <!-- Tiêu đề -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Quản Lý Môn học"
+        android:text="Quản Lý Môn Học"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_gravity="center" />
+
+    <!-- Nhập tên môn học -->
     <EditText
-        android:id="@+id/eTxtSubjName"
+        android:id="@+id/eTxtSubjectName"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:ems="10"
-        android:inputType="text"
-        android:hint="@string/eTxtSubjectName"
-        android:background="@drawable/custom_edit_text"
-        android:padding="8dp"
         android:layout_marginTop="20dp"
-        android:drawablePadding="8dp" />
+        android:background="@drawable/custom_edit_text"
+        android:drawablePadding="8dp"
+        android:hint="@string/eTxtSubjectName"
+        android:inputType="text"
+        android:padding="8dp" />
 
     <Spinner
         android:id="@+id/spinnerCreditNumbers"
         android:layout_width="match_parent"
-        android:ems="10"
         android:layout_height="50dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/custom_edit_text"
-        android:padding="8dp" />
+        android:padding="8dp"
+        android:prompt="@string/prompt_choose_major" />
 
-    <!-- Horizontal layout for action buttons -->
-
+    <!-- Các nút hành động -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="horizontal"
-        android:gravity="center">
+        android:layout_marginTop="20dp">
 
         <Button
             android:id="@+id/btnAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cornerRadius="25dp"
-            android:backgroundTint="@color/purple_200"
             android:layout_marginEnd="10dp"
-            android:text="@string/btnAdd_txt" />
+            android:backgroundTint="@color/purple_200"
+            android:text="@string/btnAdd_txt"
+            android:textAllCaps="false"
+            app:cornerRadius="25dp" />
 
         <Button
             android:id="@+id/btnEdit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cornerRadius="25dp"
             android:backgroundTint="@color/purple_200"
-            android:text="@string/btnEdit_txt" />
+            android:text="@string/btnEdit_txt"
+            android:textAllCaps="false"
+            app:cornerRadius="25dp" />
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/listViewSubjects"
+    <!-- TextView thông báo khi danh sách trống -->
+    <TextView
+        android:id="@+id/emptyTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@android:color/darker_gray"
-        android:dividerHeight="1dp"
-        android:layout_marginTop="10dp" />
+        android:gravity="center"
+        android:text="Danh sách môn học trống"
+        android:visibility="gone"
+        android:padding="16dp"
+        android:textSize="16sp" />
+
+    <!-- RecyclerView hiển thị danh sách môn học -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_subjects"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        tools:listitem="@layout/custom_list_subject" />
+
+    <!-- ProgressBar hiển thị trạng thái tải -->
+    <ProgressBar
+        android:id="@+id/progressBarLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
 </LinearLayout>

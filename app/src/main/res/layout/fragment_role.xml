@@ -17,45 +17,45 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:text="Quản Lý User"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="10dp" />
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/eTxtEmail"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:ems="10"
-            android:inputType="text"
-            android:hint="@string/eTxtEmail_hint"
-            android:background="@drawable/custom_edit_text"
-            android:padding="8dp"
             android:layout_marginTop="20dp"
+            android:background="@drawable/custom_edit_text"
             android:drawableStart="@drawable/ic_email"
-            android:drawablePadding="8dp" />
+            android:drawablePadding="8dp"
+            android:ems="10"
+            android:hint="@string/eTxtEmail_hint"
+            android:inputType="text"
+            android:padding="8dp" />
 
         <EditText
             android:id="@+id/eTxtPassword"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:ems="10"
-            android:inputType="textPassword"
-            android:hint="@string/eTxtPassword_hint"
-            android:background="@drawable/custom_edit_text"
-            android:padding="8dp"
             android:layout_marginTop="20dp"
+            android:background="@drawable/custom_edit_text"
             android:drawableStart="@drawable/ic_pwd"
-            android:drawablePadding="8dp" />
+            android:drawablePadding="8dp"
+            android:ems="10"
+            android:hint="@string/eTxtPassword_hint"
+            android:inputType="textPassword"
+            android:padding="8dp" />
 
         <Spinner
             android:id="@+id/spinnerRoles"
             android:layout_width="match_parent"
-            android:ems="10"
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/custom_edit_text"
+            android:ems="10"
             android:padding="8dp" />
 
         <!-- Horizontal layout for action buttons -->
@@ -63,25 +63,25 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btnAdd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:cornerRadius="25dp"
-                android:backgroundTint="@color/purple_200"
                 android:layout_marginEnd="10dp"
-                android:text="@string/btnAdd_txt" />
+                android:backgroundTint="@color/purple_200"
+                android:text="@string/btnAdd_txt"
+                app:cornerRadius="25dp" />
 
             <Button
                 android:id="@+id/btnEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:cornerRadius="25dp"
                 android:backgroundTint="@color/purple_200"
-                android:text="@string/btnEdit_txt" />
+                android:text="@string/btnEdit_txt"
+                app:cornerRadius="25dp" />
         </LinearLayout>
 
         <!-- ListView to display student list -->
@@ -89,9 +89,9 @@
             android:id="@+id/listViewRoles"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:divider="@android:color/darker_gray"
-            android:dividerHeight="1dp"
-            android:layout_marginTop="10dp" />
+            android:dividerHeight="1dp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

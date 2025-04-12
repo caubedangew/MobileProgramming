@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
                 onDelete = ForeignKey.CASCADE,
                 onUpdate = ForeignKey.CASCADE
         )
-}, indices = {@Index(value="email", unique = true)})
+}, indices = {@Index(value = "email", unique = true)})
 public class Teacher extends BaseInformation {
     private int departmentId;
 

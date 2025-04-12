@@ -6,7 +6,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.btl.login.dto.StudentClassWithMajorDTO;
+import com.btl.login.dto.StudentClassDTO;
 import com.btl.login.entities.StudentClass;
 
 import java.util.List;
@@ -31,19 +31,16 @@ public interface StudentClassDao {
     @Update
     void updateClass(StudentClass studentClass);
 
-    @Query("SELECT sc.id, sc.className, " +
-            "COALESCE(m.majorName, 'Chưa xác định') AS majorName " +
-            "FROM studentClass sc " +
-            "LEFT JOIN major m ON sc.majorId = m.id")
-    List<StudentClassWithMajorDTO> getClassesWithMajor();
-
-    @Query("DELETE FROM studentClass WHERE id = :studentClassId")
-    void deleteClassById(int studentClassId);
-
     @Query("SELECT className FROM studentclass")
     List<String> getAllClassNames();
 
     @Query("SELECT id FROM studentClass WHERE className = :className LIMIT 1")
     int getClassIdByName(String className);
 
+    @Query("SELECT studentClass.id, studentClass.className, " +
+            "COALESCE(studentClass.majorId, 0) AS majorId, " +
+            "COALESCE(major.majorName, 'Chưa xác định') AS majorName " +
+            "FROM studentClass " +
+            "LEFT JOIN major ON studentClass.majorId = major.id")
+    List<StudentClassDTO> getClassesWithMajorName();
 }

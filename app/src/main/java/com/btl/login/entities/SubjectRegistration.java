@@ -19,8 +19,8 @@ import androidx.room.Index;
                 onUpdate = ForeignKey.CASCADE,
                 onDelete = ForeignKey.CASCADE
         ),
-}, indices = {@Index(value={"studentId", "openClassId"}, unique = true)})
-public class SubjectRegistration extends BaseProperties{
+}, indices = {@Index(value = {"studentId", "openClassId"}, unique = true)})
+public class SubjectRegistration extends BaseProperties {
     private int openClassId;
 
     private int studentId;
