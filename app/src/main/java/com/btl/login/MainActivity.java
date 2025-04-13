@@ -1,8 +1,13 @@
 package com.btl.login;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -36,9 +41,14 @@ import com.btl.login.fragments.UserFragment;
 import com.btl.login.fragments.UserStatisticsFragment;
 import com.btl.login.userViewModel.UserViewModel;
 import com.btl.login.utils.DateUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -54,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton btnMenu;
     View headerNavigation;
     private UserViewModel userViewModel;
+    FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +77,40 @@ public class MainActivity extends AppCompatActivity {
         // Quan sát trạng thái đăng nhập
         userViewModel.getIsLoggedIn().observe(this, isLoggedIn -> {
             if (isLoggedIn != null && isLoggedIn) {
+                navView.getHeaderView(0).findViewById(R.id.imgAvatar).setVisibility(View.VISIBLE);
+                firestore.collection("users").document(mAuth.getCurrentUser().getUid()).get()
+                        .addOnCompleteListener(task -> {
+                            DocumentSnapshot snapshot = task.getResult();
+                            if (snapshot != null && snapshot.exists()) {
+                                String profileImageUrl = snapshot.getString("profileImageUrl");
+                                if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
+                                    Uri currentUri = Uri.parse(profileImageUrl.replace("http://", "https://"));
+                                    Glide.with(this)
+                                            .load(currentUri)
+                                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                            .into((ShapeableImageView) navView.getHeaderView(0).findViewById(R.id.imgAvatar));
+                                } else {
+                                    Log.d("TAB", "profileImageUrl is null or empty.");
+                                }
+                            } else {
+                                Log.d("UserFragment", "Document does not exist.");
+                                Toast.makeText(this, "Document của user này không tồn tại!", Toast.LENGTH_LONG).show();
+                            }
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.e("Error in getting document", e.getMessage());
+                            Toast.makeText(this, "Lỗi khi truy vấn Firestore: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        });
+                ExecutorService executorService = Executors.newSingleThreadExecutor();
+                Handler handler = new Handler(Looper.getMainLooper());
+                executorService.execute(() -> {
+                    Teacher teacher = appDatabase.teacherDao().getTeacherByEmail(mAuth.getCurrentUser().getEmail());
+                    handler.post(() -> {
+                        ((TextView) navView.getHeaderView(0).findViewById(R.id.userName)).setText(teacher.getFirstName() + " " + teacher.getLastName());
+                    });
+                });
+                ((TextView) navView.getHeaderView(0).findViewById(R.id.userEmail)).setText(mAuth.getCurrentUser().getEmail());
+                navView.getHeaderView(0).findViewById(R.id.imgAvatar).setVisibility(View.VISIBLE);
                 navMenu.findItem(R.id.login).setVisible(false);
                 navMenu.findItem(R.id.register).setVisible(false);
                 navMenu.findItem(R.id.user).setVisible(true);
@@ -74,6 +119,9 @@ public class MainActivity extends AppCompatActivity {
                 navMenu.findItem(R.id.inputScore).setVisible(true);
                 navMenu.findItem(R.id.statistics).setVisible(true);
             } else {
+                navView.getHeaderView(0).findViewById(R.id.imgAvatar).setVisibility(View.GONE);
+                ((TextView) navView.getHeaderView(0).findViewById(R.id.userName)).setText("Anonymous");
+                ((TextView) navView.getHeaderView(0).findViewById(R.id.userEmail)).setText("Vui lòng đăng nhập vào hệ thống để sử dụng");
                 navMenu.findItem(R.id.login).setVisible(true);
                 navMenu.findItem(R.id.register).setVisible(true);
                 navMenu.findItem(R.id.user).setVisible(false);
