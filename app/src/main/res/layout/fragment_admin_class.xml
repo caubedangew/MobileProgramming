@@ -1,0 +1,96 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".fragments.ClassFragment">
+
+    <!-- Tiêu đề -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quản Lý Lớp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_gravity="center" />
+
+    <!-- Nhập tên lớp -->
+    <EditText
+        android:id="@+id/eTxtClassName"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/custom_edit_text"
+        android:drawablePadding="8dp"
+        android:hint="@string/eTxtClassName"
+        android:inputType="text"
+        android:padding="8dp" />
+
+    <!-- Spinner chọn ngành học -->
+    <Spinner
+        android:id="@+id/spinnerMajors"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/custom_edit_text"
+        android:padding="8dp"
+        android:prompt="@string/prompt_choose_major" />
+
+    <!-- Các nút hành động -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+        <Button
+            android:id="@+id/btnAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="@color/purple_200"
+            android:text="@string/btnAdd_txt"
+            android:textAllCaps="false"
+            app:cornerRadius="25dp" />
+
+        <Button
+            android:id="@+id/btnEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/purple_200"
+            android:text="@string/btnEdit_txt"
+            android:textAllCaps="false"
+            app:cornerRadius="25dp" />
+    </LinearLayout>
+
+    <!-- TextView thông báo khi danh sách trống -->
+    <TextView
+        android:id="@+id/emptyTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Danh sách lớp trống"
+        android:visibility="gone"
+        android:padding="16dp"
+        android:textSize="16sp" />
+
+    <!-- RecyclerView hiển thị danh sách lớp -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_classes"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        tools:listitem="@layout/custom_list_class" />
+
+    <!-- ProgressBar hiển thị trạng thái tải -->
+    <ProgressBar
+        android:id="@+id/progressBarLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+</LinearLayout>

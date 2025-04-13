@@ -2,7 +2,6 @@ package com.btl.login.entities;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
-import androidx.room.Ignore;
 
 import org.jetbrains.annotations.NotNull;
 

@@ -16,4 +16,6 @@ public class StudentScoreDTO {
     public int getSubjectScoreId() {
         return subjectScoreId;
     }
+
+
 }

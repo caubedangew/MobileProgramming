@@ -5,11 +5,9 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.btl.login.entities.Subject;
 import com.btl.login.entities.TeacherAssignment;
 
 import java.util.List;
-import java.util.Map;
 
 @Dao
 public interface TeacherAssignmentDao {
@@ -24,4 +22,5 @@ public interface TeacherAssignmentDao {
 
     @Delete
     void deleteTeacherAssignment(TeacherAssignment teacherAssignmentDao);
+
 }

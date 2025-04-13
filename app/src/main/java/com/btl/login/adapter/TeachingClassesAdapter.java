@@ -9,21 +9,20 @@ import android.widget.TextView;
 
 import com.btl.login.R;
 import com.btl.login.dto.TeachingClassesDTO;
-import com.btl.login.entities.OpenClass;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TeachingClassesAdapter extends BaseAdapter {
     private final List<TeachingClassesDTO> listTeachingClasses;
+    private final LayoutInflater inflater;
     private Integer numberStudentHavingFullScores;
     private Context context;
-    private final LayoutInflater inflater;
 
     public TeachingClassesAdapter(Context context, List<TeachingClassesDTO> listTeachingClasses) {
         inflater = LayoutInflater.from(context);
         this.listTeachingClasses = listTeachingClasses;
     }
+
     @Override
     public int getCount() {
         return listTeachingClasses.size();

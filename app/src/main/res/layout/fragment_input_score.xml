@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="10dp"
     android:orientation="vertical"
-    tools:context=".fragments.InputScoreFragment"
-    android:layout_margin="10dp">
+    tools:context=".fragments.InputScoreFragment">
 
     <TextView
         android:id="@+id/txtInputScoreTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:text="Quá trình nhập điểm cho môn học ... lớp ..."
-        android:textSize="22sp"
-        android:textStyle="bold"
         android:textAlignment="center"
         android:textColor="@color/purple_200"
-        android:layout_marginBottom="10dp"
-        />
+        android:textSize="22sp"
+        android:textStyle="bold" />
 
     <Spinner
         android:id="@+id/spinner_list_students"
@@ -28,35 +27,33 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:stretchColumns="2, 3"
         android:paddingVertical="20dp"
-        >
+        android:stretchColumns="2, 3">
 
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/txtProgressScoreTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/txtProgressScoreTitle_txt"
-                />
+                android:text="@string/txtProgressScoreTitle_txt" />
 
             <TextView
                 android:id="@+id/txtProgressDescription"
                 android:layout_width="200dp"
                 android:layout_height="100dp"
-                android:text="Gồm điểm quá trình"
-                android:paddingHorizontal="10dp"/>
+                android:paddingHorizontal="10dp"
+                android:text="Gồm điểm quá trình" />
 
             <TextView
                 android:id="@+id/txtProgressPercentage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10%"
-                android:paddingEnd="10dp"/>
+                android:paddingEnd="10dp"
+                android:text="10%" />
 
             <EditText
                 android:id="@+id/eTxtProgressScore"
@@ -68,7 +65,7 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/txtMiddleSemesterScoreTitle"
@@ -80,15 +77,15 @@
                 android:id="@+id/txtMiddleSemesterDescription"
                 android:layout_width="200dp"
                 android:layout_height="100dp"
-                android:text="Gồm điểm quá trình"
-                android:paddingHorizontal="10dp"/>
+                android:paddingHorizontal="10dp"
+                android:text="Gồm điểm quá trình" />
 
             <TextView
                 android:id="@+id/txtMiddleSemesterPercentage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="40%"
-                android:paddingEnd="10dp"/>
+                android:paddingEnd="10dp"
+                android:text="40%" />
 
             <EditText
                 android:id="@+id/eTxtMiddleSemesterScore"
@@ -100,7 +97,7 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/txtFinalSemesterScoreTitle"
@@ -112,15 +109,15 @@
                 android:id="@+id/txtFinalSemesterDescription"
                 android:layout_width="200dp"
                 android:layout_height="100dp"
-                android:text="Gồm điểm quá trình"
-                android:paddingHorizontal="10dp"/>
+                android:paddingHorizontal="10dp"
+                android:text="Gồm điểm quá trình" />
 
             <TextView
                 android:id="@+id/txtFinalSemesterPercentage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="50%"
-                android:paddingEnd="10dp"/>
+                android:paddingEnd="10dp"
+                android:text="50%" />
 
             <EditText
                 android:id="@+id/eTxtFinalSemesterScore"
@@ -131,13 +128,13 @@
         </TableRow>
     </TableLayout>
 
-        <Button
-            android:layout_gravity="center"
-            android:id="@+id/btnSave"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cornerRadius="25dp"
-            android:backgroundTint="@color/purple_200"
-            android:text="@string/btnSave_txt" />
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/purple_200"
+        android:text="@string/btnSave_txt"
+        app:cornerRadius="25dp" />
 
 </LinearLayout>

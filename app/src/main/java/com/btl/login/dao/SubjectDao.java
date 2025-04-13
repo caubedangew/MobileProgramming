@@ -4,7 +4,9 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
+import com.btl.login.dto.SubjectDTO;
 import com.btl.login.dto.SubjectsTaughtByTeacherDTO;
 import com.btl.login.entities.Subject;
 
@@ -33,4 +35,13 @@ public interface SubjectDao {
             "WHERE teacherAssignment.teacherId=:teacherId AND subject.subjectName LIKE '%' || :subjectName || '%'" +
             "GROUP BY subject.id, subject.subjectName, subject.creditNumber")
     List<SubjectsTaughtByTeacherDTO> getSubjectsTaughtByTeacherLogin(int teacherId, String subjectName);
+
+    @Query("SELECT COUNT(*) FROM subject WHERE subjectName = :subjectName")
+    int checkSubjectExists(String subjectName);
+
+    @Update
+    void updateSubject(Subject subject);
+
+    @Query("SELECT subject.*, COALESCE(subject.creditNumber, 0) AS creditNumber FROM subject")
+    List<SubjectDTO> getSubjectsWithCreditNumber();
 }

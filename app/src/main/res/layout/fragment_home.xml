@@ -8,69 +8,68 @@
 
     <TextView
         android:id="@+id/txtMessageRecommendToUpdateData"
-        android:padding="15dp"
-        android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:background="#f8d7da"
-        android:textColor="#721c35"
-        android:textSize="18sp"
+        android:padding="15dp"
+        android:text="@string/txtMessageRecommendToUpdateData"
         android:textAlignment="center"
-        android:text="@string/txtMessageRecommendToUpdateData" />
+        android:textColor="#721c35"
+        android:textSize="18sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:gravity="center_vertical"
-        >
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/layoutInputScore"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_margin="20dp"
             android:background="@drawable/home"
+            android:orientation="horizontal"
             android:paddingHorizontal="5dp">
 
             <ImageView
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:src="@drawable/input_score"/>
+                android:src="@drawable/input_score" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textAlignment="center"
-                android:textSize="22dp"
+                android:layout_marginHorizontal="10dp"
                 android:text="@string/nav_input_score_item"
-                android:layout_marginHorizontal="10dp"/>
+                android:textAlignment="center"
+                android:textSize="22dp" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/layoutStatistics"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_margin="20dp"
-            android:paddingHorizontal="5dp"
-            android:background="@drawable/home">
+            android:background="@drawable/home"
+            android:orientation="horizontal"
+            android:paddingHorizontal="5dp">
 
             <TextView
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginHorizontal="10dp"
                 android:text="@string/nav_statistic_item"
                 android:textAlignment="center"
-                android:textSize="22dp"
-                android:layout_marginHorizontal="10dp"/>
+                android:textSize="22dp" />
 
             <ImageView
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:src="@drawable/bar"/>
+                android:src="@drawable/bar" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

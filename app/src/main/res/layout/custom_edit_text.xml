@@ -2,23 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:background="@drawable/custom_edit_text"
-    android:padding="10dp"
+    android:layout_marginHorizontal="15dp"
     android:layout_marginVertical="10dp"
-    android:layout_marginHorizontal="15dp">
+    android:background="@drawable/custom_edit_text"
+    android:orientation="horizontal"
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/txtComponent"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:textColor="@color/purple_200"
         android:textAlignment="center"
-        />
+        android:textColor="@color/purple_200" />
 
     <EditText
         android:id="@+id/eTxtComponent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="wrap_content" />
 </LinearLayout>

@@ -5,8 +5,6 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
 
-import org.jetbrains.annotations.NotNull;
-
 @Entity(foreignKeys = {
         @ForeignKey(
                 entity = OpenClass.class,

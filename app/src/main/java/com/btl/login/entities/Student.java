@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
                 childColumns = "studentClassId",
                 onUpdate = ForeignKey.CASCADE,
                 onDelete = ForeignKey.CASCADE)
-}, indices = {@Index(value="email", unique = true)})
+}, indices = {@Index(value = "email", unique = true)})
 public class Student extends BaseInformation {
     private int studentClassId;
 

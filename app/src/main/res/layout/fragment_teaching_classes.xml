@@ -3,20 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="10dp"
     android:orientation="vertical"
-    tools:context=".fragments.TeachingSubjectsFragment"
-    android:layout_margin="10dp">
+    tools:context=".fragments.TeachingSubjectsFragment">
 
     <TextView
         android:id="@+id/txtTeachingClassesTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="22sp"
-        android:textStyle="bold"
+        android:layout_marginBottom="10dp"
         android:textAlignment="center"
         android:textColor="@color/purple_200"
-        android:layout_marginBottom="10dp"
-        />
+        android:textSize="22sp"
+        android:textStyle="bold" />
 
     <ListView
         android:id="@+id/listTeachingSubjects"
