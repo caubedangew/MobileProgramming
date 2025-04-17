@@ -229,29 +229,42 @@ public class RoleFragment extends Fragment {
     }
     /** 📌 Cập nhật mật khẩu & vai trò */
     private void updateUserRole() {
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        String email = eTxtEmail.getText().toString().trim(); // 🔥 Lấy email từ EditText
+        String newRole = spinnerRoles.getSelectedItem().toString(); // 🔥 Lấy vai trò từ Spinner
 
-        if (currentUser == null) {
-            Toast.makeText(getContext(), "Không thể cập nhật vai trò, người dùng chưa đăng nhập!", Toast.LENGTH_SHORT).show();
+        if (email.isEmpty() || newRole.isEmpty()) {
+            Toast.makeText(getContext(), "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        String userUID = currentUser.getUid(); // 🔥 Lấy UID của người dùng từ Authentication
-        String newRole = spinnerRoles.getSelectedItem().toString();
-
-        if (newRole.isEmpty()) {
-            Toast.makeText(getContext(), "Vui lòng chọn vai trò mới!", Toast.LENGTH_SHORT).show();
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(getContext(), "Email không hợp lệ!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // 🔥 Cập nhật `role` theo UID của người dùng trong Firestore
-        db.collection("users").document(userUID).update("role", newRole)
-                .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(getContext(), "Vai trò đã được cập nhật!", Toast.LENGTH_SHORT).show();
-                    loadUsersFromFirebase(); // 🔥 Cập nhật danh sách sau khi sửa
+        // 🔥 Tìm tài liệu có email trong Firestore để lấy UID
+        db.collection("users").whereEqualTo("email", email).get()
+                .addOnSuccessListener(querySnapshot -> {
+                    if (!querySnapshot.isEmpty()) {
+                        DocumentSnapshot document = querySnapshot.getDocuments().get(0); // 🔥 Lấy tài liệu đầu tiên
+                        String userUID = document.getId(); // 🔥 Lấy UID của tài liệu
+
+                        // 🔥 Cập nhật vai trò trên Firestore
+                        db.collection("users").document(userUID).update("role", newRole)
+                                .addOnSuccessListener(aVoid -> {
+                                    Toast.makeText(getContext(), "Vai trò đã được cập nhật!", Toast.LENGTH_SHORT).show();
+                                    loadUsersFromFirebase(); // 🔥 Cập nhật danh sách sau khi sửa
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(getContext(), "Lỗi khi cập nhật vai trò trên Firestore: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                });
+
+                    } else {
+                        Toast.makeText(getContext(), "Không tìm thấy người dùng có email này!", Toast.LENGTH_SHORT).show();
+                    }
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(getContext(), "Lỗi khi cập nhật vai trò trên Firestore: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Lỗi khi tìm kiếm người dùng: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
 
