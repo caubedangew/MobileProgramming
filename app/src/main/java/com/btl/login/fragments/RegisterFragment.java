@@ -51,6 +51,8 @@ import com.google.firebase.firestore.Transaction;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -164,7 +166,7 @@ public class RegisterFragment extends Fragment {
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
-                            addRoleToFirestore(user.getUid(), "teacher", firestore);
+                            addRoleToFirestore(user.getUid(), email, role, hashPassword(password), firestore);
                             if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
                                 new AlertDialog.Builder(getContext())
                                         .setMessage("Ứng dụng cần quyền này để truy cập vào bộ nhớ của bạn.")
@@ -191,13 +193,17 @@ public class RegisterFragment extends Fragment {
         btnRegister.setEnabled(true);
     }
 
-    private void addRoleToFirestore(String userId, String role, FirebaseFirestore firestore) {
+    private void addRoleToFirestore(String userId, String email, String role, String hashedPassword, FirebaseFirestore firestore) {
         DocumentReference userRef = firestore.collection("users").document(userId);
-        Map<String, String> userRole = new HashMap<>();
-        userRole.put("role", role);
-        userRef.set(userRole)
-                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Role added successfully"))
-                .addOnFailureListener(e -> Log.d("Firestore", "Error adding role", e));
+
+        Map<String, String> userData = new HashMap<>();
+        userData.put("email", email);  // Thêm email vào Firestore
+        userData.put("role", role);
+        userData.put("password", hashedPassword); // Lưu mật khẩu đã mã hóa
+
+        userRef.set(userData)
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Email, role, and hashed password added successfully"))
+                .addOnFailureListener(e -> Log.d("Firestore", "Error adding email, role, and hashed password", e));
     }
 
     private void uploadImageToCloudinary(FirebaseUser user, FirebaseFirestore firestore) {
@@ -323,6 +329,19 @@ public class RegisterFragment extends Fragment {
                 deleteUserAccount(user);
                 Toast.makeText(getContext(), "Không thể cấp quyền truy cập vào bộ nhớ", Toast.LENGTH_LONG).show();
             }
+        }
+    }
+    private String hashPassword(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hashedBytes = md.digest(password.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashedBytes) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Hashing algorithm not available", e);
         }
     }
 }
