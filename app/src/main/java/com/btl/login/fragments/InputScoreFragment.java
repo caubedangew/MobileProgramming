@@ -43,7 +43,6 @@ public class InputScoreFragment extends Fragment {
     private static final String OPEN_CLASS_PARAM = "openClassId";
     private static final String TITLE = "title";
     String title;
-    ;
     EditText eTxtProgressScore, eTxtMiddleScore, eTxtFinalScore;
     TextView txtTitle, txtProgressDescription, txtMiddleDescription, txtFinalDescription,
             txtProgressWeight, txtMiddleWeight, txtFinalWeight;
@@ -51,6 +50,8 @@ public class InputScoreFragment extends Fragment {
     boolean haveProgressScore, haveMiddleScore, haveFinalScore;
     private int subjectId, openClassId, studentId;
     private List<SubjectScore> subjectScore;
+    private List<StudentInClassDTO> listStudents;
+    private InputScoreAdapter inputScoreAdapter;
 
     public InputScoreFragment() {
 
@@ -108,7 +109,7 @@ public class InputScoreFragment extends Fragment {
         Handler handler = new Handler(Looper.getMainLooper());
         executorService.execute(() -> {
             subjectScore = appDatabase.subjectScoreDao().getSubjectScoreBySubjectId(subjectId);
-            List<StudentInClassDTO> listStudents = appDatabase.studentScoreDao().getStudentsInOpenClass(openClassId);
+            listStudents = appDatabase.studentScoreDao().getStudentsInOpenClass(openClassId);
             handler.post(() -> {
                 if (!subjectScore.isEmpty()) {
                     txtProgressDescription.setText(subjectScore.get(0).getDescription());
@@ -118,10 +119,10 @@ public class InputScoreFragment extends Fragment {
                     txtFinalDescription.setText(subjectScore.get(2).getDescription());
                     txtFinalWeight.setText((int) (subjectScore.get(2).getWeight() * 100) + "%");
                 }
-                InputScoreAdapter inputScoreAdapter = new InputScoreAdapter(getContext(), listStudents);
-                Spinner spinner_list_students = view.findViewById(R.id.spinner_list_students);
-                spinner_list_students.setAdapter(inputScoreAdapter);
-                spinner_list_students.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                inputScoreAdapter = new InputScoreAdapter(getContext(), listStudents);
+                Spinner spinnerListStudents = view.findViewById(R.id.spinner_list_students);
+                spinnerListStudents.setAdapter(inputScoreAdapter);
+                spinnerListStudents.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         haveProgressScore = false;
@@ -206,9 +207,21 @@ public class InputScoreFragment extends Fragment {
                             executorService.execute(() -> appDatabase.studentScoreDao().addStudentScores(studentScores.toArray(StudentScore[]::new)));
                             Toast.makeText(getContext(), "Lưu điểm thành công", Toast.LENGTH_LONG).show();
                         }
+//                        updateStudentList(executorService, handler, appDatabase);
                     })
                     .setNegativeButton("Để tôi kiểm tra lại", null)
                     .show();
+        });
+    }
+
+    private void updateStudentList(ExecutorService executorService, Handler handler, AppDatabase appDatabase) {
+        executorService.execute(() -> {
+            List<StudentInClassDTO> students = appDatabase.studentScoreDao().getStudentsInOpenClass(openClassId);
+            handler.post(() -> {
+                listStudents.clear();
+                listStudents.addAll(students);
+                inputScoreAdapter.notifyDataSetChanged();
+            });
         });
     }
 }

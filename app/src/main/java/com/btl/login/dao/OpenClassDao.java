@@ -25,16 +25,21 @@ public interface OpenClassDao {
     void deleteOpenClass(OpenClass openClass);
 
     @Query("SELECT openClass.id as openClassId, subjectId, className, COUNT(*) as numberSubjectRegistration, " +
-            "(SELECT COUNT(*) FROM (SELECT studentScore.studentId FROM student " +
-            "JOIN studentScore ON student.id = studentScore.studentId " +
-            "JOIN subjectScore ON subjectScore.id = studentScore.subjectScoreId " +
-            "JOIN openClass ON openClass.id = studentScore.openClassId " +
-            "JOIN teacherAssignment ON teacherAssignment.openClassId = openClass.id " +
-            "WHERE teacherAssignment.teacherId = :userId AND subjectScore.subjectId = :subjectId " +
-            "GROUP BY studentScore.studentId " +
-            "HAVING COUNT(*) = (" +
-            "SELECT COUNT(*) FROM subjectScore " +
-            "WHERE subjectScore.subjectId = :subjectId))) as numberStudentHaveScore " +
+            "COUNT(*) as numberSubjectRegistration, " +
+            "        (SELECT COUNT(DISTINCT studentScore.studentId) " +
+            "        FROM studentScore " +
+            "        INNER JOIN subjectScore ON subjectScore.id = studentScore.subjectScoreId " +
+            "        WHERE studentScore.openClassId = openClass.id " +
+            "        AND subjectScore.subjectId = :subjectId" +
+            "        AND (SELECT COUNT(*) " +
+            "            FROM subjectScore ss" +
+            "            WHERE ss.subjectId = :subjectId" +
+            "        ) = (SELECT COUNT(*) " +
+            "            FROM studentScore ss2" +
+            "            INNER JOIN subjectScore ON subjectScore.id = ss2.subjectScoreId" +
+            "            WHERE ss2.studentId = studentScore.studentId " +
+            "            AND ss2.openClassId = openClass.id " +
+            "            AND subjectScore.subjectId = :subjectId)) as numberStudentHaveScore " +
             "FROM openClass " +
             "JOIN subjectRegistration ON openClass.id = subjectRegistration.openClassId " +
             "JOIN studentClass ON openClass.classId = studentClass.id " +

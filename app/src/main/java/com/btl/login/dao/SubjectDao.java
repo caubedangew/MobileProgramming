@@ -29,12 +29,18 @@ public interface SubjectDao {
     @Query("DELETE FROM subject")
     void deleteAllSubjects();
 
-    @Query("SELECT subject.id, subject.subjectName, subject.creditNumber, COUNT(*) as assignmentCount FROM teacherAssignment " +
+    @Query("SELECT subject.id, subject.subjectName, subject.creditNumber, " +
+            "(SELECT COUNT(numberStudent.numberStudents) " +
+            "            FROM (SELECT COUNT(*) as numberStudents FROM subjectregistration " +
+            "            JOIN openClass ON openClass.id = subjectRegistration.openClassId " +
+            "            GROUP BY openClass.id) as numberStudent) as assignmentCount " +
+            "FROM teacherAssignment " +
             "JOIN openClass ON teacherAssignment.openClassId = openClass.id " +
+            "JOIN subjectregistration ON openClass.id = subjectRegistration.openClassId " +
             "JOIN subject ON subject.id = openClass.subjectId " +
-            "WHERE teacherAssignment.teacherId=:teacherId AND subject.subjectName LIKE '%' || :subjectName || '%'" +
+            "WHERE teacherAssignment.teacherId=:teacherId AND subject.subjectName LIKE '%' || :subjectName || '%' AND semesterId=:semesterId " +
             "GROUP BY subject.id, subject.subjectName, subject.creditNumber")
-    List<SubjectsTaughtByTeacherDTO> getSubjectsTaughtByTeacherLogin(int teacherId, String subjectName);
+    List<SubjectsTaughtByTeacherDTO> getSubjectsTaughtByTeacherLogin(int semesterId, int teacherId, String subjectName);
 
     @Query("SELECT COUNT(*) FROM subject WHERE subjectName = :subjectName")
     int checkSubjectExists(String subjectName);

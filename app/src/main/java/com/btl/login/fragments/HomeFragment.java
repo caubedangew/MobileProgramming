@@ -113,7 +113,7 @@ public class HomeFragment extends Fragment {
         });
 
         layoutStatistics.setOnClickListener(v -> {
-            UserStatisticsFragment statisticsFragment = new UserStatisticsFragment();
+            UserSubjectsStatisticsFragment statisticsFragment = new UserSubjectsStatisticsFragment();
             ((NavigationView) requireActivity().findViewById(R.id.nav_view)).getMenu().findItem(R.id.statistics).setChecked(true);
             ((Toolbar) requireActivity().findViewById(R.id.toolbar)).setTitle("Thống kê điểm số sinh viên");
             redirectToSpecifiedFragment(statisticsFragment, true);

@@ -1,6 +1,7 @@
 package com.btl.login.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,6 @@ import java.util.List;
 public class InputScoreAdapter extends BaseAdapter {
     private final List<StudentInClassDTO> listStudents;
     private final LayoutInflater inflater;
-    private Context context;
 
     public InputScoreAdapter(Context context, List<StudentInClassDTO> listStudents) {
         inflater = LayoutInflater.from(context);
@@ -42,13 +42,20 @@ public class InputScoreAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = inflater.inflate(R.layout.custom_spinner_teaching_students_item, null);
 
+
         TextView txtStudentName = view.findViewById(R.id.txtStudentName);
         TextView txtStudentId = view.findViewById(R.id.txtStudentId);
         ImageView imgAlreadyHaveScore = view.findViewById(R.id.imgAlreadyHaveScore);
 
         txtStudentName.setText(listStudents.get(position).getFullName());
         txtStudentId.setText(String.valueOf(listStudents.get(position).getId()));
-        imgAlreadyHaveScore.setImageResource(R.drawable.ic_tick);
+
+        if (listStudents.get(position).getNumberScore() == 3)
+            imgAlreadyHaveScore.setImageResource(R.drawable.ic_tick);
+        else if (listStudents.get(position).getNumberScore() == 0)
+            imgAlreadyHaveScore.setImageResource(R.drawable.ic_cross);
+        else
+            imgAlreadyHaveScore.setImageResource(R.drawable.ic_warning);
 
         return view;
     }

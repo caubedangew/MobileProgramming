@@ -3,11 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
     android:orientation="vertical"
-    tools:context=".fragments.UserSubjectsStatisticsFragment">
+    android:layout_margin="10dp"
+    tools:context=".fragments.UserClassesStatisticsFragment">
 
     <TextView
+        android:id="@+id/txtClassesStatisticsTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
@@ -17,15 +18,8 @@
         android:textSize="22sp"
         android:textStyle="bold" />
 
-    <Spinner
-        android:id="@+id/spinnerSemester"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:background="@drawable/custom_edit_text"/>
-
     <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/statisticsChart"
+        android:id="@+id/classesStatisticsChart"
         android:layout_width="match_parent"
         android:layout_height="700dp"
         android:layout_marginTop="20dp" />

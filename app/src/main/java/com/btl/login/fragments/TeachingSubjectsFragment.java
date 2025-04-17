@@ -1,14 +1,18 @@
 package com.btl.login.fragments;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,10 +24,12 @@ import com.btl.login.MainActivity;
 import com.btl.login.R;
 import com.btl.login.adapter.TeachingSubjectsAdapter;
 import com.btl.login.configurations.AppDatabase;
+import com.btl.login.dto.SemesterDTO;
 import com.btl.login.dto.SubjectsTaughtByTeacherDTO;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -35,13 +41,15 @@ import java.util.concurrent.Executors;
 public class TeachingSubjectsFragment extends Fragment {
 
     EditText eTxtSearchSubjectName;
-
     Button btnSearch;
-
     String searchSubjectName = "";
-
     List<SubjectsTaughtByTeacherDTO> listTeachingSubjects;
+    Spinner spinnerSemesters;
+    AppDatabase appDatabase;
+    GridView teachingSubjects;
     String title = "";
+    String chosenSemesterName = "";
+    int semesterId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,6 +63,8 @@ public class TeachingSubjectsFragment extends Fragment {
 
         eTxtSearchSubjectName = view.findViewById(R.id.eTxtSearchingSubjectName);
         btnSearch = view.findViewById(R.id.btnSearch);
+        spinnerSemesters = view.findViewById(R.id.spinnerSemester);
+        teachingSubjects = view.findViewById(R.id.grid_teaching_subjects);
 
         return view;
     }
@@ -63,8 +73,39 @@ public class TeachingSubjectsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        appDatabase = AppDatabase.getDatabase(getContext());
+        List<String> semesters = new ArrayList<>();
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
+        executorService.execute(() -> {
+            List<SemesterDTO> semesterList = appDatabase.semesterDao().getSemesterNameAndAcademicYearName(System.currentTimeMillis());
+            semesterId = appDatabase.semesterDao().getSemesterIdAtCurrentTime(System.currentTimeMillis());
+            handler.post(() -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                    semesters.addAll(semesterList.stream().map(SemesterDTO::getFullSemesterName).toList());
+                }
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, semesters);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinnerSemesters.setAdapter(adapter);
+
+                spinnerSemesters.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        semesterId = semesterList.get(position).getSemesterId();
+                        chosenSemesterName = semesters.get(position);
+                        executorService.execute(() -> {
+                            handleSearch(view, handler);
+                        });
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+            });
+        });
+
         executorService.execute(() -> {
             handleSearch(view, handler);
         });
@@ -80,16 +121,14 @@ public class TeachingSubjectsFragment extends Fragment {
     }
 
     private void handleSearch(@NonNull View view, Handler handler) {
-        AppDatabase appDatabase = AppDatabase.getDatabase(getContext());
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         int userId = appDatabase.teacherDao().getTeacherByEmail(user.getEmail()).getId();
-        listTeachingSubjects = appDatabase.subjectDao().getSubjectsTaughtByTeacherLogin(userId, searchSubjectName);
+        listTeachingSubjects = appDatabase.subjectDao().getSubjectsTaughtByTeacherLogin(semesterId, userId, searchSubjectName);
         handler.post(() -> {
             TeachingSubjectsAdapter teachingSubjectsAdapter = new TeachingSubjectsAdapter(getContext(), listTeachingSubjects);
-            GridView teachingSubjects = view.findViewById(R.id.grid_teaching_subjects);
             teachingSubjects.setAdapter(teachingSubjectsAdapter);
             teachingSubjects.setOnItemClickListener((parent, view1, position, id) -> {
-                title = listTeachingSubjects.get(position).getSubjectName() + " học kỳ II năm học 2024 - 2025";
+                title = listTeachingSubjects.get(position).getSubjectName() + " " + chosenSemesterName;
                 TeachingClassesFragment teachingClassesFragment = TeachingClassesFragment.newInstance(userId, listTeachingSubjects.get(position).getId(), title);
                 redirectToSpecifiedFragment(teachingClassesFragment, true);
             });

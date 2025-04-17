@@ -38,7 +38,7 @@ import com.btl.login.fragments.LoginFragment;
 import com.btl.login.fragments.RegisterFragment;
 import com.btl.login.fragments.TeachingSubjectsFragment;
 import com.btl.login.fragments.UserFragment;
-import com.btl.login.fragments.UserStatisticsFragment;
+import com.btl.login.fragments.UserSubjectsStatisticsFragment;
 import com.btl.login.userViewModel.UserViewModel;
 import com.btl.login.utils.DateUtils;
 import com.bumptech.glide.Glide;
@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
         Fragment homeFragment = new HomeFragment();
         Fragment userFragment = new UserFragment();
         Fragment teachingSubjectsFragment = new TeachingSubjectsFragment();
-        Fragment statisticsFragment = new UserStatisticsFragment();
+        Fragment statisticsFragment = new UserSubjectsStatisticsFragment();
         Fragment loginFragment = new LoginFragment();
         Fragment registerFragment = new RegisterFragment();
         Fragment adminFragment = new AdminFragment();
@@ -289,7 +289,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initData() {
-//        appDatabase.teacherDao().addTeachers(new Teacher("Le", "Vu", "lttvu3003@gmail.com.vn", 1));
         new Thread(() -> {
             List<Department> departments = appDatabase.departmentDao().getAllDepartments();
             if (departments.isEmpty()) {

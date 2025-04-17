@@ -30,12 +30,19 @@ public interface StudentScoreDao {
     @Delete
     void deleteStudentScore(StudentScore studentScore);
 
-    @Query("SELECT subjectRegistration.studentId as id, (student.firstName || ' ' || student.lastName) as fullName, COUNT(*) " +
+    @Query("SELECT subjectRegistration.studentId as id, (student.firstName || ' ' || student.lastName) as fullName, COUNT(StudentScore.studentId) as numberScore " +
             "FROM student " +
             "JOIN subjectRegistration ON subjectRegistration.studentId = student.id " +
+            "LEFT JOIN StudentScore ON StudentScore.studentId = student.id AND studentscore.openClassId = :openClassId " +
             "WHERE subjectRegistration.openClassId=:openClassId " +
-            "GROUP BY student.id, fullName")
+            "GROUP BY student.id, fullName " +
+            "ORDER BY numberScore, fullName")
     List<StudentInClassDTO> getStudentsInOpenClass(int openClassId);
+
+    @Query("SELECT COUNT(*) " +
+            "FROM StudentScore " +
+            "WHERE openClassId=:openClassId AND studentId=:studentId")
+    int getNumberScoreHaveInputting(int openClassId, int studentId);
 
     @Query("SELECT studentScore.score, subjectScore.id as subjectScoreId " +
             "FROM studentScore " +

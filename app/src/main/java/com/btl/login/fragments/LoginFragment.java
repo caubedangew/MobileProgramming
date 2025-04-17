@@ -136,7 +136,7 @@ public class LoginFragment extends Fragment {
                                             } else if ("teacher".equals(role)) {
                                                 userViewModel.setLoggedIn(true);
                                                 userViewModel.setUserRole("teacher");
-
+                                                ((Toolbar) requireActivity().findViewById(R.id.toolbar)).setTitle("Trang chủ");
                                                 FragmentManager fragmentManager = getParentFragmentManager();
                                                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                                                 fragmentTransaction.replace(R.id.fragment_container, new HomeFragment());
