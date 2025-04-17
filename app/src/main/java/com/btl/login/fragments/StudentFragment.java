@@ -32,6 +32,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import android.text.TextWatcher;
+import android.text.Editable;
 
 public class StudentFragment extends Fragment implements OnStudentActionListener {
 
@@ -39,9 +41,9 @@ public class StudentFragment extends Fragment implements OnStudentActionListener
     private final List<StudentDTO> multipleStudentsList = new ArrayList<>();
     private final ExecutorService executorService = Executors.newFixedThreadPool(4);
     private RecyclerView recyclerViewStudents, recyclerViewAddMultipleStudents;
-    private Spinner spinnerClasses;
-    private EditText eTxtFirstName, eTxtLastName, eTxtEmail, eTxtStudentCount;
-    private Button btnAddStudent, btnEditStudent, btnAddMultipleStudents, btnSaveMultipleStudents;
+    private Spinner spinnerClasses, spinnerSearchCategory;
+    private EditText eTxtFirstName, eTxtLastName, eTxtEmail, eTxtStudentCount, editTextSearch;
+    private Button btnAddStudent, btnEditStudent, btnAddMultipleStudents, btnSaveMultipleStudents, btnSearchStudent;
     private ProgressBar progressBarLoading;
     private StudentAdapter adapter;
     private AppDatabase appDatabase;
@@ -49,7 +51,6 @@ public class StudentFragment extends Fragment implements OnStudentActionListener
     private StudentDTO selectedStudent;
     private MultipleStudentsAdapter multipleStudentsAdapter;
 
-    @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_admin_student, container, false);
@@ -57,8 +58,8 @@ public class StudentFragment extends Fragment implements OnStudentActionListener
         initViews(view);
         setupRecyclerView();
         loadSpinnerData();
+        setupSearchSpinner(); // Khởi tạo `Spinner` tìm kiếm
 
-        // Thêm sự kiện chọn trong Spinner
         spinnerClasses.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -67,7 +68,6 @@ public class StudentFragment extends Fragment implements OnStudentActionListener
                     Toast.makeText(requireContext(), "Vui lòng chọn lớp học hợp lệ!", Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 selectedClassName = null;
@@ -80,6 +80,31 @@ public class StudentFragment extends Fragment implements OnStudentActionListener
         btnEditStudent.setOnClickListener(v -> handleEditStudent());
         btnAddMultipleStudents.setOnClickListener(v -> handleAddMultipleStudents());
         btnSaveMultipleStudents.setOnClickListener(v -> handleSaveMultipleStudents());
+
+        btnSearchStudent.setOnClickListener(v -> {
+            String query = editTextSearch.getText().toString().trim();
+            if (query.isEmpty()) {
+                Toast.makeText(requireContext(), "Vui lòng nhập thông tin cần tìm!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            searchStudents(query);
+        });
+
+        editTextSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().isEmpty()) {
+                    adapter.resetList(); // Khôi phục danh sách gốc
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
         return view;
     }
 
@@ -97,18 +122,60 @@ public class StudentFragment extends Fragment implements OnStudentActionListener
         recyclerViewAddMultipleStudents = view.findViewById(R.id.recyclerViewAddMultipleStudents);
         btnAddMultipleStudents = view.findViewById(R.id.btnAddMultipleStudents);
         btnSaveMultipleStudents = view.findViewById(R.id.btnSaveMultipleStudents);
+
+        editTextSearch = view.findViewById(R.id.editTextSearch);
+        spinnerSearchCategory = view.findViewById(R.id.spinnerSearchCategory);
+        btnSearchStudent = view.findViewById(R.id.btnSearchStudent);
     }
 
     private void setupRecyclerView() {
-        // Thiết lập cho danh sách sinh viên đã lưu
-        adapter = new StudentAdapter(requireContext(), studentList, this); // Dùng cho xử lý một sinh viên
         recyclerViewStudents.setLayoutManager(new LinearLayoutManager(requireContext()));
+        adapter = new StudentAdapter(requireContext(), studentList, this);
         recyclerViewStudents.setAdapter(adapter);
 
-        // Thiết lập cho danh sách nhập liệu
-        multipleStudentsAdapter = new MultipleStudentsAdapter(multipleStudentsList); // Dùng cho xử lý nhiều sinh viên
-        recyclerViewAddMultipleStudents.setLayoutManager(new LinearLayoutManager(requireContext()));
+        recyclerViewAddMultipleStudents.setLayoutManager(new LinearLayoutManager(requireContext())); // ✅ Đặt LayoutManager trước khi gán Adapter
+        multipleStudentsAdapter = new MultipleStudentsAdapter(multipleStudentsList);
         recyclerViewAddMultipleStudents.setAdapter(multipleStudentsAdapter);
+    }
+
+    private void setupSearchSpinner() {
+        String[] searchCategories = {"Họ", "Tên", "Lớp"};
+        ArrayAdapter<String> adapterSpinner = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, searchCategories);
+        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerSearchCategory.setAdapter(adapterSpinner);
+    }
+
+    private void searchStudents(String query) {
+        if (query.isEmpty()) {
+            adapter.resetList();
+            return;
+        }
+
+        List<StudentDTO> filteredList = new ArrayList<>();
+
+        for (StudentDTO student : adapter.getStudentListFull()) {
+            if (student == null) continue;
+
+            switch (spinnerSearchCategory.getSelectedItem().toString()) {
+                case "Họ":
+                    if (student.getFirstName() != null && student.getFirstName().toLowerCase().contains(query.toLowerCase())) {
+                        filteredList.add(student);
+                    }
+                    break;
+                case "Tên":
+                    if (student.getLastName() != null && student.getLastName().toLowerCase().contains(query.toLowerCase())) {
+                        filteredList.add(student);
+                    }
+                    break;
+                case "Lớp":
+                    if (student.getClassName() != null && student.getClassName().toLowerCase().contains(query.toLowerCase())) {
+                        filteredList.add(student);
+                    }
+                    break;
+            }
+        }
+
+        adapter.updateList(filteredList);
     }
 
     private void loadSpinnerData() {
@@ -124,21 +191,30 @@ public class StudentFragment extends Fragment implements OnStudentActionListener
     }
 
     private void loadStudentsFromDatabase() {
-        requireActivity().runOnUiThread(() -> progressBarLoading.setVisibility(View.VISIBLE)); // Hiển thị ProgressBar
+        requireActivity().runOnUiThread(() -> progressBarLoading.setVisibility(View.VISIBLE));
 
         executorService.execute(() -> {
             List<StudentDTO> updatedList = appDatabase.studentDao().getAllStudentsWithClassName();
+
             requireActivity().runOnUiThread(() -> {
-                studentList.clear();
-                studentList.addAll(updatedList);
-                adapter.notifyDataSetChanged();
-                progressBarLoading.setVisibility(View.GONE); // Ẩn ProgressBar sau khi hoàn thành
+                if (updatedList == null || updatedList.isEmpty()) {
+                    Toast.makeText(requireContext(), "Không có sinh viên nào trong cơ sở dữ liệu!", Toast.LENGTH_SHORT).show();
+                } else {
+                    adapter.updateFullList(updatedList); // Gọi từ Adapter thay vì cập nhật `studentListFull` từ `Fragment`
+                }
+
+                progressBarLoading.setVisibility(View.GONE);
             });
         });
     }
 
     @Override
     public void onStudentSelect(StudentDTO student) {
+        if (student == null) {
+            Toast.makeText(requireContext(), "Lỗi: Không tìm thấy sinh viên!", Toast.LENGTH_SHORT).show();
+            return; // Không tiếp tục nếu student bị null
+        }
+
         selectedStudent = student; // Lưu lại sinh viên được chọn
         eTxtFirstName.setText(student.getFirstName());
         eTxtLastName.setText(student.getLastName());
@@ -146,12 +222,13 @@ public class StudentFragment extends Fragment implements OnStudentActionListener
 
         // Cập nhật lớp học trong Spinner
         ArrayAdapter<String> spinnerAdapter = (ArrayAdapter<String>) spinnerClasses.getAdapter();
-        int spinnerPosition = spinnerAdapter.getPosition(student.getClassName());
-        if (spinnerPosition >= 0) {
-            spinnerClasses.setSelection(spinnerPosition);
+        if (spinnerAdapter != null) {
+            int spinnerPosition = spinnerAdapter.getPosition(student.getClassName());
+            if (spinnerPosition >= 0) {
+                spinnerClasses.setSelection(spinnerPosition);
+            }
         }
     }
-
     private void handleAddStudent() {
         executorService.execute(() -> {
             String firstName = eTxtFirstName.getText().toString().trim();
@@ -219,13 +296,16 @@ public class StudentFragment extends Fragment implements OnStudentActionListener
     }
 
     private void updateStudent(String firstName, String lastName, String email, int classId) {
-        executorService.execute(() -> {
+        executorService.execute(() -> { // Chạy trên Background Thread
             Student updatedStudent = new Student(firstName, lastName, email, classId);
             updatedStudent.setId(selectedStudent.getId());
             appDatabase.studentDao().updateStudent(updatedStudent);
 
+            List<StudentDTO> updatedList = appDatabase.studentDao().getAllStudentsWithClassName(); // Truy vấn trên Background Thread
+
             requireActivity().runOnUiThread(() -> {
-                loadStudentsFromDatabase();
+                adapter.updateFullList(updatedList); // Cập nhật danh sách gốc
+                loadStudentsFromDatabase(); // Làm mới danh sách hiển thị
                 Toast.makeText(requireContext(), "Thông tin sinh viên đã được cập nhật!", Toast.LENGTH_SHORT).show();
                 clearInputFields();
             });
@@ -239,10 +319,12 @@ public class StudentFragment extends Fragment implements OnStudentActionListener
                 .setMessage("Bạn có chắc chắn muốn xóa sinh viên " + student.getFirstName() + " " + student.getLastName() + "?")
                 .setPositiveButton("Xóa", (dialog, which) -> executorService.execute(() -> {
                     appDatabase.studentDao().deleteStudentById(student.getId());
+
                     requireActivity().runOnUiThread(() -> {
-                        studentList.remove(position);
+                        adapter.removeStudent(student); // Gọi phương thức xóa từ Adapter
                         adapter.notifyDataSetChanged();
-                        Toast.makeText(requireContext(), "Đã xóa sinh viên: " + student.getFirstName() + " " + student.getLastName(), Toast.LENGTH_SHORT).show();
+
+                        Toast.makeText(requireContext(), "Đã xóa sinh viên!", Toast.LENGTH_SHORT).show();
                     });
                 }))
                 .setNegativeButton("Hủy", null)

@@ -7,6 +7,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.btl.login.dto.TeacherDTO;
+import com.btl.login.dto.TeacherInfo;
 import com.btl.login.entities.Teacher;
 
 import java.util.List;
@@ -43,5 +44,8 @@ public interface TeacherDao {
             "FROM teacher " +
             "LEFT JOIN department ON teacher.departmentId = department.id")
     List<TeacherDTO> getTeachersWithDepartmentName();
-
+    @Query("DELETE FROM teacher WHERE email = :email")
+    int deleteTeacherByEmail(String email);
+    @Query("SELECT firstName, lastName FROM teacher WHERE email = :email")
+    TeacherInfo getTeacherInfoByEmail(String email);
 }

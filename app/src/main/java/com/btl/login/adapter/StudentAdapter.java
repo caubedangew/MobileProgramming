@@ -14,23 +14,25 @@ import com.btl.login.R;
 import com.btl.login.dto.StudentDTO;
 import com.btl.login.interfaces.OnStudentActionListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentViewHolder> {
     private final Context context;
-    private final List<StudentDTO> studentList;
+    private List<StudentDTO> studentList;
     private final OnStudentActionListener listener;
+    private final List<StudentDTO> studentListFull; // Danh sách gốc
 
     public StudentAdapter(Context context, List<StudentDTO> studentList, OnStudentActionListener listener) {
         this.context = context;
-        this.studentList = studentList;
+        this.studentList = new ArrayList<>(studentList); // Sao lưu danh sách hiện tại
+        this.studentListFull = new ArrayList<>(studentList); // Sao lưu danh sách gốc
         this.listener = listener;
     }
 
     @NonNull
     @Override
     public StudentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Inflate layout cho một item của RecyclerView
         View view = LayoutInflater.from(context).inflate(R.layout.custom_list_student, parent, false);
         return new StudentViewHolder(view);
     }
@@ -47,7 +49,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
         // Sự kiện khi nhấn vào một mục
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
-                listener.onStudentSelect(student); // Gọi đến sự kiện chọn sinh viên
+                listener.onStudentSelect(student);
             }
         });
 
@@ -64,6 +66,41 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
         return studentList.size();
     }
 
+    public void resetList() {
+        if (studentListFull == null || studentListFull.isEmpty()) {
+            return; // Không làm gì nếu danh sách gốc chưa được khởi tạo
+        }
+        studentList.clear();
+        studentList.addAll(studentListFull); // Khôi phục từ danh sách gốc
+        notifyDataSetChanged();
+    }
+
+    // Khôi phục danh sách gốc (khi xóa tìm kiếm)
+    public void updateList(List<StudentDTO> newList) {
+        if (newList == null || newList.isEmpty()) return; // Kiểm tra danh sách trước khi cập nhật
+
+        studentList.clear();
+        studentList.addAll(newList);
+        notifyDataSetChanged();
+    }
+    public void updateFullList(List<StudentDTO> updatedList) {
+        if (updatedList == null || updatedList.isEmpty()) return; // Kiểm tra danh sách trước khi cập nhật
+
+        studentList.clear();
+        studentList.addAll(updatedList);
+
+        studentListFull.clear();
+        studentListFull.addAll(updatedList); // Cập nhật danh sách gốc
+
+        notifyDataSetChanged();
+    }
+    public void removeStudent(StudentDTO student) {
+        studentList.remove(student); // Xóa khỏi danh sách hiển thị
+        studentListFull.remove(student); // Xóa khỏi danh sách gốc
+    }
+    public List<StudentDTO> getStudentListFull() {
+        return new ArrayList<>(studentListFull); // Trả về bản sao danh sách gốc để tránh sửa đổi trực tiếp
+    }
     public static class StudentViewHolder extends RecyclerView.ViewHolder {
         TextView tvStudentName, tvStudentEmail, tvStudentClass;
         ImageView imgDeleteStudent;

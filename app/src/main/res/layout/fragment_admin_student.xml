@@ -12,13 +12,46 @@
         android:orientation="vertical">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Quản Lý Sinh Viên"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:layout_marginBottom="10dp"
-            android:layout_gravity="center" />
+            android:textAlignment="center"
+            android:layout_marginBottom="10dp" />
+
+        <!-- Tìm kiếm sinh viên -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <Spinner
+                android:id="@+id/spinnerSearchCategory"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:spinnerMode="dropdown" />
+
+            <EditText
+                android:id="@+id/editTextSearch"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="2"
+                android:hint="Nhập thông tin cần tìm"
+                android:inputType="text"
+                android:padding="8dp" />
+        </LinearLayout>
+
+        <!-- Nút tìm kiếm -->
+        <Button
+            android:id="@+id/btnSearchStudent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tìm Kiếm"
+            android:backgroundTint="@color/purple_200"
+            android:layout_marginTop="8dp" />
 
         <!-- Nhập thông tin một sinh viên -->
         <EditText
@@ -47,8 +80,6 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="10dp"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:spinnerMode="dropdown" />
 
         <!-- Nút Thêm, Sửa -->
@@ -63,15 +94,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
-                android:backgroundTint="@color/purple_200"
-                android:text="Thêm sinh viên" />
+                android:text="Thêm sinh viên"
+                android:backgroundTint="@color/purple_200" />
 
             <Button
                 android:id="@+id/btnEditSingleStudent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/purple_200"
-                android:text="Sửa sinh viên" />
+                android:text="Sửa sinh viên"
+                android:backgroundTint="@color/purple_200" />
         </LinearLayout>
 
         <!-- Nhập số lượng sinh viên -->
@@ -130,12 +161,14 @@
 
         <!-- Danh sách Sinh viên -->
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
             android:text="Danh Sách Sinh Viên"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewStudents"

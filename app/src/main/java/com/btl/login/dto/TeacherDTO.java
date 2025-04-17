@@ -1,6 +1,7 @@
 package com.btl.login.dto;
 
 import androidx.room.Embedded;
+import androidx.room.Ignore;
 
 import com.btl.login.entities.Teacher;
 
@@ -41,5 +42,9 @@ public class TeacherDTO {
     // Utility Method
     public String getTeacherFullName() {
         return teacher.getFirstName() + " " + teacher.getLastName();
+    }
+    @Ignore // Thêm phương thức lấy email
+    public String getEmail() {
+        return teacher.getEmail();
     }
 }

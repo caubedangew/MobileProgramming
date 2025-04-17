@@ -1,70 +1,85 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RoleFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fillViewport="true"
+    tools:context=".fragments.RoleFragment">
 
-    <!-- Main container layout -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
             android:text="Quản Lý User"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_marginBottom="10dp" />
 
+        <!-- Trường nhập Email -->
         <EditText
             android:id="@+id/eTxtEmail"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/custom_edit_text"
-            android:drawableStart="@drawable/ic_email"
-            android:drawablePadding="8dp"
-            android:ems="10"
-            android:hint="@string/eTxtEmail_hint"
-            android:inputType="text"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
             android:padding="8dp" />
 
+        <!-- Trường nhập Mật Khẩu -->
         <EditText
             android:id="@+id/eTxtPassword"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/custom_edit_text"
-            android:drawableStart="@drawable/ic_pwd"
-            android:drawablePadding="8dp"
-            android:ems="10"
-            android:hint="@string/eTxtPassword_hint"
+            android:hint="Mật khẩu"
             android:inputType="textPassword"
             android:padding="8dp" />
 
+        <!-- Trường nhập First Name -->
+        <EditText
+            android:id="@+id/eTxtFirstName"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/custom_edit_text"
+            android:hint="@string/eTxtFirstName_txt"
+            android:inputType="textPersonName"
+            android:padding="8dp" />
+
+        <!-- Trường nhập Last Name -->
+        <EditText
+            android:id="@+id/eTxtLastName"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/custom_edit_text"
+            android:hint="@string/eTxtLastName_txt"
+            android:inputType="textPersonName"
+            android:padding="8dp" />
+
+        <!-- Dropdown vai trò -->
         <Spinner
             android:id="@+id/spinnerRoles"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/custom_edit_text"
-            android:ems="10"
             android:padding="8dp" />
 
-        <!-- Horizontal layout for action buttons -->
-
+        <!-- Nút thêm -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
 
             <Button
                 android:id="@+id/btnAdd"
@@ -73,6 +88,7 @@
                 android:layout_marginEnd="10dp"
                 android:backgroundTint="@color/purple_200"
                 android:text="@string/btnAdd_txt"
+                android:textAllCaps="false"
                 app:cornerRadius="25dp" />
 
             <Button
@@ -81,17 +97,16 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/purple_200"
                 android:text="@string/btnEdit_txt"
+                android:textAllCaps="false"
                 app:cornerRadius="25dp" />
         </LinearLayout>
 
-        <!-- ListView to display student list -->
-        <ListView
-            android:id="@+id/listViewRoles"
+        <!-- RecyclerView hiển thị danh sách -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewRoles"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:divider="@android:color/darker_gray"
-            android:dividerHeight="1dp" />
+            android:layout_marginTop="20dp"
+            android:scrollbars="vertical" />
     </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

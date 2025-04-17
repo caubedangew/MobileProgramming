@@ -13,6 +13,10 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
+import java.util.function.Consumer;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -26,6 +30,7 @@ import com.btl.login.configurations.AppDatabase;
 import com.btl.login.dto.TeacherDTO;
 import com.btl.login.entities.Teacher;
 import com.btl.login.interfaces.OnTeacherActionListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
@@ -293,35 +298,62 @@ public class TeacherFragment extends Fragment implements OnTeacherActionListener
             }
         }).start();
     }
+    private void checkUserRoleOnFirestore(String email, Consumer<Boolean> callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("users").whereEqualTo("email", email).get()
+                .addOnSuccessListener(querySnapshot -> {
+                    if (!querySnapshot.isEmpty()) {
+                        String role = querySnapshot.getDocuments().get(0).getString("role");
+                        callback.accept(!"admin".equalsIgnoreCase(role)); // Chỉ hiển thị nếu KHÔNG phải admin
+                    } else {
+                        callback.accept(true); // Nếu không có trên Firestore, giả định là teacher
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Firestore", "Lỗi khi kiểm tra role: " + e.getMessage());
+                    callback.accept(true); // Nếu lỗi khi truy vấn, vẫn hiển thị để tránh mất dữ liệu
+                });
+    }
 
     private void loadTeachersFromDatabase() {
         requireActivity().runOnUiThread(() -> progressBarLoading.setVisibility(View.VISIBLE)); // Hiển thị ProgressBar
 
         new Thread(() -> {
             try {
-                // Tải danh sách giáo viên từ cơ sở dữ liệu
-                teacherList = appDatabase.teacherDao().getTeachersWithDepartmentName();
+                List<TeacherDTO> allTeachers = appDatabase.teacherDao().getTeachersWithDepartmentName();
+                List<TeacherDTO> filteredTeachers = new ArrayList<>();
+                CountDownLatch latch = new CountDownLatch(allTeachers.size()); // Đợi kiểm tra toàn bộ danh sách
+
+                for (TeacherDTO teacher : allTeachers) {
+                    checkUserRoleOnFirestore(teacher.getEmail(), isTeacher -> {
+                        if (isTeacher) {
+                            filteredTeachers.add(teacher);
+                        }
+                        latch.countDown(); // Giảm số lượng đợi khi kiểm tra xong giáo viên
+                    });
+                }
+
+                latch.await(); // Đợi toàn bộ giáo viên được kiểm tra trước khi cập nhật UI
 
                 requireActivity().runOnUiThread(() -> {
-                    if (teacherList != null && !teacherList.isEmpty()) {
-                        adapter = new TeacherAdapter(requireContext(), teacherList, this);
-                        recyclerTeacher.setLayoutManager(new LinearLayoutManager(requireContext()));
-                        recyclerTeacher.setAdapter(adapter);
-                    } else {
-                        showToast("Không có giáo viên nào trong danh sách!");
-                    }
-                    progressBarLoading.setVisibility(View.GONE); // Ẩn ProgressBar
+                    adapter = new TeacherAdapter(requireContext(), filteredTeachers, this);
+                    recyclerTeacher.setLayoutManager(new LinearLayoutManager(requireContext()));
+                    recyclerTeacher.setAdapter(adapter);
+                    progressBarLoading.setVisibility(View.GONE);
                 });
+
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt(); // Đảm bảo luồng không bị lỗi sau khi Interrupted
+                Log.e("LoadTeachers", "Luồng bị gián đoạn: " + e.getMessage());
             } catch (Exception e) {
                 requireActivity().runOnUiThread(() -> {
-                    showToast("Lỗi tải danh sách giáo viên!"); // Hiển thị thông báo lỗi
+                    showToast("Lỗi tải danh sách giáo viên!");
                     progressBarLoading.setVisibility(View.GONE);
                 });
                 Log.e("LoadTeachers", "Lỗi: ", e);
             }
         }).start();
     }
-
     private void loadSpinnerData() {
         new Thread(() -> {
             try {
@@ -378,6 +410,8 @@ public class TeacherFragment extends Fragment implements OnTeacherActionListener
                                     teacherList.remove(position); // Xóa giáo viên khỏi danh sách
                                     adapter.notifyItemRemoved(position); // Cập nhật RecyclerView
                                     showToast("Đã xóa giáo viên: " + teacher.getTeacher().getFirstName());
+
+                                    loadTeachersFromDatabase(); // 🔥 Tải lại danh sách sau khi xóa
                                 } else {
                                     showToast("Xóa thất bại do danh sách bị lỗi!");
                                 }
